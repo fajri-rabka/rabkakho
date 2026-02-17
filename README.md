@@ -18,8 +18,6 @@ npm run build
 npm start
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) to view the website.
-
 ## 📁 Project Structure
 
 ```
@@ -75,6 +73,3 @@ Edit `lib/constants/colors.ts` to customize the color palette.
 
 MIT
 
-## 🤝 Contributing
-
-Contributions are welcome! Feel free to open issues or submit pull requests.
