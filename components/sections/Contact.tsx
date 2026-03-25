@@ -1,38 +1,72 @@
-'use client';
-
-import { AnimatedSection } from '@/components/ui/AnimatedSection';
-import { GlassCard } from '@/components/ui/GlassCard';
-import { SectionContainer } from '@/components/ui/SectionContainer';
-import { GlassButton } from '@/components/ui/GlassButton';
-import { tokens } from '@/lib/constants/design-tokens';
-import { Mail, MessageSquare, ArrowRight } from 'lucide-react';
+﻿'use client';
 
 export function Contact() {
-    return (
-        <SectionContainer id="contact" className="pb-32">
-            <AnimatedSection width="default" className="max-w-4xl mx-auto">
-                <GlassCard className="p-8 md:p-12 text-center space-y-8 relative overflow-hidden group">
-                    {/* Decorative background glow */}
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-gradient-to-r from-cyan-500/10 via-purple-500/10 to-pink-500/10 blur-3xl opacity-50 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-
-                    <div className="relative z-10 space-y-6">
-                        <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white">
-                            Ready to start your next project?
-                        </h2>
-                        <p className="text-sm text-neutral-300 max-w-2xl mx-auto">
-                            I'm currently available for freelance work and open to full-time opportunities.
-                            If you have a project that needs some creative touch, let's chat!
-                        </p>
-
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-                            <GlassButton size="lg" className="min-w-[160px]">
-                                <Mail className="mr-2 h-5 w-5" />
-                                Email Me
-                            </GlassButton>
-                        </div>
-                    </div>
-                </GlassCard>
-            </AnimatedSection>
-        </SectionContainer>
-    );
+  return (
+    <section className="px-8 max-w-screen-2xl mx-auto py-48" id="contact">
+      <div className="max-w-4xl mx-auto glass-card p-12 md:p-24 relative overflow-hidden border border-white/10">
+        <div className="relative z-10 text-center mb-16">
+          <h2 className="font-headline text-5xl font-extrabold tracking-tighter mb-4">LET'S START A CONVERSATION.</h2>
+          <p className="text-white/30 font-label text-[10px] tracking-[0.3em] uppercase">Currently accepting new projects for Q3 2024</p>
+        </div>
+        <form className="space-y-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+            <div className="relative">
+              <input 
+                className="peer block w-full appearance-none border-0 border-b border-white/10 bg-transparent py-4 px-0 text-white focus:border-white focus:outline-none focus:ring-0 transition-colors" 
+                id="name" 
+                name="name" 
+                placeholder=" " 
+                type="text"
+              />
+              <label 
+                className="absolute top-4 -z-10 origin-[0] -translate-y-8 scale-75 transform text-xs font-bold tracking-widest text-white/30 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-white" 
+                htmlFor="name"
+              >
+                FULL NAME
+              </label>
+            </div>
+            <div className="relative">
+              <input 
+                className="peer block w-full appearance-none border-0 border-b border-white/10 bg-transparent py-4 px-0 text-white focus:border-white focus:outline-none focus:ring-0 transition-colors" 
+                id="email" 
+                name="email" 
+                placeholder=" " 
+                type="email"
+              />
+              <label 
+                className="absolute top-4 -z-10 origin-[0] -translate-y-8 scale-75 transform text-xs font-bold tracking-widest text-white/30 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-white" 
+                htmlFor="email"
+              >
+                EMAIL ADDRESS
+              </label>
+            </div>
+          </div>
+          <div className="relative">
+            <textarea 
+              className="peer block w-full appearance-none border-0 border-b border-white/10 bg-transparent py-4 px-0 text-white focus:border-white focus:outline-none focus:ring-0 transition-colors" 
+              id="message" 
+              name="message" 
+              placeholder=" " 
+              rows={3}
+            ></textarea>
+            <label 
+              className="absolute top-4 -z-10 origin-[0] -translate-y-8 scale-75 transform text-xs font-bold tracking-widest text-white/30 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-white" 
+              htmlFor="message"
+            >
+              PROJECT OVERVIEW
+            </label>
+          </div>
+          <div className="flex justify-center pt-8">
+            <button 
+              className="bg-white text-black px-16 py-5 text-xs font-bold uppercase tracking-[0.3em] hover:bg-white/90 active:scale-95 transition-all w-full md:w-auto" 
+              type="submit"
+            >
+              Send Message
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+  );
 }
+

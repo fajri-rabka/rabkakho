@@ -1,93 +1,58 @@
-'use client';
-
-import { AnimatedSection } from '@/components/ui/AnimatedSection';
-import { GlassCard } from '@/components/ui/GlassCard';
-import { SectionContainer } from '@/components/ui/SectionContainer';
-import { tokens } from '@/lib/constants/design-tokens';
-import { Calendar, Building2 } from 'lucide-react';
-
-const experiences = [
-    {
-        role: 'Senior Frontend Engineer',
-        company: 'TechCorp Inc.',
-        period: '2023 - Present',
-        description: 'Leading the frontend team in rebuilding the core product dashboard. Improved performance by 40% and established a new design system.',
-        technologies: ['React', 'Next.js', 'GraphQL', 'Turborepo']
-    },
-    {
-        role: 'Full Stack Developer',
-        company: 'StartupX',
-        period: '2021 - 2023',
-        description: 'Developed and maintained multiple client-facing applications. Implemented CI/CD pipelines and automated testing strategies.',
-        technologies: ['Vue.js', 'Node.js', 'AWS', 'Docker']
-    },
-    {
-        role: 'Junior Web Developer',
-        company: 'Creative Agency',
-        period: '2019 - 2021',
-        description: 'Collaborated with designers to deliver pixel-perfect websites for various clients. Specialized in interactive animations.',
-        technologies: ['JavaScript', 'GSAP', 'WordPress', 'PHP']
-    }
-];
+﻿'use client';
 
 export function Experience() {
-    return (
-        <SectionContainer id="experience" className="bg-white/2">
-            <div className="space-y-12">
-                <AnimatedSection className="text-center max-w-2xl mx-auto space-y-4">
-                    <h2 className={tokens.typography.h2}>Experience</h2>
-                    <p className="text-neutral-400">
-                        My professional journey and the companies I've had the privilege to work with.
-                    </p>
-                </AnimatedSection>
-
-                <div className="relative space-y-8 max-w-4xl mx-auto">
-                    {/* Vertical Line */}
-                    <div className="absolute left-0 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-cyan-500/50 to-transparent hidden md:block" />
-
-                    {experiences.map((exp, index) => (
-                        <AnimatedSection key={index} delay={index * 0.1}>
-                            <div className={`relative flex flex-col md:flex-row gap-8 ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
-
-                                {/* Timeline Dot */}
-                                <div className="absolute left-0 md:left-1/2 w-4 h-4 rounded-full bg-cyan-500 shadow-[0_0_10px_rgba(34,211,238,0.5)] -translate-x-1.5 md:-translate-x-2 mt-6 hidden md:block" />
-
-                                <div className="flex-1">
-                                    {/* Spacer for alternating layout */}
-                                </div>
-
-                                <GlassCard className="flex-1 p-6 space-y-4 w-full md:w-[calc(50%-2rem)]">
-                                    <div className="flex justify-between items-start flex-wrap gap-2">
-                                        <div>
-                                            <h3 className="text-xl font-bold text-white">{exp.role}</h3>
-                                            <div className="flex items-center gap-2 text-cyan-400 text-sm mt-1">
-                                                <Building2 size={14} />
-                                                <span>{exp.company}</span>
-                                            </div>
-                                        </div>
-                                        <div className="flex items-center gap-2 text-neutral-500 text-xs font-medium px-2 py-1 rounded-full bg-white/5 border border-white/5">
-                                            <Calendar size={12} />
-                                            <span>{exp.period}</span>
-                                        </div>
-                                    </div>
-
-                                    <p className="text-neutral-300 text-sm leading-relaxed">
-                                        {exp.description}
-                                    </p>
-
-                                    <div className="flex flex-wrap gap-2 pt-2">
-                                        {exp.technologies.map(tech => (
-                                            <span key={tech} className="text-xs text-neutral-400 px-2 py-1 rounded bg-white/5">
-                                                {tech}
-                                            </span>
-                                        ))}
-                                    </div>
-                                </GlassCard>
-                            </div>
-                        </AnimatedSection>
-                    ))}
-                </div>
+  return (
+    <section className="px-8 max-w-screen-2xl mx-auto py-32 border-t border-white/5" id="experience">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-16">
+        <div className="md:col-span-4">
+          <span className="font-label text-[10px] tracking-[0.4em] uppercase text-white/40">The Journey</span>
+          <h2 className="font-headline text-5xl font-extrabold tracking-tighter mt-4">EXPERIENCE</h2>
+        </div>
+        <div className="md:col-span-8 space-y-24 relative">
+          {/* Vertical Line */}
+          <div className="absolute left-0 top-0 bottom-0 w-px bg-white/10 hidden md:block"></div>
+          
+          {/* Exp Item 01 */}
+          <div className="md:pl-12 relative group reveal">
+            <div className="absolute -left-[5px] top-2 w-2.5 h-2.5 bg-white border-4 border-black ring-1 ring-white/20 hidden md:block transition-all group-hover:scale-150"></div>
+            <div className="glass-card p-10 hover:bg-white/5 transition-all duration-500 border border-white/10">
+              <span className="text-xs font-bold tracking-[0.3em] text-white/40 block mb-4">2021 â€” PRESENT</span>
+              <h3 className="text-3xl font-extrabold tracking-tighter mb-2">Senior Front-End Developer</h3>
+              <p className="text-white/60 text-lg mb-6">Lumina Creative Agency</p>
+              <p className="text-white/40 font-light leading-relaxed max-w-2xl">
+                Leading a high-performance team of 5 designers and developers. Spearheading the technical direction of award-winning digital experiences for global luxury brands. Focused on performance, accessibility, and high-fidelity motion design.
+              </p>
             </div>
-        </SectionContainer>
-    );
+          </div>
+          
+          {/* Exp Item 02 */}
+          <div className="md:pl-12 relative group reveal" style={{ animationDelay: '0.1s' }}>
+            <div className="absolute -left-[5px] top-2 w-2.5 h-2.5 bg-white/20 border-4 border-black ring-1 ring-white/10 hidden md:block transition-all group-hover:bg-white group-hover:scale-150"></div>
+            <div className="glass-card p-10 hover:bg-white/5 transition-all duration-500 border border-white/10">
+              <span className="text-xs font-bold tracking-[0.3em] text-white/40 block mb-4">2019 â€” 2021</span>
+              <h3 className="text-3xl font-extrabold tracking-tighter mb-2">UI Engineer</h3>
+              <p className="text-white/60 text-lg mb-6">Nova Fintech Systems</p>
+              <p className="text-white/40 font-light leading-relaxed max-w-2xl">
+                Architected and maintained the core Design System used across 4 enterprise products. Engineered complex real-time dashboards for financial monitoring, focusing on data visualization and modular component architecture.
+              </p>
+            </div>
+          </div>
+          
+          {/* Exp Item 03 */}
+          <div className="md:pl-12 relative group reveal" style={{ animationDelay: '0.2s' }}>
+            <div className="absolute -left-[5px] top-2 w-2.5 h-2.5 bg-white/20 border-4 border-black ring-1 ring-white/10 hidden md:block transition-all group-hover:bg-white group-hover:scale-150"></div>
+            <div className="glass-card p-10 hover:bg-white/5 transition-all duration-500 border border-white/10">
+              <span className="text-xs font-bold tracking-[0.3em] text-white/40 block mb-4">2017 â€” 2019</span>
+              <h3 className="text-3xl font-extrabold tracking-tighter mb-2">Junior Web Developer</h3>
+              <p className="text-white/60 text-lg mb-6">StartUp Inc.</p>
+              <p className="text-white/40 font-light leading-relaxed max-w-2xl">
+                Executed full-stack development for rapid-growth consumer platforms. Specialized in custom CMS integrations and developing responsive, mobile-first user interfaces using emerging front-end frameworks.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 }
+

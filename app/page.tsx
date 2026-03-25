@@ -1,26 +1,25 @@
-import { Navbar } from '@/components/sections/Navbar';
+import { Navbar } from '@/components/layout/Navbar';
 import { Hero } from '@/components/sections/Hero';
-import { About } from '@/components/sections/About';
-import { Skills } from '@/components/sections/Skills';
-import { Projects } from '@/components/sections/Projects';
+import { ProjectsPreview } from '@/components/sections/Projects';
+import { TechStack } from '@/components/sections/TechStack';
 import { Experience } from '@/components/sections/Experience';
+import { About } from '@/components/sections/About';
 import { Contact } from '@/components/sections/Contact';
-import { Footer } from '@/components/sections/Footer';
-import { SectionContainer } from '@/components/ui/SectionContainer';
+import { Footer } from '@/components/layout/Footer';
 
 export default function Home() {
   return (
-    <main className="relative flex flex-col min-h-screen">
-      <SectionContainer>
-        <Navbar />
+    <>
+      <Navbar />
+      <main className="pt-32">
         <Hero />
-        <About />
-        <Skills />
-        <Projects />
+        <ProjectsPreview />
+        <TechStack />
         <Experience />
+        <About />
         <Contact />
-      </SectionContainer>
+      </main>
       <Footer />
-    </main>
+    </>
   );
 }
