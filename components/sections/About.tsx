@@ -75,13 +75,13 @@ function FloatingLetter({ char, index }: { char: string; index: number }) {
 export function About() {
   return (
     <section
-      className="px-8 max-w-screen-2xl mx-auto py-32 bg-black border-t border-white/5"
+      className="px-8 max-w-screen-2xl mx-auto lg:py-32 py-16 bg-black border-t border-white/5"
       id="about"
     >
       <div className="grid grid-cols-1 md:grid-cols-12 gap-16">
         {/* LEFT */}
         <div className="md:col-span-5">
-          <h2 className="font-headline text-6xl md:text-7xl font-extrabold tracking-tighter mt-4 leading-[0.9]">
+          <h2 className="font-headline lg:text-7xl text-6xl font-extrabold tracking-tighter mt-4 leading-[0.9]">
             <div className="flex flex-wrap gap-y-4">
               {"LESS CODE.".split("").map((char, i) => (
                 <FloatingLetter key={i} char={char} index={i} />
@@ -97,35 +97,63 @@ export function About() {
 
         {/* RIGHT */}
         <div className="md:col-span-7">
-          <p className="text-2xl font-light text-white/70 leading-relaxed mb-16">
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{
+              duration: 0.8,
+              ease: [0.16, 1, 0.3, 1] as any,
+              delay: 0.1,
+            }}
+            className="lg:text-2xl text-xl font-light text-white/70 leading-relaxed mb-16"
+          >
             Building great products is not about adding more, but delivering
             more with less. I focus on creating efficient, scalable interfaces
             where performance, clarity, and user experience work seamlessly
             together.
-          </p>
+          </motion.p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {/* APPROACH */}
-            <div>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{
+                duration: 0.8,
+                ease: [0.16, 1, 0.3, 1] as any,
+                delay: 0.3,
+              }}
+            >
               <h4 className="font-headline font-bold text-lg mb-4 tracking-tighter">
                 THE APPROACH
               </h4>
-              <p className="text-white/30 text-sm leading-relaxed font-light">
+              <p className="text-white/30 lg:text-lg text-md leading-relaxed font-light">
                 I build with a systems mindset clean code, prioritize
                 performance, and precise, every detail matters.
               </p>
-            </div>
+            </motion.div>
 
             {/* RESULT */}
-            <div>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{
+                duration: 0.8,
+                ease: [0.16, 1, 0.3, 1] as any,
+                delay: 0.4,
+              }}
+            >
               <h4 className="font-headline font-bold text-lg mb-4 tracking-tighter">
                 THE RESULT
               </h4>
-              <p className="text-white/30 text-sm leading-relaxed font-light">
+              <p className="text-white/30 lg:text-lg text-md leading-relaxed font-light">
                 Scalable, high performance products built to last and designed
                 to deliver real impact.
               </p>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>

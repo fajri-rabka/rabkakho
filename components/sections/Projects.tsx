@@ -1,6 +1,7 @@
 "use client";
 
 import { Project, ProjectsProps } from "@/lib/interfaces";
+import { motion } from "framer-motion";
 
 const DEFAULT_PROJECTS: Project[] = [
   {
@@ -40,31 +41,68 @@ export function Projects({
 }: ProjectsProps) {
   return (
     <section
-      className="px-8 max-w-screen-2xl mx-auto py-32 border-t border-white/5"
+      className="px-8 max-w-screen-2xl mx-auto lg:py-32 py-16 border-t border-white/5"
       id="work"
     >
-      <div className="flex justify-between items-end mb-20">
+      <div className="flex justify-between items-end lg:mb-20 mb-10">
         <div>
-          <span className="font-label text-[10px] tracking-[0.4em] uppercase text-white/60">
-            {label}
-          </span>
-          <h2 className="font-headline text-6xl font-extrabold tracking-tighter mt-4">
-            {title}
-          </h2>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 1.5,
+              ease: [0.19, 1, 0.22, 1],
+              delay: 0.1,
+            }}
+          >
+            <span className="font-label text-[10px] tracking-[0.4em] uppercase text-white/60">
+              {label}
+            </span>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 1.5,
+              ease: [0.19, 1, 0.22, 1],
+              delay: 0.4,
+            }}
+          >
+            <h2 className="font-headline lg:text-6xl text-4xl font-extrabold tracking-tighter mt-4">
+              {title}
+            </h2>
+          </motion.div>
         </div>
         <div className="hidden md:block text-right">
-          <span className="text-white/40 font-label text-[10px] tracking-[0.3em] uppercase">
-            Scroll to explore ({projects.length.toString().padStart(2, "0")})
-          </span>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 1.5,
+              ease: [0.19, 1, 0.22, 1],
+              delay: 0.6,
+            }}
+          >
+            <span className="text-white/40 font-label text-[10px] tracking-[0.3em] uppercase">
+              Scroll to explore ({projects.length.toString().padStart(2, "0")})
+            </span>
+          </motion.div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-x-20 md:gap-y-32">
         {projects.map((project, index) => (
-          <div
+          <motion.div
             key={project.id}
-            className={`group relative flex flex-col reveal ${index % 2 === 1 ? "md:mt-40" : ""}`}
-            style={{ animationDelay: `${(index % 2) * 0.1}s` }}
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{
+              duration: 0.8,
+              ease: [0.16, 1, 0.3, 1] as any,
+              delay: (index % 2) * 0.1,
+            }}
+            className={`group relative flex flex-col ${index % 2 === 1 ? "md:mt-40" : ""}`}
           >
             <div className="h-[400px] overflow-hidden bg-[#0a0a0a] mb-8 transition-transform duration-700 group-hover:-translate-y-2">
               <img
@@ -133,7 +171,7 @@ export function Projects({
                 arrow_outward
               </span>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </section>
