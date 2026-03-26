@@ -31,7 +31,7 @@ export function Navbar() {
         borderRadius: isScrolled ? "100px" : "0px",
         borderColor: isScrolled
           ? "rgba(255, 255, 255, 0.1)"
-          : "rgba(255, 255, 255, 0.05)",
+          : "rgba(255, 255, 255, 0.5)",
       }}
       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
       className={`fixed z-50 left-1/2 -translate-x-1/2 bg-surface/80 backdrop-blur-xl border-x border-b transition-colors duration-300`}
@@ -76,7 +76,7 @@ export function Navbar() {
 
         <button
           onClick={() => scrollTo("contact")}
-          className="bg-white text-black px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-white/90 active:scale-95 transition-all duration-300"
+          className="bg-transparent border border-white rounded-full text-white px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-white hover:text-black active:scale-95 transition-all duration-300 cursor-pointer"
         >
           Get in Touch
         </button>
