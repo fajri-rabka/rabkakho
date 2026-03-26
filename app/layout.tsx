@@ -19,6 +19,11 @@ const plusJakarta = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: "Fajri | Frontend Developer - Built with passion.",
   description: "Built with passion.",
+  icons: {
+    icon: "/favicon/favicon.ico",
+    apple: "/favicon/apple-touch-icon.png",
+  },
+  manifest: "/favicon/site.webmanifest",
 };
 
 export const viewport: Viewport = {
