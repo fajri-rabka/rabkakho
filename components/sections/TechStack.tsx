@@ -94,26 +94,6 @@ export function TechStack() {
             Vue.js
           </span>
         </div>
-        {/* Tech Item: Figma */}
-        <div
-          className="glass-card p-8 flex flex-col gap-5 items-center justify-center group hover:bg-white/10 transition-all duration-500 reveal"
-          style={{ animationDelay: "0.25s" }}
-        >
-          <Image src="/svg/figma.svg" alt="Figma" width={32} height={32} />
-          <span className="text-[9px] font-bold tracking-[0.2em] uppercase text-white/60 group-hover:text-white">
-            Figma
-          </span>
-        </div>
-        {/* Tech Item: Git */}
-        <div
-          className="glass-card p-8 flex flex-col gap-5 items-center justify-center group hover:bg-white/10 transition-all duration-500 reveal"
-          style={{ animationDelay: "0.3s" }}
-        >
-          <Image src="/svg/git.svg" alt="Git" width={32} height={32} />
-          <span className="text-[9px] font-bold tracking-[0.2em] uppercase text-white/60 group-hover:text-white">
-            Git
-          </span>
-        </div>
         {/* Tech Item: Vite.js */}
         <div
           className="glass-card p-8 flex flex-col gap-5 items-center justify-center group hover:bg-white/10 transition-all duration-500 reveal"
@@ -132,6 +112,31 @@ export function TechStack() {
           <Image src="/svg/nodejs.svg" alt="Node.js" width={32} height={32} />
           <span className="text-[9px] font-bold tracking-[0.2em] uppercase text-white/60 group-hover:text-white">
             Node.js
+          </span>
+        </div>
+        {/* Tech Item: Tailwind */}
+        <div
+          className="glass-card p-8 flex flex-col gap-5 items-center justify-center group hover:bg-white/10 transition-all duration-500 reveal"
+          style={{ animationDelay: "0.25s" }}
+        >
+          <Image
+            src="/svg/tailwind.svg"
+            alt="Tailwind"
+            width={32}
+            height={32}
+          />
+          <span className="text-[9px] font-bold tracking-[0.2em] uppercase text-white/60 group-hover:text-white">
+            Tailwind
+          </span>
+        </div>
+        {/* Tech Item: Git */}
+        <div
+          className="glass-card p-8 flex flex-col gap-5 items-center justify-center group hover:bg-white/10 transition-all duration-500 reveal"
+          style={{ animationDelay: "0.3s" }}
+        >
+          <Image src="/svg/git.svg" alt="Git" width={32} height={32} />
+          <span className="text-[9px] font-bold tracking-[0.2em] uppercase text-white/60 group-hover:text-white">
+            Git
           </span>
         </div>
       </div>

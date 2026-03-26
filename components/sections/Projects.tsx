@@ -11,7 +11,7 @@ const DEFAULT_PROJECTS: Project[] = [
     description:
       "A super app for Honda motorcycle enthusiasts to connect, share, and booking services.",
     image: "images/projects/wahana-honda.webp",
-    tags: ["React Native", "Bitbucket"],
+    tags: ["React Native", "Bitbucket", "Bootstrap"],
   },
   {
     id: "02",
