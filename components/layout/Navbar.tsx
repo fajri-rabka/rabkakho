@@ -117,13 +117,12 @@ export function Navbar() {
           </div>
 
           <div className="flex items-center gap-6">
-            {/* Senior Theme Toggle */}
             <button
               onClick={toggleTheme}
               className="group relative h-10 w-10 rounded-full border border-outline bg-transparent hover:bg-surface transition-all duration-300 overflow-hidden active:scale-90"
               aria-label="Toggle Theme"
             >
-              <div className="relative h-full w-full pointer-events-none">
+              <div className="relative h-full w-full">
                 <motion.div
                   initial={false}
                   animate={{
@@ -131,9 +130,9 @@ export function Navbar() {
                     opacity: theme === "dark" ? 1 : 0,
                   }}
                   transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                  className="absolute inset-0 flex items-center justify-center"
+                  className="absolute inset-0 flex items-center justify-center hover:bg-white group transition-colors duration-500"
                 >
-                  <span className="material-symbols-outlined text-[20px]">
+                  <span className="material-symbols-outlined text-[20px] group-hover:text-black transition-colors duration-500">
                     dark_mode
                   </span>
                 </motion.div>
@@ -144,9 +143,9 @@ export function Navbar() {
                     opacity: theme === "light" ? 1 : 0,
                   }}
                   transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                  className="absolute inset-0 flex items-center justify-center"
+                  className="absolute inset-0 flex items-center justify-center hover:bg-black group transition-colors duration-500"
                 >
-                  <span className="material-symbols-outlined text-[20px]">
+                  <span className="material-symbols-outlined text-[20px] group-hover:text-white transition-colors duration-500">
                     light_mode
                   </span>
                 </motion.div>
@@ -155,7 +154,7 @@ export function Navbar() {
 
             <button
               onClick={() => scrollTo("contact")}
-              className="hidden md:block bg-transparent border border-on-background text-on-background rounded-full px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] hover:opacity-90 active:scale-95 transition-all duration-300"
+              className="hidden md:block bg-transparent border border-on-background text-on-background rounded-full px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-white hover:text-black active:scale-95 transition-all duration-300"
             >
               Get in Touch
             </button>
