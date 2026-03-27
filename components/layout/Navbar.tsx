@@ -73,7 +73,7 @@ export function Navbar() {
                     ${
                       isActive
                         ? "text-on-background"
-                        : "text-on-background/60 hover:text-on-background"
+                        : "text-on-background/80 hover:text-on-background"
                     }`}
                 >
                   {item.label}

@@ -43,13 +43,13 @@ export function Hero() {
           animate="visible"
           variants={variants}
         >
-          <span className="font-label text-[10px] tracking-[0.4em] uppercase mb-8 block text-white/40">
+          <span className="font-label text-[10px] tracking-[0.4em] uppercase mb-8 block text-on-background/85">
             {new Date().getFullYear()}
           </span>
         </motion.div>
 
         {/* MAIN HEADLINE */}
-        <h1 className="font-headline text-6xl md:text-[8.5rem] font-extrabold tracking-tighter leading-[0.85] mb-12">
+        <h1 className="font-headline text-6xl md:text-[8.5rem] font-extrabold tracking-tighter leading-[0.85] mb-12 text-on-background">
           <motion.div
             custom={1}
             initial="hidden"
@@ -65,24 +65,36 @@ export function Hero() {
               initial="hidden"
               animate="visible"
               variants={variants}
-              className="text-white relative z-10 block"
+              className="text-on-background relative z-10 block"
             >
               MORE IMPACT.
             </motion.span>
 
             {/* Sliding Glint Mask */}
             <motion.div
-              className="absolute inset-0 bg-white mix-blend-difference z-20 pointer-events-none"
-              initial={{ x: "-100%" }}
-              animate={{ x: ["-100%", "0%", "100%"] }}
+              className="absolute inset-0 z-20 pointer-events-none overflow-hidden"
+              initial={{ x: "-120%" }}
+              animate={{ x: ["-120%", "120%"] }}
               transition={{
-                duration: 5,
-                times: [0, 0.5, 1],
+                duration: 2.2,
                 repeat: Infinity,
-                repeatDelay: 4,
-                ease: [0.19, 1, 0.22, 1],
+                repeatDelay: 3,
+                ease: [0.4, 0, 0.2, 1],
               }}
-            />
+            >
+              <div
+                className="
+      h-full w-[40%]
+      bg-gradient-to-r
+      from-transparent
+      via-white/80
+      to-transparent
+      blur-[6px]
+      opacity-70
+      dark:via-white/90
+    "
+              />
+            </motion.div>
           </div>
         </h1>
 
@@ -95,7 +107,7 @@ export function Hero() {
           className="grid grid-cols-1 md:grid-cols-8 gap-8"
         >
           <div className="md:col-start-1 md:col-span-12 lg:col-span-5">
-            <p className="text-md md:text-lg text-white/60 leading-relaxed font-light text-balance ">
+            <p className="text-md md:text-lg text-on-background/80 leading-relaxed font-light text-balance ">
               I build efficient, scalable front-end solutions with clean
               architecture, focusing on performance, maintainability, and
               seamless user experience.

@@ -65,7 +65,7 @@ function FloatingLetter({ char, index }: { char: string; index: number }) {
           ease: "easeInOut",
         },
       }}
-      className="inline-block px-2 md:px-3 relative cursor-pointer select-none transition-colors hover:text-white"
+      className="inline-block px-2 md:px-3 relative cursor-pointer select-none transition-colors hover:text-on-background text-on-background/85"
     >
       {char === " " ? "\u00A0\u00A0" : char}
     </motion.span>
@@ -75,13 +75,13 @@ function FloatingLetter({ char, index }: { char: string; index: number }) {
 export function About() {
   return (
     <section
-      className="px-8 max-w-screen-2xl mx-auto lg:py-32 py-16 bg-black border-t border-white/5"
+      className="px-8 max-w-screen-2xl mx-auto lg:py-32 py-16 bg-background border-t border-outline"
       id="about"
     >
       <div className="grid grid-cols-1 md:grid-cols-12 gap-16">
         {/* LEFT */}
         <div className="md:col-span-5">
-          <h2 className="font-headline lg:text-7xl text-6xl font-extrabold tracking-tighter mt-4 leading-[0.9]">
+          <h2 className="font-headline lg:text-7xl text-6xl font-extrabold tracking-tighter mt-4 leading-[0.9] text-on-background">
             <div className="flex flex-wrap gap-y-4">
               {"LESS CODE.".split("").map((char, i) => (
                 <FloatingLetter key={i} char={char} index={i} />
@@ -106,7 +106,7 @@ export function About() {
               ease: [0.16, 1, 0.3, 1] as any,
               delay: 0.1,
             }}
-            className="lg:text-2xl text-xl font-light text-white/70 leading-relaxed mb-16"
+            className="lg:text-2xl text-xl font-light text-on-background/90 leading-relaxed mb-16"
           >
             Building great products is not about adding more, but delivering
             more with less. I focus on creating efficient, scalable interfaces
@@ -126,10 +126,10 @@ export function About() {
                 delay: 0.3,
               }}
             >
-              <h4 className="font-headline font-bold text-lg mb-4 tracking-tighter">
+              <h4 className="font-headline font-bold text-lg mb-4 tracking-tighter text-on-background">
                 THE APPROACH
               </h4>
-              <p className="text-white/30 lg:text-lg text-md leading-relaxed font-light">
+              <p className="text-on-background/70 lg:text-lg text-md leading-relaxed font-light">
                 I build with a systems mindset clean code, prioritize
                 performance, and precise, every detail matters.
               </p>
@@ -146,10 +146,10 @@ export function About() {
                 delay: 0.4,
               }}
             >
-              <h4 className="font-headline font-bold text-lg mb-4 tracking-tighter">
+              <h4 className="font-headline font-bold text-lg mb-4 tracking-tighter text-on-background">
                 THE RESULT
               </h4>
-              <p className="text-white/30 lg:text-lg text-md leading-relaxed font-light">
+              <p className="text-on-background/70 lg:text-lg text-md leading-relaxed font-light">
                 Scalable, high performance products built to last and designed
                 to deliver real impact.
               </p>

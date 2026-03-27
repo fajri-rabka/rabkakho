@@ -55,14 +55,14 @@ const BackgroundParticles = () => {
           {layer.p.map((p, i) => (
             <motion.div
               key={i}
-              className="absolute bg-white rounded-full"
+              className="absolute bg-on-background rounded-full"
               style={{
                 width: p.size,
                 height: p.size,
                 left: p.left,
                 top: p.top,
-                opacity: p.opacity,
-                boxShadow: p.size > 1.2 ? "0 0 10px rgba(255,255,255,0.3)" : "none",
+                opacity: p.opacity * 0.5,
+                boxShadow: p.size > 1.2 ? `0 0 10px var(--color-on-background)` : "none",
               }}
               animate={{
                 x: [0, p.driftX, 0],

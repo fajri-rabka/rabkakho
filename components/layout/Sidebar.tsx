@@ -65,18 +65,18 @@ export function Sidebar({ isOpen, onClose, items, scrollTo }: SidebarProps) {
           animate="open"
           exit="closed"
           variants={containerVariants}
-          className="fixed inset-0 w-full h-full bg-black/95 backdrop-blur-3xl z-[100] flex flex-col"
+          className="fixed inset-0 w-full h-full bg-surface/95 backdrop-blur-3xl z-[100] flex flex-col"
         >
           {/* Close Area / Header */}
           <div className="absolute top-0 left-0 right-0 p-10 md:p-16 flex justify-end items-end z-10">
             <button
               onClick={onClose}
-              className="group flex items-center gap-4 text-white/60 hover:text-white transition-all duration-500"
+              className="group flex items-center gap-4 text-on-background/60 hover:text-on-background transition-all duration-500"
             >
               <span className="text-[10px] font-bold tracking-[0.4em] uppercase hidden md:block opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                 Close Menu
               </span>
-              <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center bg-white/5 group-hover:bg-white group-hover:text-black transition-all duration-700 ease-[0.16, 1, 0.3, 1] rotate-[-90deg] group-hover:rotate-0">
+              <div className="w-12 h-12 rounded-full border border-outline flex items-center justify-center bg-on-background/5 group-hover:bg-on-background group-hover:text-background transition-all duration-700 ease-[0.16, 1, 0.3, 1] rotate-[-90deg] group-hover:rotate-0">
                 <X size={20} />
               </div>
             </button>
@@ -96,7 +96,7 @@ export function Sidebar({ isOpen, onClose, items, scrollTo }: SidebarProps) {
                 className="group relative"
               >
                 <div className="overflow-hidden relative flex items-center justify-center">
-                  <span className="text-5xl md:text-[7rem] lg:text-[9rem] font-extrabold tracking-tighter leading-[0.9] text-white/20 group-hover:text-white transition-all duration-700 ease-[0.16, 1, 0.3, 1] inline-block">
+                  <span className="text-5xl md:text-[7rem] lg:text-[9rem] font-extrabold tracking-tighter leading-[0.9] text-on-background/20 group-hover:text-on-background transition-all duration-700 ease-[0.16, 1, 0.3, 1] inline-block">
                     {item.label}
                   </span>
 
@@ -104,13 +104,13 @@ export function Sidebar({ isOpen, onClose, items, scrollTo }: SidebarProps) {
                   <motion.div
                     initial={{ scaleX: 0 }}
                     whileHover={{ scaleX: 1 }}
-                    className="absolute bottom-4 left-0 right-0 h-[2px] bg-white origin-left"
+                    className="absolute bottom-4 left-0 right-0 h-[2px] bg-on-background origin-left"
                     transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                   />
                 </div>
 
                 {/* Repel Effect Panah */}
-                <span className="absolute -right-16 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 group-hover:right-[-60px] transition-all duration-700 ease-[0.16, 1, 0.3, 1] text-white hidden lg:block">
+                <span className="absolute -right-16 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 group-hover:right-[-60px] transition-all duration-700 ease-[0.16, 1, 0.3, 1] text-on-background hidden lg:block">
                   <ArrowRight size={48} strokeWidth={1} />
                 </span>
               </motion.button>

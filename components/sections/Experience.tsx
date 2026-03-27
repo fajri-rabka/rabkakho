@@ -12,7 +12,7 @@ export function Experience() {
 
   return (
     <section
-      className="px-8 max-w-screen-2xl mx-auto lg:py-32 py-16 border-t border-white/5"
+      className="px-8 max-w-screen-2xl mx-auto lg:py-32 py-16 border-t border-outline"
       id="experience"
     >
       <div className="grid grid-cols-1 md:grid-cols-12 gap-15 lg:gap-20">
@@ -20,10 +20,10 @@ export function Experience() {
           className="md:col-span-4"
           {...fadeInUp}
         >
-          <span className="font-label text-[10px] tracking-[0.4em] uppercase text-white/40">
+          <span className="font-label text-[10px] tracking-[0.4em] uppercase text-on-background/85">
             The Journey
           </span>
-          <h2 className="font-headline lg:text-6xl text-4xl font-extrabold tracking-tighter mt-4">
+          <h2 className="font-headline lg:text-6xl text-4xl font-extrabold tracking-tighter mt-4 text-on-background">
             EXPERIENCE
           </h2>
         </motion.div>
@@ -34,7 +34,7 @@ export function Experience() {
             whileInView={{ height: "100%" }}
             viewport={{ once: true }}
             transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] as any, delay: 0.4 }}
-            className="absolute left-0 top-0 bottom-0 w-px bg-white/10 hidden md:block"
+            className="absolute left-0 top-0 bottom-0 w-px bg-outline hidden md:block"
           ></motion.div>
 
           {[
@@ -83,8 +83,8 @@ export function Experience() {
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as any, delay: index * 0.1 }}
               className="md:pl-12 relative group"
             >
-              <div className="absolute -left-[5px] top-2 w-2.5 h-2.5 bg-white/20 border-4 border-black ring-1 ring-white/10 hidden md:block transition-all group-hover:bg-white group-hover:scale-150"></div>
-              <div className="glass-card p-10 hover:bg-white/5 transition-all duration-500 border border-white/10">
+              <div className="absolute -left-[5px] top-2 w-2.5 h-2.5 bg-on-background/20 border-4 border-background ring-1 ring-outline hidden md:block transition-all group-hover:bg-on-background group-hover:scale-150"></div>
+              <div className="glass-card p-10 hover:bg-on-background/5 transition-all duration-500 border border-outline">
                 <div className="logo mb-4">
                   <Image
                     src={item.logo}
@@ -94,16 +94,16 @@ export function Experience() {
                     className="grayscale group-hover:grayscale-0 transition-all duration-500"
                   />
                 </div>
-                <span className="text-xs font-bold tracking-[0.3em] text-white/40 block mb-4">
+                <span className="text-xs font-bold tracking-[0.3em] text-on-background/85 block mb-4">
                   {item.date}
                 </span>
-                <h3 className="text-3xl font-extrabold tracking-tighter mb-2">
+                <h3 className="text-3xl font-extrabold tracking-tighter mb-2 text-on-background">
                   {item.role}
                 </h3>
-                <p className="text-white/60 text-lg mb-6">
+                <p className="text-on-background text-lg mb-6">
                   {item.company}
                 </p>
-                <p className="text-white/40 font-light leading-relaxed max-w-2xl">
+                <p className="text-on-background/80 font-light leading-relaxed max-w-2xl text-balance">
                   {item.desc}
                 </p>
               </div>

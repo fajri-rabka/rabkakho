@@ -2,6 +2,7 @@
 
 import { Project, ProjectsProps } from "@/lib/interfaces";
 import { motion } from "framer-motion";
+import { useTheme } from "@/hooks/useTheme";
 
 const DEFAULT_PROJECTS: Project[] = [
   {
@@ -39,9 +40,10 @@ export function Projects({
   label = "Works",
   title = "PROJECTS",
 }: ProjectsProps) {
+  const { theme } = useTheme();
   return (
     <section
-      className="px-8 max-w-screen-2xl mx-auto lg:py-32 py-16 border-t border-white/5"
+      className="px-8 max-w-screen-2xl mx-auto lg:py-32 py-16 border-t border-outline"
       id="work"
     >
       <div className="flex justify-between items-end lg:mb-20 mb-10">
@@ -55,7 +57,7 @@ export function Projects({
               delay: 0.1,
             }}
           >
-            <span className="font-label text-[10px] tracking-[0.4em] uppercase text-white/60">
+            <span className="font-label text-[10px] tracking-[0.4em] uppercase text-on-background/85">
               {label}
             </span>
           </motion.div>
@@ -68,7 +70,7 @@ export function Projects({
               delay: 0.4,
             }}
           >
-            <h2 className="font-headline lg:text-6xl text-4xl font-extrabold tracking-tighter mt-4">
+            <h2 className="font-headline lg:text-6xl text-4xl font-extrabold tracking-tighter mt-4 text-on-background">
               {title}
             </h2>
           </motion.div>
@@ -83,7 +85,7 @@ export function Projects({
               delay: 0.6,
             }}
           >
-            <span className="text-white/40 font-label text-[10px] tracking-[0.3em] uppercase">
+            <span className="text-on-background/70 font-label text-[10px] tracking-[0.3em] uppercase">
               Scroll to explore ({projects.length.toString().padStart(2, "0")})
             </span>
           </motion.div>
@@ -104,7 +106,7 @@ export function Projects({
             }}
             className={`group relative flex flex-col ${index % 2 === 1 ? "md:mt-40" : ""}`}
           >
-            <div className="h-[400px] overflow-hidden bg-[#0a0a0a] mb-8 transition-transform duration-700 group-hover:-translate-y-2">
+            <div className="h-[400px] overflow-hidden bg-surface-variant mb-8 transition-transform duration-700 group-hover:-translate-y-2">
               <img
                 className="w-full h-full object-cover grayscale opacity-70 group-hover:scale-105 group-hover:opacity-100 transition-all duration-700"
                 alt={project.title}
@@ -112,14 +114,14 @@ export function Projects({
               />
             </div>
 
-            <div className="project-card-glass p-8 absolute bottom-20 left-6 right-6 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 z-10">
-              <span className="text-[10px] tracking-[0.3em] uppercase text-white/70 font-bold">
+            <div className="project-card-glass p-8 absolute bottom-20 left-6 right-6 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 z-10 shadow-2xl">
+              <span className="text-[10px] tracking-[0.3em] uppercase text-on-background/90 font-bold">
                 {project.category} - {project.subcategory}
               </span>
-              <h3 className="text-2xl font-extrabold tracking-tighter text-white mt-2">
+              <h3 className="text-2xl font-extrabold tracking-tighter text-on-background mt-2">
                 {project.title}
               </h3>
-              <p className="text-sm text-white/80 mt-4 mb-6 leading-relaxed font-light">
+              <p className="text-sm text-on-background/80 mt-4 mb-6 leading-relaxed font-light">
                 {project.description}
               </p>
               <div className="flex flex-wrap gap-2">
@@ -137,17 +139,20 @@ export function Projects({
                     .replace("css", "css")
                     .replace(/\s+/g, "")
                     .replace(/\./g, "");
-                  const iconUrl = `https://cdn.simpleicons.org/${slug}/ffffff`;
+                  
+                  // Use theme-aware icon color (white in dark, black in light)
+                  const iconColor = theme === "dark" ? "ffffff" : "000000";
+                  const iconUrl = `https://cdn.simpleicons.org/${slug}/${iconColor}`;
 
                   return (
                     <span
                       key={tag}
-                      className="flex items-center px-2 py-1 uppercase text-white/40 tracking-widest"
+                      className="flex items-center px-2 py-1 uppercase text-on-background/70 tracking-widest"
                     >
                       <img
                         src={iconUrl}
                         alt={tag}
-                        className="w-6 h-6 object-contain opacity-60"
+                        className="w-6 h-6 object-contain opacity-80"
                         onError={(e) =>
                           (e.currentTarget.style.display = "none")
                         }
@@ -160,14 +165,14 @@ export function Projects({
 
             <div className="flex justify-between items-start">
               <div>
-                <h3 className="text-2xl font-extrabold tracking-tighter group-hover:text-white transition-colors">
+                <h3 className="text-2xl font-extrabold tracking-tighter group-hover:text-on-background transition-colors text-on-background">
                   {project.title}
                 </h3>
-                <p className="text-white/60 text-sm mt-1 uppercase tracking-widest text-[10px]">
+                <p className="text-on-background/85 text-sm mt-1 uppercase tracking-widest text-[10px]">
                   {project.subcategory}
                 </p>
               </div>
-              <span className="material-symbols-outlined text-white/40 group-hover:text-white transition-colors">
+              <span className="material-symbols-outlined text-on-background/70 group-hover:text-on-background transition-colors">
                 arrow_outward
               </span>
             </div>

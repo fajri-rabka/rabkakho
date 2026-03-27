@@ -62,19 +62,19 @@ export function Contact() {
           ease: [0.16, 1, 0.3, 1] as any,
           delay: 0.1,
         }}
-        className="max-w-4xl mx-auto contact-form glass-card p-12 md:p-24 relative overflow-hidden border border-white/10 bg-gradient-to-br from-white/[0.06] to-transparent shadow-2xl shadow-black/50"
+        className="max-w-4xl mx-auto contact-form glass-card p-12 md:p-24 relative overflow-hidden shadow-2xl shadow-black/5"
       >
-        {/* High-Contrast Decorative Orbs */}
-        <div className="absolute -top-32 -right-32 w-[500px] h-[500px] bg-white/[0.1] blur-[140px] rounded-full pointer-events-none" />
-        <div className="absolute -bottom-32 -left-32 w-[500px] h-[500px] bg-white/[0.05] blur-[140px] rounded-full pointer-events-none" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-white/[0.02] blur-[100px] rounded-full pointer-events-none" />
+        {/* Dynamic Decorative Orbs */}
+        <div className="absolute -top-32 -right-32 w-[500px] h-[500px] bg-on-background/[0.03] blur-[140px] rounded-full pointer-events-none" />
+        <div className="absolute -bottom-32 -left-32 w-[500px] h-[500px] bg-on-background/[0.02] blur-[140px] rounded-full pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-on-background/[0.01] blur-[100px] rounded-full pointer-events-none" />
 
         <div className="relative z-10 text-center mb-16">
-          <h2 className="font-headline lg:text-6xl text-4xl font-extrabold tracking-tighter mb-4 text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-white/60">
+          <h2 className="font-headline lg:text-6xl text-4xl font-extrabold tracking-tighter mb-4 text-on-background">
             LET'S START A CONVERSATION.
           </h2>
 
-          <p className="text-white/30 font-label text-[10px] tracking-[0.3em] uppercase">
+          <p className="text-on-background/85 font-label text-[10px] tracking-[0.3em] uppercase">
             Currently accepting new projects
           </p>
         </div>
@@ -88,15 +88,15 @@ export function Contact() {
             <div className="relative group/field">
               <input
                 {...register("name")}
-                className="peer block w-full appearance-none border-0 border-b border-white/10 bg-transparent py-4 px-0 text-white focus:outline-none focus:ring-0 transition-all duration-300"
+                className="peer block w-full appearance-none border-0 border-b border-outline bg-transparent py-4 px-0 text-on-background focus:outline-none focus:ring-0 transition-all duration-300"
                 id="name"
                 placeholder=" "
                 type="text"
                 disabled={isSubmitting}
               />
-              <div className="absolute bottom-0 left-0 w-full h-[2px] scale-x-0 peer-focus:scale-x-100 bg-gradient-to-r from-transparent via-white/40 to-transparent transition-transform duration-500 origin-center" />
+              <div className="absolute bottom-0 left-0 w-full h-[2px] scale-x-0 peer-focus:scale-x-100 bg-on-background transition-transform duration-500 origin-center" />
               <label
-                className="absolute top-4 -z-10 origin-[0] -translate-y-8 scale-75 transform text-xs font-bold tracking-widest text-white/30 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-white"
+                className="absolute top-4 -z-10 origin-[0] -translate-y-8 scale-75 transform text-xs font-bold tracking-widest text-on-background/75 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-on-background"
                 htmlFor="name"
               >
                 FULL NAME
@@ -118,15 +118,15 @@ export function Contact() {
             <div className="relative group/field">
               <input
                 {...register("email")}
-                className="peer block w-full appearance-none border-0 border-b border-white/10 bg-transparent py-4 px-0 text-white focus:outline-none focus:ring-0 transition-all duration-300"
+                className="peer block w-full appearance-none border-0 border-b border-outline bg-transparent py-4 px-0 text-on-background focus:outline-none focus:ring-0 transition-all duration-300"
                 id="email"
                 placeholder=" "
                 type="email"
                 disabled={isSubmitting}
               />
-              <div className="absolute bottom-0 left-0 w-full h-[2px] scale-x-0 peer-focus:scale-x-100 bg-gradient-to-r from-transparent via-white/40 to-transparent transition-transform duration-500 origin-center" />
+              <div className="absolute bottom-0 left-0 w-full h-[2px] scale-x-0 peer-focus:scale-x-100 bg-on-background transition-transform duration-500 origin-center" />
               <label
-                className="absolute top-4 -z-10 origin-[0] -translate-y-8 scale-75 transform text-xs font-bold tracking-widest text-white/30 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-white"
+                className="absolute top-4 -z-10 origin-[0] -translate-y-8 scale-75 transform text-xs font-bold tracking-widest text-on-background/75 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-on-background"
                 htmlFor="email"
               >
                 EMAIL ADDRESS
@@ -149,15 +149,15 @@ export function Contact() {
           <div className="relative group/field">
             <textarea
               {...register("message")}
-              className="peer block w-full appearance-none border-0 border-b border-white/10 bg-transparent py-4 px-0 text-white focus:outline-none focus:ring-0 transition-all duration-300"
+              className="peer block w-full appearance-none border-0 border-b border-outline bg-transparent py-4 px-0 text-on-background focus:outline-none focus:ring-0 transition-all duration-300"
               id="message"
               placeholder=" "
               rows={3}
               disabled={isSubmitting}
             ></textarea>
-            <div className="absolute bottom-0 left-0 w-full h-[2px] scale-x-0 peer-focus:scale-x-100 bg-gradient-to-r from-transparent via-white/40 to-transparent transition-transform duration-500 origin-center" />
+            <div className="absolute bottom-0 left-0 w-full h-[2px] scale-x-0 peer-focus:scale-x-100 bg-on-background transition-transform duration-500 origin-center" />
             <label
-              className="absolute top-4 -z-10 origin-[0] -translate-y-8 scale-75 transform text-xs font-bold tracking-widest text-white/30 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-white"
+              className="absolute top-4 -z-10 origin-[0] -translate-y-8 scale-75 transform text-xs font-bold tracking-widest text-on-background/75 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-on-background"
               htmlFor="message"
             >
               PROJECT OVERVIEW
@@ -184,7 +184,7 @@ export function Contact() {
                   animate={{ opacity: 1, rotateX: 0 }}
                   className={`text-[11px] font-bold uppercase tracking-[0.2em] px-8 py-3 rounded-full border ${
                     feedback.type === "success"
-                      ? "bg-white/10 border-white/20 text-white"
+                      ? "bg-on-background/10 border-on-background/20 text-on-background"
                       : "bg-red-500/10 border-red-500/20 text-red-500"
                   }`}
                 >
@@ -194,12 +194,12 @@ export function Contact() {
             </AnimatePresence>
 
             <button
-              className={`bg-white text-black border-white border rounded-full px-16 py-5 text-xs font-bold uppercase tracking-[0.3em] transition-all duration-[400ms] relative overflow-hidden group min-w-[240px] flex items-center justify-center ${
+              className={`bg-on-background text-background border-on-background border rounded-full px-16 py-5 text-xs font-bold uppercase tracking-[0.3em] transition-all duration-[400ms] relative overflow-hidden group min-w-[240px] flex items-center justify-center ${
                 isSubmitting
                   ? "opacity-60 cursor-not-allowed scale-[0.98]"
                   : feedback?.type === "success"
                     ? "bg-green-500 border-green-500 text-white"
-                    : "hover:bg-transparent hover:text-white active:scale-95"
+                    : "hover:bg-transparent hover:text-on-background active:scale-95"
               }`}
               type="submit"
               disabled={isSubmitting || feedback?.type === "success"}
