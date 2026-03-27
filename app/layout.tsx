@@ -32,6 +32,8 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
+import { CustomCursor } from "@/components/ui/CustomCursor";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -48,6 +50,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${plusJakarta.variable} font-body bg-black text-white selection:bg-white selection:text-black antialiased`}
       >
+        <CustomCursor />
         {children}
       </body>
     </html>

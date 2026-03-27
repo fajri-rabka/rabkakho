@@ -1,12 +1,14 @@
 "use client";
 import { motion } from "framer-motion";
+import BackgroundParticles from "@/components/ui/BackgroundParticles";
 
 export function Hero() {
   return (
     <section
       id="home"
-      className="lg:min-h-[80vh] min-h-[100vh] flex flex-col justify-center px-8 max-w-screen-2xl mx-auto mb-32 reveal"
+      className="relative lg:min-h-[80vh] min-h-[100vh] flex flex-col justify-center px-8 max-w-screen-2xl mx-auto mb-32 reveal"
     >
+      <BackgroundParticles />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

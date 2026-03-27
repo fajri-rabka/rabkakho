@@ -56,6 +56,7 @@
 
 * {
   box-sizing: border-box;
+  cursor: none !important;
 }
 
 html {
@@ -68,8 +69,11 @@ body {
 }
 
 a,
-button {
-  cursor: pointer;
+button,
+input,
+textarea,
+[role="button"] {
+  cursor: none !important;
 }
 
 .hamburger {
