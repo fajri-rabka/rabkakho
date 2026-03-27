@@ -154,7 +154,7 @@ export function Navbar() {
 
             <button
               onClick={() => scrollTo("contact")}
-              className="hidden md:block bg-transparent border border-on-background text-on-background rounded-full px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-white hover:text-black active:scale-95 transition-all duration-300"
+              className="hidden md:block border border-outline text-on-background rounded-full px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] bg-transparent hover:bg-on-background hover:text-background active:scale-95 transition-all duration-300"
             >
               Get in Touch
             </button>
