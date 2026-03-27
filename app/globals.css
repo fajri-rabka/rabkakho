@@ -34,9 +34,14 @@
   --color-glass-border: var(--glass-border);
 }
 
+@media (pointer: fine) {
+  * {
+    cursor: none !important;
+  }
+}
+
 * {
   box-sizing: border-box;
-  cursor: none !important;
 }
 
 html {
@@ -60,12 +65,14 @@ h5 {
   font-family: var(--font-headline);
 }
 
-a,
-button,
-input,
-textarea,
-[role="button"] {
-  cursor: none !important;
+@media (pointer: fine) {
+  a,
+  button,
+  input,
+  textarea,
+  [role="button"] {
+    cursor: none !important;
+  }
 }
 
 .hamburger {

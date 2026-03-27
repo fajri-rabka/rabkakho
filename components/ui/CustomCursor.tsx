@@ -7,6 +7,7 @@ const SPRING = { damping: 25, stiffness: 300, mass: 0.4 };
 
 export function CustomCursor() {
   const [isVisible, setIsVisible] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
   const [variant, setVariant] = useState<"default" | "hover">("default");
 
   const mouseX = useMotionValue(0);
@@ -16,6 +17,14 @@ export function CustomCursor() {
   const smoothY = useSpring(mouseY, SPRING);
 
   useEffect(() => {
+    // Detect touch device (coarse pointer)
+    const checkTouch = () => {
+      setIsTouchDevice(window.matchMedia("(pointer: coarse)").matches);
+    };
+
+    checkTouch();
+    window.addEventListener("resize", checkTouch);
+
     const move = (e: MouseEvent) => {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
@@ -41,12 +50,15 @@ export function CustomCursor() {
     document.addEventListener("mouseenter", handlePointerEnter);
 
     return () => {
+      window.removeEventListener("resize", checkTouch);
       window.removeEventListener("mousemove", move);
       window.removeEventListener("mouseover", handleHover);
       document.removeEventListener("mouseleave", handlePointerLeave);
       document.removeEventListener("mouseenter", handlePointerEnter);
     };
   }, [isVisible, mouseX, mouseY]);
+
+  if (isTouchDevice) return null;
 
   return (
     <>

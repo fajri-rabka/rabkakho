@@ -148,7 +148,7 @@ export function Sidebar({ isOpen, onClose, items, scrollTo }: SidebarProps) {
                     alt={link.l}
                     width={20}
                     height={20}
-                    className=" opacity-50 group-hover:opacity-100 transition duration-500"
+                    className="opacity-40 group-hover:opacity-100 transition duration-500 dark:invert-100 invert-10"
                   />
                 </a>
               ))}
