@@ -25,19 +25,54 @@ const variants: Variants = {
 
 const words = ["MORE IMPACT.", "MORE POWER.", "MORE SPEED."];
 
+const Highlight = ({
+  children,
+  active,
+}: {
+  children: string;
+  active: boolean;
+}) => (
+  <span className="relative inline-block mx-1">
+    <motion.span
+      animate={{
+        color: active ? "var(--on-bg)" : "var(--on-bg-variant)",
+        opacity: active ? 1 : 0.4,
+      }}
+      transition={{ duration: 0.8 }}
+      className="relative z-10 font-medium"
+    >
+      {children}
+    </motion.span>
+    <motion.span
+      initial={{ scaleX: 0 }}
+      animate={{ scaleX: active ? 1 : 0 }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      className="absolute bottom-[2px] left-0 right-0 h-[2px] bg-on-background origin-left -z-0"
+    />
+  </span>
+);
+
 export function Hero() {
   const [mounted, setMounted] = useState(false);
   const { scrollY } = useScroll();
   const yParallax = useTransform(scrollY, [0, 500], [0, 80]);
   const [index, setIndex] = useState(0);
+  const [highlightIdx, setHighlightIdx] = useState(0);
 
   useEffect(() => {
     setMounted(true);
-    const timer = setInterval(() => {
+    const wordTimer = setInterval(() => {
       setIndex((prev) => (prev + 1) % words.length);
     }, 6000);
 
-    return () => clearInterval(timer);
+    const highlightTimer = setInterval(() => {
+      setHighlightIdx((prev) => (prev + 1) % 4);
+    }, 3000);
+
+    return () => {
+      clearInterval(wordTimer);
+      clearInterval(highlightTimer);
+    };
   }, [words.length]);
 
   if (!mounted) {
@@ -107,9 +142,14 @@ export function Hero() {
         >
           <div className="md:col-start-1 md:col-span-12 lg:col-span-5">
             <p className="text-xs md:text-lg text-on-background/80 leading-relaxed font-light text-balance ">
-              I build efficient, scalable front-end solutions with clean
-              architecture, focusing on performance, maintainability, and
-              seamless user experience.
+              I build efficient,{" "}
+              <Highlight active={highlightIdx === 0}>scalable</Highlight>{" "}
+              front-end solutions with clean architecture, focusing on{" "}
+              <Highlight active={highlightIdx === 1}>performance</Highlight>,{" "}
+              <Highlight active={highlightIdx === 2}>maintainability</Highlight>
+              , and seamless{" "}
+              <Highlight active={highlightIdx === 3}>user experience</Highlight>
+              .
             </p>
           </div>
         </motion.div>
