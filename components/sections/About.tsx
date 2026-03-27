@@ -82,7 +82,7 @@ export function About() {
       <div className="grid grid-cols-1 md:grid-cols-12 gap-16">
         {/* LEFT */}
         <div className="md:col-span-5">
-          <h2 className="font-headline lg:text-8xl text-4xl font-extrabold tracking-tighter mt-4 leading-[1.3] md:leading-[1.1] text-on-background">
+          <h2 className="font-headline lg:text-8xl text-4xl font-extrabold tracking-tighter mt-4 leading-[1.3] md:leading-[1.2] text-on-background">
             <div className="flex flex-wrap gap-y-12 md:gap-y-10">
               {"LESS CODE.".split("").map((char, i) => (
                 <FloatingLetter key={i} char={char} index={i} />

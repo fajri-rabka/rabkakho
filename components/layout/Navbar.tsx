@@ -39,29 +39,51 @@ export function Navbar() {
         initial={{ y: -100 }}
         animate={{
           y: 0,
-          top: isScrolled ? "20px" : "0px",
-          width: isScrolled ? "90%" : "100%",
-          borderRadius: isScrolled ? "100px" : "0px",
-          borderColor: isScrolled ? "var(--color-outline)" : "transparent",
+          top: isScrolled ? "14px" : "0px",
+          width: isScrolled ? "80%" : "100%",
+          borderRadius: "100px",
+          borderWidth: isScrolled ? "1px" : "0px",
+          borderColor: isScrolled
+            ? theme === "dark"
+              ? "rgba(255, 255, 255, 0.15)"
+              : "rgba(0, 0, 0, 0.08)"
+            : theme === "dark"
+              ? "rgba(255, 255, 255, 0)"
+              : "rgba(0, 0, 0, 0)",
           backgroundColor: isScrolled
             ? theme === "dark"
-              ? "rgba(0,0,0,0.5)"
-              : "rgba(255,255,255,0.7)"
+              ? "rgba(10, 10, 10, 0.45)"
+              : "rgba(255, 255, 255, 0.45)"
             : theme === "dark"
-              ? "rgba(0,0,0,0.3)"
-              : "rgba(255,255,255,0.3)",
+              ? "rgba(0, 0, 0, 0)"
+              : "rgba(255, 255, 255, 0)",
+          boxShadow: isScrolled
+            ? theme === "dark"
+              ? "0 20px 40px -15px rgba(0, 0, 0, 0.7)"
+              : "0 20px 40px -15px rgba(0, 0, 0, 0.1)"
+            : "0 0 0 rgba(0, 0, 0, 0)",
         }}
-        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed z-50 left-1/2 -translate-x-1/2 backdrop-blur-2xl border-x border-b transition-all duration-500 saturate-150"
+        transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+        className="fixed z-50 left-1/2 -translate-x-1/2 backdrop-blur-3xl saturate-[180%]"
       >
-        <div
-          className={`flex justify-between items-center px-10 transition-all duration-300 w-full max-w-screen-2xl mx-auto gap-8 ${isScrolled ? "py-4" : "py-8"}`}
+        <motion.div
+          animate={{
+            paddingTop: isScrolled ? "12px" : "28px",
+            paddingBottom: isScrolled ? "12px" : "28px",
+            paddingLeft: isScrolled ? "24px" : "40px",
+            paddingRight: isScrolled ? "24px" : "40px",
+          }}
+          transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+          className="flex justify-between items-center w-full max-w-screen-2xl mx-auto gap-8"
         >
-          <div className="text-xl font-bold tracking-tighter text-on-background font-headline">
+          <motion.div
+            animate={{ scale: isScrolled ? 0.95 : 1 }}
+            className="text-xl font-bold tracking-tighter text-on-background font-headline"
+          >
             Rabka.
-          </div>
+          </motion.div>
 
-          <div className="hidden md:flex gap-10 items-center relative">
+          <div className="hidden lg:flex gap-10 items-center relative">
             {NAV_ITEMS.map((item) => {
               const isActive = active === item.id;
 
@@ -81,7 +103,7 @@ export function Navbar() {
                   {isActive && (
                     <motion.div
                       layoutId="nav-indicator"
-                      className="absolute left-0 bottom-0 h-[1px] w-full bg-on-background"
+                      className="absolute left-0 bottom-0 h-px w-full bg-on-background"
                       transition={{
                         type: "spring",
                         stiffness: 400,
@@ -140,7 +162,7 @@ export function Navbar() {
 
             <button
               onClick={() => setIsSidebarOpen(true)}
-              className="flex xl:hidden group items-center justify-center"
+              className="flex lg:hidden group items-center justify-center"
             >
               <div className="flex flex-col gap-1.5 items-end">
                 <span className="w-8 h-[1.5px] bg-on-background rounded-full" />
@@ -148,7 +170,7 @@ export function Navbar() {
               </div>
             </button>
           </div>
-        </div>
+        </motion.div>
       </motion.nav>
 
       <Sidebar

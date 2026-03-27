@@ -69,7 +69,7 @@ export function Hero() {
         </motion.div>
 
         {/* MAIN HEADLINE */}
-        <h1 className="font-headline text-5xl md:text-[8.5rem] font-extrabold tracking-tighter leading-[0.85] text-on-background">
+        <h1 className="font-headline text-5xl md:text-8xl lg:text-7xl xl:text-8xl font-extrabold tracking-tighter leading-[0.85] text-on-background">
           <motion.div
             custom={1}
             initial="hidden"
@@ -78,7 +78,7 @@ export function Hero() {
           >
             LESS CODE
           </motion.div>
-          <div className="relative h-[1.8em] lg:h-[1.1em] overflow-hidden mb-12 md:mb-16 lg:mb-20">
+          <div className="relative h-[1.8em] lg:h-[1.1em] overflow-hidden mb-12 md:mb-0 lg:mb-20">
             <AnimatePresence mode="popLayout">
               <motion.span
                 key={words[index]}

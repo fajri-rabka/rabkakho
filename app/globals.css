@@ -52,6 +52,14 @@ body {
     color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: var(--font-headline);
+}
+
 a,
 button,
 input,
@@ -70,13 +78,14 @@ textarea,
   padding: 0;
   z-index: 10;
   gap: 5px;
-  span {
-    width: 40px;
-    height: 2px;
-    background: white;
-    border-radius: 10px;
-    transition: all 0.3s linear;
-  }
+}
+
+.hamburger span {
+  width: 40px;
+  height: 2px;
+  background: white;
+  border-radius: 10px;
+  transition: all 0.3s linear;
 }
 
 .material-symbols-outlined {
