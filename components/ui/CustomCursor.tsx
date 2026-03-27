@@ -64,12 +64,13 @@ export function CustomCursor() {
           scale: variant === "hover" ? 1.3 : 1,
           borderColor:
             variant === "hover"
-              ? "rgba(255,255,255,0.15)"
-              : "rgba(255,255,255,0.3)",
+              ? "var(--on-bg-variant)"
+              : "var(--cursor-ring)",
           backgroundColor:
             variant === "hover"
-              ? "rgba(255,255,255,0.05)"
-              : "rgba(255,255,255,0)",
+              ? "var(--on-bg-variant)"
+              : "transparent",
+          opacity: isVisible ? (variant === "hover" ? 0.2 : 1) : 0,
         }}
         transition={{
           scale: { type: "spring", ...SPRING },

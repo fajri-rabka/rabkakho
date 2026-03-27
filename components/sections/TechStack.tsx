@@ -87,8 +87,18 @@ export function TechStack() {
             }}
             className="glass-card p-8 flex flex-col gap-5 items-center justify-center group hover:bg-on-background/5 transition-all duration-500 border border-outline"
           >
-            <div className={`relative w-8 h-8 flex items-center justify-center ${theme === "dark" ? "invert brightness-200" : ""}`}>
-               <Image src={tech.icon} alt={tech.name} width={32} height={32} className={theme === "light" ? "brightness-0" : ""} />
+            <div
+              className={`relative w-8 h-8 flex items-center justify-center`}
+            >
+              <Image
+                src={tech.icon}
+                alt={tech.name}
+                width={32}
+                height={32}
+                className={
+                  theme === "light" ? "brightness-0" : "brightness-100"
+                }
+              />
             </div>
             <span className="text-[9px] font-bold tracking-[0.2em] uppercase text-on-background/85 group-hover:text-on-background">
               {tech.name}

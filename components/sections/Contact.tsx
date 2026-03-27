@@ -71,7 +71,7 @@ export function Contact() {
 
         <div className="relative z-10 text-center mb-16">
           <h2 className="font-headline lg:text-6xl text-4xl font-extrabold tracking-tighter mb-4 text-on-background">
-            LET'S START A CONVERSATION.
+            LET'S CONNECT.
           </h2>
 
           <p className="text-on-background/85 font-label text-[10px] tracking-[0.3em] uppercase">

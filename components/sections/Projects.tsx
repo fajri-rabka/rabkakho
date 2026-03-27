@@ -139,9 +139,10 @@ export function Projects({
                     .replace("css", "css")
                     .replace(/\s+/g, "")
                     .replace(/\./g, "");
-                  
+
                   // Use theme-aware icon color (white in dark, black in light)
                   const iconColor = theme === "dark" ? "ffffff" : "000000";
+                  console.log("🚀 ~ Projects ~ iconColor:", iconColor);
                   const iconUrl = `https://cdn.simpleicons.org/${slug}/${iconColor}`;
 
                   return (

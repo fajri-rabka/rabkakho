@@ -6,7 +6,7 @@
   --on-bg-variant: #4a4a4a;
   --surface: #ffffff;
   --outline: rgba(0, 0, 0, 0.12);
-  --glass-bg: rgba(0, 0, 0, 0.04);
+  --glass-bg: rgba(255, 255, 255, 0.8);
   --glass-border: rgba(0, 0, 0, 0.1);
 }
 
@@ -16,7 +16,7 @@
   --on-bg-variant: #b0b0b0;
   --surface: #000000;
   --outline: rgba(255, 255, 255, 0.15);
-  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-bg: rgba(0, 0, 0, 0.8);
   --glass-border: rgba(255, 255, 255, 0.15);
 }
 
@@ -89,8 +89,8 @@ textarea,
 
 .glass-card {
   background: var(--color-glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(40px) saturate(180%) contrast(110%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%) contrast(110%);
   border: 1px solid var(--color-glass-border);
   border-radius: 20px;
 }
@@ -98,8 +98,8 @@ textarea,
 .project-card-glass {
   background: var(--color-glass-bg);
   border-radius: 20px;
-  backdrop-filter: blur(80px);
-  -webkit-backdrop-filter: blur(80px);
+  backdrop-filter: blur(40px) saturate(180%) contrast(110%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%) contrast(110%);
   border: 1px solid var(--color-glass-border);
 }
 
@@ -118,14 +118,40 @@ textarea,
   animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* ─── Accessibility: Reduced Motion ───────────────────────────────────────── */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+/* ─── Modern Scrollbar ─────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--on-bg-variant);
+  border-radius: 100px;
+  opacity: 0.1;
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--on-bg);
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--on-bg-variant) transparent;
+}
+
+/* Cursor Ring Tokens */
+:root {
+  --cursor-ring: rgba(0, 0, 0, 0.15);
+  --cursor-dot: #000000;
+}
+
+.dark {
+  --cursor-ring: rgba(255, 255, 255, 0.2);
+  --cursor-dot: #ffffff;
 }

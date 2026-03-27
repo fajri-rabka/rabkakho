@@ -8,7 +8,7 @@ import { useTheme } from "@/hooks/useTheme";
 
 const NAV_ITEMS = [
   { id: "home", label: "Home" },
-  { id: "work", label: "Work" },
+  { id: "work", label: "Works" },
   { id: "experience", label: "Experience" },
   { id: "about", label: "About" },
   { id: "contact", label: "Contact" },
@@ -98,7 +98,7 @@ export function Navbar() {
             {/* Senior Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className="group relative h-9 w-9 rounded-full border border-outline bg-transparent hover:bg-surface transition-all duration-300 overflow-hidden active:scale-90"
+              className="group relative h-10 w-10 rounded-full border border-outline bg-transparent hover:bg-surface transition-all duration-300 overflow-hidden active:scale-90"
               aria-label="Toggle Theme"
             >
               <div className="relative h-full w-full pointer-events-none">
@@ -143,8 +143,8 @@ export function Navbar() {
               className="flex xl:hidden group items-center justify-center"
             >
               <div className="flex flex-col gap-1.5 items-end">
+                <span className="w-8 h-[1.5px] bg-on-background rounded-full" />
                 <span className="w-6 h-[1.5px] bg-on-background rounded-full" />
-                <span className="w-4 h-[1.5px] bg-on-background rounded-full" />
               </div>
             </button>
           </div>

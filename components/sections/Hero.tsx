@@ -1,15 +1,14 @@
 "use client";
 
-import { motion, useScroll, useTransform, Variants } from "framer-motion";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  Variants,
+  AnimatePresence,
+} from "framer-motion";
+import { useState, useEffect } from "react";
 import BackgroundParticles from "@/components/ui/BackgroundParticles";
-
-/**
- * Senior Refactor: Hero Section
- * - High-performance staggered animations
- * - Custom premium easing
- * - Scroll parallax depth
- * - ZERO wording changes
- */
 
 const variants: Variants = {
   hidden: { opacity: 0, y: 30 },
@@ -19,14 +18,35 @@ const variants: Variants = {
     transition: {
       duration: 1.2,
       delay: i * 0.12,
-      ease: [0.215, 0.61, 0.355, 1], // Custom Cubic-Bezier
+      ease: [0.215, 0.61, 0.355, 1],
     },
   }),
 };
 
+const words = ["MORE IMPACT.", "MORE POWER.", "MORE SPEED."];
+
 export function Hero() {
+  const [mounted, setMounted] = useState(false);
   const { scrollY } = useScroll();
   const yParallax = useTransform(scrollY, [0, 500], [0, 80]);
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    setMounted(true);
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % words.length);
+    }, 6000);
+
+    return () => clearInterval(timer);
+  }, [words.length]);
+
+  if (!mounted) {
+    return (
+      <section className="relative min-h-[100vh] lg:min-h-[80vh] flex flex-col justify-center px-8 max-w-screen-2xl mx-auto overflow-hidden">
+        {/* Skeleton UI or just a blank section to reserve space */}
+      </section>
+    );
+  }
 
   return (
     <section
@@ -49,7 +69,7 @@ export function Hero() {
         </motion.div>
 
         {/* MAIN HEADLINE */}
-        <h1 className="font-headline text-6xl md:text-[8.5rem] font-extrabold tracking-tighter leading-[0.85] mb-12 text-on-background">
+        <h1 className="font-headline text-5xl md:text-[8.5rem] font-extrabold tracking-tighter leading-[0.85] mb-12 text-on-background">
           <motion.div
             custom={1}
             initial="hidden"
@@ -59,42 +79,22 @@ export function Hero() {
             LESS CODE
           </motion.div>
 
-          <div className="relative inline-flex overflow-hidden group">
-            <motion.span
-              custom={2}
-              initial="hidden"
-              animate="visible"
-              variants={variants}
-              className="text-on-background relative z-10 block"
-            >
-              MORE IMPACT.
-            </motion.span>
-
-            {/* Sliding Glint Mask */}
-            <motion.div
-              className="absolute inset-0 z-20 pointer-events-none overflow-hidden"
-              initial={{ x: "-120%" }}
-              animate={{ x: ["-120%", "120%"] }}
-              transition={{
-                duration: 2.2,
-                repeat: Infinity,
-                repeatDelay: 3,
-                ease: [0.4, 0, 0.2, 1],
-              }}
-            >
-              <div
-                className="
-      h-full w-[40%]
-      bg-gradient-to-r
-      from-transparent
-      via-white/80
-      to-transparent
-      blur-[6px]
-      opacity-70
-      dark:via-white/90
-    "
-              />
-            </motion.div>
+          <div className="relative h-[1.1em] overflow-hidden">
+            <AnimatePresence mode="popLayout">
+              <motion.span
+                key={words[index]}
+                initial={{ y: 40, opacity: 0, filter: "blur(6px)" }}
+                animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+                exit={{ y: -40, opacity: 0, filter: "blur(6px)" }}
+                transition={{
+                  duration: 0.9,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                className="absolute left-0 top-0 w-full will-change-transform will-change-opacity"
+              >
+                {words[index]}
+              </motion.span>
+            </AnimatePresence>
           </div>
         </h1>
 

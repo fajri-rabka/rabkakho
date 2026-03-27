@@ -3,13 +3,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
-/**
- * Senior Refactor: BackgroundParticles
- * - Performance prioritized: 3 parallax layers instead of 60 individual animations.
- * - Drifts are handled by CSS animations for zero JS main-thread usage after mount.
- * - Hydration-safe random generation.
- */
-
 const BackgroundParticles = () => {
   const [mounted, setMounted] = useState(false);
   const { scrollY } = useScroll();
@@ -27,9 +20,9 @@ const BackgroundParticles = () => {
     return Array.from({ length: 90 }).map((_, i) => ({
       left: `${Math.random() * 100}%`,
       top: `${Math.random() * 100}%`,
-      size: Math.random() * 1.5 + 0.5,
+      size: Math.random() * 1.5 + 3,
       opacity: Math.random() * 0.4 + 0.1,
-      layer: i % 3, // 0: Far, 1: Middle, 2: Near
+      layer: i % 3,
       driftX: Math.random() * 40 - 20,
       driftY: Math.random() * 40 - 20,
       driftDuration: Math.random() * 10 + 20,
@@ -62,7 +55,8 @@ const BackgroundParticles = () => {
                 left: p.left,
                 top: p.top,
                 opacity: p.opacity * 0.5,
-                boxShadow: p.size > 1.2 ? `0 0 10px var(--color-on-background)` : "none",
+                boxShadow:
+                  p.size > 1.2 ? `0 0 10px var(--color-on-background)` : "none",
               }}
               animate={{
                 x: [0, p.driftX, 0],
