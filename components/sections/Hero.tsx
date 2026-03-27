@@ -51,7 +51,7 @@ export function Hero() {
   return (
     <section
       id="home"
-      className="relative min-h-[100vh] lg:min-h-[80vh] flex flex-col justify-center px-8 max-w-screen-2xl mx-auto overflow-hidden"
+      className="relative min-h-[80vh] lg:min-h-[80vh] flex flex-col justify-center px-8 max-w-screen-2xl mx-auto overflow-hidden"
     >
       <BackgroundParticles />
 
@@ -79,7 +79,7 @@ export function Hero() {
             LESS CODE
           </motion.div>
 
-          <div className="relative h-[1.1em] overflow-hidden">
+          <div className="relative h-[1.8em] lg:h-[1.1em] overflow-hidden">
             <AnimatePresence mode="popLayout">
               <motion.span
                 key={words[index]}
@@ -107,7 +107,7 @@ export function Hero() {
           className="grid grid-cols-1 md:grid-cols-8 gap-8"
         >
           <div className="md:col-start-1 md:col-span-12 lg:col-span-5">
-            <p className="text-md md:text-lg text-on-background/80 leading-relaxed font-light text-balance ">
+            <p className="text-xs md:text-lg text-on-background/80 leading-relaxed font-light text-balance ">
               I build efficient, scalable front-end solutions with clean
               architecture, focusing on performance, maintainability, and
               seamless user experience.

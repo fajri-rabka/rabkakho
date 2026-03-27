@@ -14,6 +14,7 @@ const DEFAULT_PROJECTS: Project[] = [
       "A super app for Honda motorcycle enthusiasts to connect, share, and booking services.",
     image: "images/projects/wahana-honda.webp",
     tags: ["React Native", "Bitbucket", "Bootstrap"],
+    link: "https://apps.apple.com/id/app/wahana-honda/id1502207230",
   },
   {
     id: "02",
@@ -23,6 +24,7 @@ const DEFAULT_PROJECTS: Project[] = [
     description: "A website for Singapore Expo event.",
     image: "images/projects/singapore-expo.webp",
     tags: ["Figma", "HTML", "SASS", "Vanilla JavaScript"],
+    link: "https://www.singaporeexpo.com.sg/",
   },
   {
     id: "03",
@@ -32,6 +34,7 @@ const DEFAULT_PROJECTS: Project[] = [
     description: "A website for Unpage Indonesia organization.",
     image: "images/projects/unpage-indonesia.webp",
     tags: ["Figma", "HTML", "SASS", "Vanilla JavaScript"],
+    link: "https://www.un-pageindonesia.org/id",
   },
 ];
 
@@ -106,77 +109,82 @@ export function Projects({
             }}
             className={`group relative flex flex-col ${index % 2 === 1 ? "md:mt-40" : ""}`}
           >
-            <div className="h-[400px] overflow-hidden bg-surface-variant mb-8 transition-transform duration-700 group-hover:-translate-y-2">
-              <img
-                className="w-full h-full object-cover grayscale opacity-70 group-hover:scale-105 group-hover:opacity-100 transition-all duration-700"
-                alt={project.title}
-                src={project.image}
-              />
-            </div>
-
-            <div className="project-card-glass p-8 absolute bottom-20 left-6 right-6 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 z-10 shadow-2xl">
-              <span className="text-[10px] tracking-[0.3em] uppercase text-on-background/90 font-bold">
-                {project.category} - {project.subcategory}
-              </span>
-              <h3 className="text-2xl font-extrabold tracking-tighter text-on-background mt-2">
-                {project.title}
-              </h3>
-              <p className="text-sm text-on-background/80 mt-4 mb-6 leading-relaxed font-light">
-                {project.description}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {project.tags.map((tag) => {
-                  const slug = tag
-                    .toLowerCase()
-                    .replace("react js", "react")
-                    .replace("react native", "react")
-                    .replace("vanilla javascript", "javascript")
-                    .replace("next js", "nextdotjs")
-                    .replace("next.js", "nextdotjs")
-                    .replace("ethers.js", "ethereum")
-                    .replace("tailwind", "tailwindcss")
-                    .replace("html", "html5")
-                    .replace("css", "css")
-                    .replace(/\s+/g, "")
-                    .replace(/\./g, "");
-
-                  // Use theme-aware icon color (white in dark, black in light)
-                  const iconColor = theme === "dark" ? "ffffff" : "000000";
-                  console.log("🚀 ~ Projects ~ iconColor:", iconColor);
-                  const iconUrl = `https://cdn.simpleicons.org/${slug}/${iconColor}`;
-
-                  return (
-                    <span
-                      key={tag}
-                      className="flex items-center px-2 py-1 uppercase text-on-background/70 tracking-widest"
-                    >
-                      <img
-                        src={iconUrl}
-                        alt={tag}
-                        className="w-6 h-6 object-contain opacity-80"
-                        onError={(e) =>
-                          (e.currentTarget.style.display = "none")
-                        }
-                      />
-                    </span>
-                  );
-                })}
+            <a
+              href={project.link || "#"}
+              target={project.link ? "_blank" : undefined}
+              rel={project.link ? "noopener noreferrer" : undefined}
+              className="block flex-1 relative"
+            >
+              <div className="h-[400px] overflow-hidden bg-surface-variant mb-8 transition-transform duration-700 group-hover:-translate-y-2">
+                <img
+                  className="w-full h-full object-cover grayscale opacity-70 group-hover:scale-105 group-hover:opacity-100 transition-all duration-700"
+                  alt={project.title}
+                  src={project.image}
+                />
               </div>
-            </div>
 
-            <div className="flex justify-between items-start">
-              <div>
-                <h3 className="text-2xl font-extrabold tracking-tighter group-hover:text-on-background transition-colors text-on-background">
+              <div className="project-card-glass p-5 lg:p-8 absolute bottom-20 left-6 right-6 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 z-10 shadow-2xl">
+                <span className="text-[8px] lg:text-[10px] tracking-[0.3em] uppercase text-on-background/90 font-bold">
+                  {project.category} - {project.subcategory}
+                </span>
+                <h3 className="text-lg lg:text-2xl font-extrabold tracking-tighter text-on-background mt-2">
                   {project.title}
                 </h3>
-                <p className="text-on-background/85 text-sm mt-1 uppercase tracking-widest text-[10px]">
-                  {project.subcategory}
+                <p className="lg:text-sm text-xs text-on-background/80 mt-4 mb-6 leading-relaxed font-light">
+                  {project.description}
                 </p>
+                <div className="flex flex-wrap gap-2">
+                  {project.tags.map((tag) => {
+                    const slug = tag
+                      .toLowerCase()
+                      .replace("react js", "react")
+                      .replace("react native", "react")
+                      .replace("vanilla javascript", "javascript")
+                      .replace("next js", "nextdotjs")
+                      .replace("next.js", "nextdotjs")
+                      .replace("ethers.js", "ethereum")
+                      .replace("tailwind", "tailwindcss")
+                      .replace("html", "html5")
+                      .replace("css", "css")
+                      .replace(/\s+/g, "")
+                      .replace(/\./g, "");
+
+                    const iconColor = theme === "dark" ? "ffffff" : "000000";
+                    const iconUrl = `https://cdn.simpleicons.org/${slug}/${iconColor}`;
+
+                    return (
+                      <span
+                        key={tag}
+                        className="flex items-center px-2 py-1 uppercase text-on-background/70 tracking-widest"
+                      >
+                        <img
+                          src={iconUrl}
+                          alt={tag}
+                          className="w-6 h-6 object-contain opacity-80"
+                          onError={(e) =>
+                            (e.currentTarget.style.display = "none")
+                          }
+                        />
+                      </span>
+                    );
+                  })}
+                </div>
               </div>
-              <span className="material-symbols-outlined text-on-background/70 group-hover:text-on-background transition-colors">
-                arrow_outward
-              </span>
-            </div>
+
+              <div className="flex justify-between items-start">
+                <div>
+                  <h3 className="text-2xl font-extrabold tracking-tighter group-hover:text-on-background transition-colors text-on-background">
+                    {project.title}
+                  </h3>
+                  <p className="text-on-background/85 text-sm mt-1 uppercase tracking-widest text-[10px]">
+                    {project.subcategory}
+                  </p>
+                </div>
+                <span className="material-symbols-outlined text-on-background/70 group-hover:text-on-background transition-colors">
+                  arrow_outward
+                </span>
+              </div>
+            </a>
           </motion.div>
         ))}
       </div>

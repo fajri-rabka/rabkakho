@@ -102,13 +102,13 @@ export function Experience() {
                 <span className="text-xs font-bold tracking-[0.3em] text-on-background/85 block mb-4">
                   {item.date}
                 </span>
-                <h3 className="text-3xl font-extrabold tracking-tighter mb-2 text-on-background">
+                <h3 className="lg:text-3xl text-xl font-extrabold tracking-tighter mb-2 text-on-background">
                   {item.role}
                 </h3>
-                <p className="text-on-background text-lg mb-6">
+                <p className="text-on-background lg:text-lg text-md mb-6">
                   {item.company}
                 </p>
-                <p className="text-on-background/80 font-light leading-relaxed max-w-2xl text-balance">
+                <p className="text-on-background/80 font-light leading-relaxed max-w-2xl lg:text-sm text-xs">
                   {item.desc}
                 </p>
               </div>

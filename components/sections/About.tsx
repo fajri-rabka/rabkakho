@@ -106,7 +106,7 @@ export function About() {
               ease: [0.16, 1, 0.3, 1] as any,
               delay: 0.1,
             }}
-            className="lg:text-2xl text-xl font-light text-on-background/90 leading-relaxed mb-16"
+            className="lg:text-2xl text-sm font-light text-on-background/90 leading-relaxed mb-16"
           >
             Building great products is not about adding more, but delivering
             more with less. I focus on creating efficient, scalable interfaces
@@ -126,10 +126,10 @@ export function About() {
                 delay: 0.3,
               }}
             >
-              <h4 className="font-headline font-bold text-lg mb-4 tracking-tighter text-on-background">
+              <h4 className="font-headline font-bold lg:text-lg text-md mb-4 tracking-tighter text-on-background">
                 THE APPROACH
               </h4>
-              <p className="text-on-background/70 lg:text-lg text-md leading-relaxed font-light">
+              <p className="text-on-background/70 lg:text-lg text-xs leading-relaxed font-light">
                 I build with a systems mindset clean code, prioritize
                 performance, and precise, every detail matters.
               </p>
@@ -146,10 +146,10 @@ export function About() {
                 delay: 0.4,
               }}
             >
-              <h4 className="font-headline font-bold text-lg mb-4 tracking-tighter text-on-background">
+              <h4 className="font-headline font-bold lg:text-lg text-md mb-4 tracking-tighter text-on-background">
                 THE RESULT
               </h4>
-              <p className="text-on-background/70 lg:text-lg text-md leading-relaxed font-light">
+              <p className="text-on-background/70 lg:text-lg text-xs leading-relaxed font-light">
                 Scalable, high performance products built to last and designed
                 to deliver real impact.
               </p>
