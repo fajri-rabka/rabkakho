@@ -46,10 +46,10 @@ export function Projects({
   const { theme } = useTheme();
   return (
     <section
-      className="px-8 max-w-screen-2xl mx-auto lg:py-32 py-16 border-t border-outline"
+      className="px-8 md:px-12 max-w-screen-2xl mx-auto py-16 md:py-24 lg:py-32 border-t border-outline"
       id="work"
     >
-      <div className="flex justify-between items-end lg:mb-20 mb-10">
+      <div className="flex justify-between items-end mb-12 md:mb-16 lg:mb-20">
         <div>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -73,7 +73,7 @@ export function Projects({
               delay: 0.4,
             }}
           >
-            <h2 className="font-headline lg:text-6xl text-4xl font-extrabold tracking-tighter mt-4 text-on-background">
+            <h2 className="font-headline lg:text-6xl text-3xl font-extrabold tracking-tighter mt-4 text-on-background">
               {title}
             </h2>
           </motion.div>
@@ -115,14 +115,13 @@ export function Projects({
               rel={project.link ? "noopener noreferrer" : undefined}
               className="block flex-1 relative"
             >
-              <div className="h-[400px] overflow-hidden bg-surface-variant mb-8 transition-transform duration-700 group-hover:-translate-y-2">
+              <div className="h-[300px] lg:h-[400px] overflow-hidden bg-surface-variant mb-8 transition-transform duration-700 group-hover:-translate-y-2">
                 <img
                   className="w-full h-full object-cover grayscale opacity-70 group-hover:scale-105 group-hover:opacity-100 transition-all duration-700"
                   alt={project.title}
                   src={project.image}
                 />
               </div>
-
               <div className="project-card-glass p-5 lg:p-8 absolute bottom-20 left-6 right-6 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 z-10 shadow-2xl">
                 <span className="text-[8px] lg:text-[10px] tracking-[0.3em] uppercase text-on-background/90 font-bold">
                   {project.category} - {project.subcategory}
@@ -176,7 +175,7 @@ export function Projects({
                   <h3 className="text-2xl font-extrabold tracking-tighter group-hover:text-on-background transition-colors text-on-background">
                     {project.title}
                   </h3>
-                  <p className="text-on-background/85 text-sm mt-1 uppercase tracking-widest text-[10px]">
+                  <p className="text-on-background/85 text-[10px] lg:text-sm mt-1 uppercase tracking-widest">
                     {project.subcategory}
                   </p>
                 </div>

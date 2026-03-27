@@ -31,14 +31,14 @@ export function TechStack() {
 
   return (
     <section
-      className="px-8 max-w-screen-2xl mx-auto lg:py-32 py-16 border-t border-outline"
+      className="px-8 md:px-12 max-w-screen-2xl mx-auto py-16 md:py-24 lg:py-32 border-t border-outline"
       id="tech-stack"
     >
-      <div className="mb-5 lg:mb-20 lg:min-h-[160px] min-h-auto">
+      <div className="mb-12 md:mb-16 lg:mb-20 lg:min-h-[160px] min-h-auto">
         <span className="font-label text-[10px] tracking-[0.4em] uppercase text-on-background/85">
           Technology Ecosystem
         </span>
-        <div className="relative mt-4 h-20 md:h-24 overflow-hidden">
+        <div className="relative mt-4 h-15 md:h-24 overflow-hidden">
           <AnimatePresence mode="popLayout">
             <motion.h2
               key={index}
@@ -49,7 +49,7 @@ export function TechStack() {
                 duration: 0.8,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className="font-headline text-4xl md:text-7xl font-extrabold tracking-tighter absolute flex items-center whitespace-nowrap text-on-background"
+              className="font-headline text-3xl md:text-7xl font-extrabold tracking-tighter absolute flex items-center whitespace-nowrap text-on-background"
             >
               {titles[index].slice(0, charIndex)}
               <motion.span

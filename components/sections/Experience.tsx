@@ -12,7 +12,7 @@ export function Experience() {
 
   return (
     <section
-      className="px-8 max-w-screen-2xl mx-auto lg:py-32 py-16 border-t border-outline"
+      className="px-8 md:px-12 max-w-screen-2xl mx-auto py-16 md:py-24 lg:py-32 border-t border-outline"
       id="experience"
     >
       <div className="grid grid-cols-1 md:grid-cols-12 gap-15 lg:gap-20">
@@ -20,7 +20,7 @@ export function Experience() {
           <span className="font-label text-[10px] tracking-[0.4em] uppercase text-on-background/85">
             The Journey
           </span>
-          <h2 className="font-headline lg:text-6xl text-4xl font-extrabold tracking-tighter mt-4 text-on-background">
+          <h2 className="font-headline lg:text-6xl text-3xl font-extrabold tracking-tighter mt-4 text-on-background">
             EXPERIENCE
           </h2>
         </motion.div>

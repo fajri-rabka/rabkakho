@@ -50,7 +50,7 @@ export function Contact() {
 
   return (
     <section
-      className="px-8 max-w-screen-2xl mx-auto py-16 lg:py-48"
+      className="px-8 md:px-12 max-w-screen-2xl mx-auto py-16 md:py-24 lg:py-32"
       id="contact"
     >
       <motion.div
@@ -70,7 +70,7 @@ export function Contact() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-on-background/[0.01] blur-[100px] rounded-full pointer-events-none" />
 
         <div className="relative z-10 text-center mb-16">
-          <h2 className="font-headline lg:text-6xl text-4xl font-extrabold tracking-tighter mb-4 text-on-background">
+          <h2 className="font-headline lg:text-6xl text-3xl font-extrabold tracking-tighter mb-4 text-on-background">
             LET'S CONNECT.
           </h2>
 
@@ -194,7 +194,7 @@ export function Contact() {
             </AnimatePresence>
 
             <button
-              className={`bg-on-background text-background border-on-background border rounded-full px-16 py-5 text-xs font-bold uppercase tracking-[0.3em] transition-all duration-[400ms] relative overflow-hidden group min-w-[240px] flex items-center justify-center ${
+              className={`bg-on-background text-background border-on-background border rounded-full px-10 lg:px-16 py-3 lg:py-5 text-xs font-bold uppercase tracking-[0.3em] transition-all duration-[400ms] relative overflow-hidden group min-w-[240px] flex items-center justify-center ${
                 isSubmitting
                   ? "opacity-60 cursor-not-allowed scale-[0.98]"
                   : feedback?.type === "success"

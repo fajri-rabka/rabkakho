@@ -21,7 +21,7 @@ export const tokens = {
   },
   typography: {
     h1: "text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight",
-    h2: "text-4xl md:text-6xl font-bold tracking-tight",
+    h2: "text-3xl md:text-6xl font-bold tracking-tight",
     h3: "text-2xl md:text-3xl font-semibold",
     body: "text-base md:text-lg text-neutral-300 leading-relaxed",
   },

@@ -42,7 +42,7 @@ export function Hero() {
 
   if (!mounted) {
     return (
-      <section className="relative min-h-[100vh] lg:min-h-[80vh] flex flex-col justify-center px-8 max-w-screen-2xl mx-auto overflow-hidden">
+      <section className="relative min-h-[100vh] lg:min-h-[80vh] flex flex-col justify-center px-8 md:px-12 max-w-screen-2xl mx-auto overflow-hidden py-16 md:py-24 lg:py-32">
         {/* Skeleton UI or just a blank section to reserve space */}
       </section>
     );
@@ -51,7 +51,7 @@ export function Hero() {
   return (
     <section
       id="home"
-      className="relative min-h-[80vh] lg:min-h-[80vh] flex flex-col justify-center px-8 max-w-screen-2xl mx-auto overflow-hidden"
+      className="relative min-h-[80vh] lg:min-h-[90vh] flex flex-col justify-center px-8 md:px-12 max-w-screen-2xl mx-auto overflow-hidden py-16 md:py-24 lg:py-32"
     >
       <BackgroundParticles />
 
@@ -69,7 +69,7 @@ export function Hero() {
         </motion.div>
 
         {/* MAIN HEADLINE */}
-        <h1 className="font-headline text-5xl md:text-[8.5rem] font-extrabold tracking-tighter leading-[0.85] mb-12 text-on-background">
+        <h1 className="font-headline text-5xl md:text-[8.5rem] font-extrabold tracking-tighter leading-[0.85] text-on-background">
           <motion.div
             custom={1}
             initial="hidden"
@@ -78,8 +78,7 @@ export function Hero() {
           >
             LESS CODE
           </motion.div>
-
-          <div className="relative h-[1.8em] lg:h-[1.1em] overflow-hidden">
+          <div className="relative h-[1.8em] lg:h-[1.1em] overflow-hidden mb-12 md:mb-16 lg:mb-20">
             <AnimatePresence mode="popLayout">
               <motion.span
                 key={words[index]}

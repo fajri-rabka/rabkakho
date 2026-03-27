@@ -1,19 +1,19 @@
 "use client";
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { motion, useSpring, useMotionValue } from "framer-motion";
 
 function FloatingLetter({ char, index }: { char: string; index: number }) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const springX = useSpring(x, { stiffness: 150, damping: 15 });
-  const springY = useSpring(y, { stiffness: 150, damping: 15 });
+
+  const springConfig = { stiffness: 80, damping: 20, mass: 0.5 };
+  const springX = useSpring(x, springConfig);
+  const springY = useSpring(y, springConfig);
   const [isHovered, setIsHovered] = useState(false);
 
-  // Base floating values - using specific starting seeds per index to avoid hydration mismatch
-  const floatDuration = 8 + (index % 5) * 2;
-  const floatY = -20 - (index % 3) * 15;
-
   const handleMouseMove = (e: React.MouseEvent) => {
+    if (window.innerWidth < 768) return;
+
     const rect = e.currentTarget.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
@@ -22,12 +22,10 @@ function FloatingLetter({ char, index }: { char: string; index: number }) {
     const dy = e.clientY - centerY;
 
     const distance = Math.sqrt(dx * dx + dy * dy);
-
-    // falloff effect
-    const maxDistance = 120;
+    const maxDistance = 100;
     const force = Math.max(0, 1 - distance / maxDistance);
 
-    const strength = 90; // adjust feel
+    const strength = 300;
 
     x.set(-dx * force * (strength / 100));
     y.set(-dy * force * (strength / 100));
@@ -49,23 +47,26 @@ function FloatingLetter({ char, index }: { char: string; index: number }) {
         x: springX,
         y: springY,
       }}
-      animate={
-        !isHovered
-          ? {
-              y: [0, floatY, 0],
-              rotate: [0, index % 2 === 0 ? 5 : -5, 0],
-            }
-          : {}
-      }
+      animate={{
+        // Increased amplitude for a more dynamic and expressive feel
+        y: isHovered
+          ? 0
+          : [0, index % 3 === 0 ? -45 : index % 3 === 1 ? -35 : -25, 0],
+        rotate: isHovered ? 0 : [0, index % 2 === 0 ? 10 : -10, 0],
+      }}
       transition={{
-        y: { duration: floatDuration, repeat: Infinity, ease: "easeInOut" },
+        y: {
+          duration: 6 + (index % 4), // Kept long for smoothness
+          repeat: Infinity,
+          ease: "easeInOut",
+        },
         rotate: {
-          duration: floatDuration + 1,
+          duration: 7 + (index % 4),
           repeat: Infinity,
           ease: "easeInOut",
         },
       }}
-      className="inline-block px-2 md:px-3 relative cursor-pointer select-none transition-colors hover:text-on-background text-on-background/85"
+      className="inline-block px-1.5 md:px-3 relative cursor-pointer select-none transition-colors hover:text-on-background text-on-background/85 will-change-transform"
     >
       {char === " " ? "\u00A0\u00A0" : char}
     </motion.span>
@@ -75,19 +76,19 @@ function FloatingLetter({ char, index }: { char: string; index: number }) {
 export function About() {
   return (
     <section
-      className="px-8 max-w-screen-2xl mx-auto lg:py-32 py-16 bg-background border-t border-outline"
+      className="px-8 md:px-12 max-w-screen-2xl mx-auto py-16 md:py-24 lg:py-32 bg-background border-t border-outline"
       id="about"
     >
       <div className="grid grid-cols-1 md:grid-cols-12 gap-16">
         {/* LEFT */}
         <div className="md:col-span-5">
-          <h2 className="font-headline lg:text-7xl text-6xl font-extrabold tracking-tighter mt-4 leading-[0.9] text-on-background">
-            <div className="flex flex-wrap gap-y-4">
+          <h2 className="font-headline lg:text-8xl text-4xl font-extrabold tracking-tighter mt-4 leading-[1.3] md:leading-[1.1] text-on-background">
+            <div className="flex flex-wrap gap-y-12 md:gap-y-10">
               {"LESS CODE.".split("").map((char, i) => (
                 <FloatingLetter key={i} char={char} index={i} />
               ))}
             </div>
-            <div className="flex flex-wrap mt-10 gap-y-4">
+            <div className="flex flex-wrap mt-16 md:mt-24 gap-y-12 md:gap-y-10">
               {"MORE IMPACT.".split("").map((char, i) => (
                 <FloatingLetter key={i} char={char} index={i + 10} />
               ))}
