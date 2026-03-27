@@ -5,53 +5,24 @@
   --font-body: var(--font-inter), sans-serif;
   --font-label: var(--font-inter), sans-serif;
 
+  /* LIGHT MODE (Default) */
   --color-primary-fixed: #5d5f5f;
-  --color-surface: #000000;
-  --color-outline-variant: #474747;
-  --color-on-tertiary-fixed: #ffffff;
-  --color-tertiary: #e2e2e2;
-  --color-outline: #919191;
-  --color-inverse-surface: #e2e2e2;
-  --color-surface-bright: #393939;
-  --color-inverse-on-surface: #303030;
-  --color-on-secondary-fixed: #1a1c1c;
-  --color-on-secondary-fixed-variant: #3a3c3c;
-  --color-on-error-container: #ffdad6;
-  --color-error: #ffb4ab;
-  --color-surface-container-lowest: #000000;
-  --color-surface-container-low: #0a0a0a;
-  --color-on-tertiary-fixed-variant: #e2e2e2;
-  --color-on-error: #690005;
-  --color-background: #000000;
-  --color-on-tertiary-container: #000000;
-  --color-surface-container: #141414;
-  --color-surface-variant: #1f1f1f;
-  --color-on-tertiary: #1a1c1c;
-  --color-on-primary-fixed: #ffffff;
-  --color-surface-container-high: #222222;
-  --color-inverse-primary: #5d5f5f;
-  --color-on-secondary-container: #e2e2e2;
-  --color-on-surface-variant: #c6c6c6;
-  --color-on-primary-fixed-variant: #e2e2e2;
-  --color-on-surface: #ffffff;
-  --color-tertiary-container: #909191;
-  --color-primary-fixed-dim: #454747;
-  --color-secondary: #c6c6c7;
-  --color-surface-tint: #c6c6c7;
-  --color-secondary-container: #454747;
-  --color-on-secondary: #1a1c1c;
-  --color-on-primary: #000000;
-  --color-error-container: #93000a;
-  --color-tertiary-fixed-dim: #454747;
-  --color-primary-container: #d4d4d4;
-  --color-surface-dim: #000000;
-  --color-secondary-fixed-dim: #aaabab;
-  --color-primary: #ffffff;
-  --color-surface-container-highest: #2a2a2a;
-  --color-on-primary-container: #000000;
+  --color-surface: #f4f4f5;
+  --color-on-surface: #121212;
+  --color-on-surface-variant: #666666;
+  --color-background: #ffffff;
   --color-on-background: #ffffff;
-  --color-secondary-fixed: #c6c6c7;
-  --color-tertiary-fixed: #5d5f5f;
+  --color-outline: rgba(0, 0, 0, 0.1);
+}
+
+.dark {
+  /* DARK MODE (True Black for premium glass depth) */
+  --color-surface: #000000;
+  --color-on-surface: #ffffff;
+  --color-on-surface-variant: #999999;
+  --color-background: #000000;
+  --color-on-background: #ffffff;
+  --color-outline: rgba(255, 255, 255, 0.1);
 }
 
 * {
@@ -61,11 +32,15 @@
 
 html {
   scroll-behavior: smooth;
+  transition: background-color 0.5s ease;
 }
 
 body {
-  background-color: #000000;
-  color: #ffffff;
+  background-color: var(--color-background);
+  color: var(--color-on-background);
+  transition:
+    background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 a,

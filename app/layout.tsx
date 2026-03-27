@@ -40,15 +40,29 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth dark">
+    <html lang="en" className="scroll-smooth">
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
           rel="stylesheet"
         />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                const theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                if (theme === 'dark') {
+                  document.documentElement.classList.add('dark');
+                } else {
+                  document.documentElement.classList.remove('dark');
+                }
+              })()
+            `,
+          }}
+        />
       </head>
       <body
-        className={`${inter.variable} ${plusJakarta.variable} font-body bg-black text-white selection:bg-white selection:text-black antialiased`}
+        className={`${inter.variable} ${plusJakarta.variable} font-body bg-background text-on-background selection:bg-on-background selection:text-background antialiased`}
       >
         <CustomCursor />
         {children}
