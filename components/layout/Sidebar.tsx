@@ -1,8 +1,6 @@
-"use client";
-
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ArrowRight } from "lucide-react";
-import Image from "next/image";
+import { GithubIcon, LinkedInIcon, InstagramIcon } from "@/components/ui/Icons";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -120,20 +118,20 @@ export function Sidebar({ isOpen, onClose, items, scrollTo }: SidebarProps) {
           {/* Bottom Footer Info */}
           <motion.div
             variants={footerVariants}
-            className="p-10 md:p-16 flex flex-col md:flex-row justify-end items-center gap-8"
+            className="p-10 md:p-16 flex flex-col md:flex-row justify-between items-center gap-8 mt-auto"
           >
-            <div className="flex gap-10 md:gap-16">
+            <div className="flex gap-10 md:gap-12">
               {[
                 {
-                  l: "/svg/github.svg",
+                  Icon: GithubIcon,
                   h: "https://github.com/fajri-rabka",
                 },
                 {
-                  l: "/svg/linkedin.svg",
+                  Icon: LinkedInIcon,
                   h: "https://www.linkedin.com/in/fajrirabka",
                 },
                 {
-                  l: "/svg/gmail.svg",
+                  Icon: InstagramIcon,
                   h: "https://www.instagram.com/fajri.rabka",
                 },
               ].map((link, i) => (
@@ -141,15 +139,15 @@ export function Sidebar({ isOpen, onClose, items, scrollTo }: SidebarProps) {
                   key={i}
                   href={link.h}
                   target="_blank"
-                  className="group flex flex-col items-center gap-2"
+                  className="group relative flex flex-col items-center gap-2"
                 >
-                  <Image
-                    src={link.l}
-                    alt={link.l}
-                    width={20}
-                    height={20}
-                    className="opacity-40 group-hover:opacity-100 transition duration-500 dark:invert-100 invert-10"
-                  />
+                  <motion.div
+                    whileHover={{ y: -5 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                    className="opacity-50 group-hover:opacity-100 transition-all duration-500"
+                  >
+                    <link.Icon size={20} />
+                  </motion.div>
                 </a>
               ))}
             </div>

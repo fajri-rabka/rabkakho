@@ -130,9 +130,9 @@ export function Navbar() {
                     opacity: theme === "dark" ? 1 : 0,
                   }}
                   transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                  className="absolute inset-0 flex items-center justify-center hover:bg-white group transition-colors duration-500"
+                  className="absolute inset-0 flex items-center justify-center group transition-colors duration-500"
                 >
-                  <span className="material-symbols-outlined text-[20px] group-hover:text-black transition-colors duration-500">
+                  <span className="material-symbols-outlined text-[20px] transition-colors duration-500">
                     dark_mode
                   </span>
                 </motion.div>
@@ -143,9 +143,9 @@ export function Navbar() {
                     opacity: theme === "light" ? 1 : 0,
                   }}
                   transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                  className="absolute inset-0 flex items-center justify-center hover:bg-black group transition-colors duration-500"
+                  className="absolute inset-0 flex items-center justify-center group transition-colors duration-500"
                 >
-                  <span className="material-symbols-outlined text-[20px] group-hover:text-white transition-colors duration-500">
+                  <span className="material-symbols-outlined text-[20px] transition-colors duration-500">
                     light_mode
                   </span>
                 </motion.div>

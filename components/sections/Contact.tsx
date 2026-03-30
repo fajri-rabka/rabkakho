@@ -6,8 +6,11 @@ import { contactSchema, type ContactFormData } from "@/lib/utils/validation";
 import { sendContactEmail } from "@/app/actions/contact";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Turnstile } from "@marsidev/react-turnstile";
+import { useThemeContext } from "@/context/ThemeContext";
 
 export function Contact() {
+  const { theme } = useThemeContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState<{
     type: "success" | "error";
@@ -18,6 +21,7 @@ export function Contact() {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
@@ -50,7 +54,7 @@ export function Contact() {
 
   return (
     <section
-      className="px-8 md:px-12 max-w-screen-2xl mx-auto py-16 md:py-24 lg:py-32"
+      className="px-4 md:px-12 max-w-screen-2xl mx-auto py-12 md:py-24 lg:py-32"
       id="contact"
     >
       <motion.div
@@ -62,19 +66,19 @@ export function Contact() {
           ease: [0.16, 1, 0.3, 1] as any,
           delay: 0.1,
         }}
-        className="max-w-4xl mx-auto contact-form glass-card p-12 md:p-24 relative overflow-hidden shadow-2xl shadow-black/5"
+        className="max-w-4xl mx-auto contact-form glass-card p-8 md:p-24 relative overflow-hidden shadow-2xl shadow-black/5"
       >
         {/* Dynamic Decorative Orbs */}
-        <div className="absolute -top-32 -right-32 w-[500px] h-[500px] bg-on-background/[0.03] blur-[140px] rounded-full pointer-events-none" />
-        <div className="absolute -bottom-32 -left-32 w-[500px] h-[500px] bg-on-background/[0.02] blur-[140px] rounded-full pointer-events-none" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-on-background/[0.01] blur-[100px] rounded-full pointer-events-none" />
+        <div className="absolute -top-32 -right-32 w-75 md:w-125 h-75 md:h-125 bg-on-background/3 blur-[80px] md:blur-[140px] rounded-full pointer-events-none" />
+        <div className="absolute -bottom-32 -left-32 w-75 md:w-125 h-75 md:h-125 bg-on-background/2 blur-[80px] md:blur-[140px] rounded-full pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-50 md:w-75 h-50 md:h-75 bg-on-background/1 blur-[60px] md:blur-[100px] rounded-full pointer-events-none" />
 
-        <div className="relative z-10 text-center mb-16">
+        <div className="relative z-10 text-center mb-12 md:mb-16">
           <h2 className="font-headline lg:text-6xl text-3xl font-extrabold tracking-tighter mb-4 text-on-background">
-            LET'S CONNECT.
+            LET&apos;S CONNECT.
           </h2>
 
-          <p className="text-on-background/85 font-label text-[10px] tracking-[0.3em] uppercase">
+          <p className="text-on-background/85 font-label text-[9px] md:text-[10px] tracking-[0.2em] md:tracking-[0.3em] uppercase">
             Currently accepting new projects
           </p>
         </div>
@@ -84,19 +88,19 @@ export function Contact() {
           onSubmit={handleSubmit(onSubmit)}
           className="space-y-12"
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12">
             <div className="relative group/field">
               <input
                 {...register("name")}
-                className="peer block w-full appearance-none border-0 border-b border-outline bg-transparent py-4 px-0 text-on-background focus:outline-none focus:ring-0 transition-all duration-300"
+                className="peer block w-full appearance-none border-0 border-b border-outline bg-transparent py-3 md:py-4 px-0 text-sm md:text-base text-on-background focus:outline-none focus:ring-0 transition-all duration-300"
                 id="name"
                 placeholder=" "
                 type="text"
                 disabled={isSubmitting}
               />
-              <div className="absolute bottom-0 left-0 w-full h-[2px] scale-x-0 peer-focus:scale-x-100 bg-on-background transition-transform duration-500 origin-center" />
+              <div className="absolute bottom-0 left-0 w-full h-px md:h-0.5 scale-x-0 peer-focus:scale-x-100 bg-on-background transition-transform duration-500 origin-center" />
               <label
-                className="absolute top-4 -z-10 origin-[0] -translate-y-8 scale-75 transform text-xs font-bold tracking-widest text-on-background/75 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-on-background"
+                className="absolute top-3 md:top-4 -z-10 origin-[0] -translate-y-8 scale-75 transform text-[10px] md:text-xs font-bold tracking-widest text-on-background/75 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-on-background"
                 htmlFor="name"
               >
                 FULL NAME
@@ -107,7 +111,7 @@ export function Contact() {
                     initial={{ opacity: 0, y: -5 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
-                    className="text-[10px] text-red-500 font-bold uppercase tracking-widest mt-2 block"
+                    className="text-[9px] md:text-[10px] text-red-500 font-bold uppercase tracking-widest mt-2 block"
                   >
                     {errors.name.message}
                   </motion.span>
@@ -118,15 +122,15 @@ export function Contact() {
             <div className="relative group/field">
               <input
                 {...register("email")}
-                className="peer block w-full appearance-none border-0 border-b border-outline bg-transparent py-4 px-0 text-on-background focus:outline-none focus:ring-0 transition-all duration-300"
+                className="peer block w-full appearance-none border-0 border-b border-outline bg-transparent py-3 md:py-4 px-0 text-sm md:text-base text-on-background focus:outline-none focus:ring-0 transition-all duration-300"
                 id="email"
                 placeholder=" "
                 type="email"
                 disabled={isSubmitting}
               />
-              <div className="absolute bottom-0 left-0 w-full h-[2px] scale-x-0 peer-focus:scale-x-100 bg-on-background transition-transform duration-500 origin-center" />
+              <div className="absolute bottom-0 left-0 w-full h-px md:h-0.5 scale-x-0 peer-focus:scale-x-100 bg-on-background transition-transform duration-500 origin-center" />
               <label
-                className="absolute top-4 -z-10 origin-[0] -translate-y-8 scale-75 transform text-xs font-bold tracking-widest text-on-background/75 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-on-background"
+                className="absolute top-3 md:top-4 -z-10 origin-[0] -translate-y-8 scale-75 transform text-[10px] md:text-xs font-bold tracking-widest text-on-background/75 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-on-background"
                 htmlFor="email"
               >
                 EMAIL ADDRESS
@@ -137,7 +141,7 @@ export function Contact() {
                     initial={{ opacity: 0, y: -5 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
-                    className="text-[10px] text-red-500 font-bold uppercase tracking-widest mt-2 block"
+                    className="text-[9px] md:text-[10px] text-red-500 font-bold uppercase tracking-widest mt-2 block"
                   >
                     {errors.email.message}
                   </motion.span>
@@ -149,15 +153,15 @@ export function Contact() {
           <div className="relative group/field">
             <textarea
               {...register("message")}
-              className="peer block w-full appearance-none border-0 border-b border-outline bg-transparent py-4 px-0 text-on-background focus:outline-none focus:ring-0 transition-all duration-300"
+              className="peer block w-full appearance-none border-0 border-b border-outline bg-transparent py-3 md:py-4 px-0 text-sm md:text-base text-on-background focus:outline-none focus:ring-0 transition-all duration-300"
               id="message"
               placeholder=" "
               rows={3}
               disabled={isSubmitting}
             ></textarea>
-            <div className="absolute bottom-0 left-0 w-full h-[2px] scale-x-0 peer-focus:scale-x-100 bg-on-background transition-transform duration-500 origin-center" />
+            <div className="absolute bottom-0 left-0 w-full h-px md:h-0.5 scale-x-0 peer-focus:scale-x-100 bg-on-background transition-transform duration-500 origin-center" />
             <label
-              className="absolute top-4 -z-10 origin-[0] -translate-y-8 scale-75 transform text-xs font-bold tracking-widest text-on-background/75 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-on-background"
+              className="absolute top-3 md:top-4 -z-10 origin-[0] -translate-y-8 scale-75 transform text-[10px] md:text-xs font-bold tracking-widest text-on-background/75 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-on-background"
               htmlFor="message"
             >
               PROJECT OVERVIEW
@@ -168,7 +172,7 @@ export function Contact() {
                   initial={{ opacity: 0, y: -5 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
-                  className="text-[10px] text-red-500 font-bold uppercase tracking-widest mt-2 block"
+                  className="text-[9px] md:text-[10px] text-red-500 font-bold uppercase tracking-widest mt-2 block"
                 >
                   {errors.message.message}
                 </motion.span>
@@ -176,13 +180,13 @@ export function Contact() {
             </AnimatePresence>
           </div>
 
-          <div className="flex flex-col items-center gap-8 pt-8">
+          <div className="flex flex-col items-center gap-6 md:gap-8 pt-4 md:pt-8">
             <AnimatePresence>
               {feedback && (
                 <motion.div
                   initial={{ opacity: 0, rotateX: -10 }}
                   animate={{ opacity: 1, rotateX: 0 }}
-                  className={`text-[11px] font-bold uppercase tracking-[0.2em] px-8 py-3 rounded-full border ${
+                  className={`text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] px-6 md:px-8 py-3 rounded-full border ${
                     feedback.type === "success"
                       ? "bg-on-background/10 border-on-background/20 text-on-background"
                       : "bg-red-500/10 border-red-500/20 text-red-500"
@@ -193,12 +197,34 @@ export function Contact() {
               )}
             </AnimatePresence>
 
+            <div className="flex flex-col items-center md:items-start pt-4 gap-2">
+              <Turnstile
+                key={theme}
+                siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+                onSuccess={(token) => setValue("turnstileToken", token)}
+                onExpire={() => setValue("turnstileToken", "")}
+                options={{ theme }}
+              />
+              <AnimatePresence>
+                {errors.turnstileToken && (
+                  <motion.span
+                    initial={{ opacity: 0, y: -5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    className="text-[9px] md:text-[10px] text-red-500 font-bold uppercase tracking-widest block"
+                  >
+                    {errors.turnstileToken.message}
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </div>
+
             <button
-              className={`bg-on-background text-background border-on-background border rounded-full px-10 lg:px-16 py-3 lg:py-5 text-xs font-bold uppercase tracking-[0.3em] transition-all duration-[400ms] relative overflow-hidden group min-w-[240px] flex items-center justify-center ${
+              className={`bg-on-background text-background border-on-background border rounded-full px-8 md:px-16 py-4 md:py-5 text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] transition-all duration-[400ms] relative overflow-hidden group w-full md:w-auto min-w-0 md:min-w-60 flex items-center justify-center ${
                 isSubmitting
                   ? "opacity-60 cursor-not-allowed scale-[0.98]"
                   : feedback?.type === "success"
-                    ? "bg-green-500 border-green-500 text-white"
+                    ? "bg-green-500 border-green-500 text-black"
                     : "hover:bg-transparent hover:text-on-background active:scale-95"
               }`}
               type="submit"

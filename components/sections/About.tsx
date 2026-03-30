@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { motion, useSpring, useMotionValue } from "framer-motion";
+import { Download } from "lucide-react";
 
 function FloatingLetter({ char, index }: { char: string; index: number }) {
   const x = useMotionValue(0);
@@ -155,6 +156,51 @@ export function About() {
                 to deliver real impact.
               </p>
             </motion.div>
+          </div>
+          <div className="flex flex-col border-t border-outline mt-16 pt-10">
+            {/* DOWNLOAD CV */}
+            <motion.a
+              href="/cv/fajri-cv.pdf"
+              download
+              initial="initial"
+              whileHover="hovered"
+              variants={{
+                initial: { opacity: 0, y: 30 },
+                hovered: { opacity: 1, y: 0 },
+              }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{
+                duration: 0.8,
+                ease: [0.16, 1, 0.3, 1] as any,
+                delay: 0.5,
+              }}
+              className="group flex items-center gap-4 w-fit cursor-pointer"
+            >
+              <div className="relative overflow-hidden border border-outline rounded-full px-8 py-4 bg-transparent group-hover:bg-on-background transition-all duration-500 ease-[0.16, 1, 0.3, 1]">
+                <span className="relative z-10 text-[9px] md:text-[11px] font-bold uppercase tracking-[0.3em] text-on-background group-hover:text-background transition-colors duration-500">
+                  Download CV
+                </span>
+              </div>
+
+              <div className="w-14 h-14 rounded-full border border-outline flex items-center justify-center bg-on-background/5 group-hover:bg-on-background transition-all duration-700 ease-[0.16, 1, 0.3, 1] overflow-hidden">
+                <motion.div
+                  variants={{
+                    initial: { rotate: 0 },
+                    hovered: { 
+                      rotate: -15,
+                      transition: {
+                        duration: 0.4,
+                        ease: [0.16, 1, 0.3, 1]
+                      }
+                    }
+                  }}
+                  className="group-hover:text-background transition-colors duration-500"
+                >
+                  <Download size={20} strokeWidth={1.5} />
+                </motion.div>
+              </div>
+            </motion.a>
           </div>
         </div>
       </div>

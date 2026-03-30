@@ -6,6 +6,7 @@ export const contactSchema = z.object({
     message: "Please enter a valid email address.",
   }),
   message: z.string().min(10, "Message must be at least 10 characters."),
+  turnstileToken: z.string().min(1, "Security check is required."),
 });
 
 export type ContactFormData = z.infer<typeof contactSchema>;
