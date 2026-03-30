@@ -1,20 +1,20 @@
 "use client";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  ReactIcon, 
-  NextjsIcon, 
-  VueIcon, 
-  ViteIcon, 
-  NodejsIcon, 
-  TailwindIcon, 
-  GitIcon 
+import {
+  ReactIcon,
+  NextjsIcon,
+  VueIcon,
+  ViteIcon,
+  NodejsIcon,
+  TailwindIcon,
+  GitIcon,
 } from "@/components/ui/Icons";
 
 export function TechStack() {
   const [index, setIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
-  const titles = ["MODERN TOOLS", "REAL PERFORMANCE"];
+  const titles = ["MODERN TOOLS", "REAL RESULTS", "NEXT GEN TECH"];
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -55,7 +55,7 @@ export function TechStack() {
                 duration: 0.8,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className="font-headline text-3xl md:text-7xl font-extrabold tracking-tighter absolute flex items-center whitespace-nowrap text-on-background"
+              className="font-headline text-2xl md:text-5xl lg:text-6xl font-extrabold tracking-tighter absolute flex items-center whitespace-nowrap text-on-background"
             >
               {titles[index].slice(0, charIndex)}
               <motion.span
