@@ -12,7 +12,7 @@ const DEFAULT_PROJECTS: Project[] = [
     category: "Apps & Web Development",
     subcategory: "Booking Services Apps",
     description:
-      "Worked as Frontend Developer in a team building a motorcycle service booking platform for Honda dealers. My responsibility was developing the mobile app booking flow, web dashboard admin, integrating dealer service data into a unified experience. The new system reduced manual booking dependency and increased digital adoption by 40% across regional dealers",
+      "Worked as Frontend Developer in a team building a motorcycle service booking platform for Honda dealers. My responsibility was developing the mobile app booking flow, web dashboard admin, integrating dealer service data into a unified experience. The new system reduced manual booking dependency and increased digital adoption by 40% across regional dealers.",
     image: "images/projects/wahana-honda.webp",
     tags: ["React Native", "React JS", "Bitbucket", "Bootstrap"],
     link: "https://apps.apple.com/id/app/wahana-honda/id1502207230",

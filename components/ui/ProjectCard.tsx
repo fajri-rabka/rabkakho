@@ -160,16 +160,6 @@ export function ProjectCard({
                 </div>
               </div>
             </div>
-
-            {/* Project ID subtle overlay over image */}
-            <div className="absolute top-6 left-6 z-20 overflow-hidden">
-              <motion.span
-                variants={textSlideUp}
-                className="block font-label text-[10px] tracking-[0.3em] uppercase text-white/70 mix-blend-overlay font-bold"
-              >
-                No. {project.id}
-              </motion.span>
-            </div>
           </motion.a>
         </motion.div>
 
