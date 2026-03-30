@@ -29,7 +29,7 @@ function Highlight({
           opacity: active ? 1 : 0.6,
         }}
         transition={{ duration: 1, ease }}
-        className={`relative z-10 text-on-background  ${active ? "text-on-background font-bold" : "text-on-background/40"}`}
+        className={`relative z-10 text-on-background font-bold  ${active ? "text-on-background" : "text-on-background/80"}`}
       >
         {children}
       </motion.span>
@@ -134,7 +134,7 @@ export function Hero() {
             delay: 0.6,
             ease,
           }}
-          className={`text-md md:text-lg text-on-background  leading-relaxed max-w-2xl mb-12 font-light`}
+          className={`text-sm md:text-lg text-on-background  leading-relaxed max-w-2xl mb-12 font-light`}
         >
           I build efficient,
           <Highlight active={highlightIdx === 0}>scalable</Highlight>

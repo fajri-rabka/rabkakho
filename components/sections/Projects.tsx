@@ -1,10 +1,10 @@
 "use client";
 
 import { Project, ProjectsProps } from "@/lib/interfaces";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { useTheme } from "@/hooks/useTheme";
-import { ease, fadeUp, staggerContainer } from "@/lib/motion";
-import { ArrowUpRight } from "lucide-react";
+import { ease } from "@/lib/motion";
+import { ProjectCard } from "@/components/ui/ProjectCard";
 
 const DEFAULT_PROJECTS: Project[] = [
   {
@@ -13,15 +13,15 @@ const DEFAULT_PROJECTS: Project[] = [
     category: "Apps & Web Development",
     subcategory: "Booking Services Apps",
     description:
-      "A super app for Honda motorcycle enthusiasts to connect, share, and booking services.",
+      "A super app for Honda motorcycle enthusiasts to connect, share, and book services.",
     problem:
-      "Users struggled to manage motorcycle maintenance scheduling efficiently.",
+      "Booking a service was still done manually, people had to call dealers, wait in queue, and often follow up just to get a confirmation.",
     solution:
-      "Developed an intuitive centralized super app handling bookings and community.",
+      "We built a single super app that lets users book services, explore dealer info, and engage with the community in one simple experience.",
     impact:
-      "Increased digital service adoptions by 40% across regional dealerships.",
+      "Service bookings shifted significantly to digital, with a 40% increase in adoption across regional dealers.",
     image: "images/projects/wahana-honda.webp",
-    tags: ["React Native", "Bitbucket", "Bootstrap"],
+    tags: ["React Native", "React JS", "Bitbucket", "Bootstrap"],
     link: "https://apps.apple.com/id/app/wahana-honda/id1502207230",
   },
   {
@@ -31,11 +31,11 @@ const DEFAULT_PROJECTS: Project[] = [
     subcategory: "Event Website",
     description: "A website for Singapore Expo event.",
     problem:
-      "Outdated web presence caused friction for event organizers securing spaces.",
+      "The previous website felt slow and outdated, causing users to leave before completing inquiry forms.",
     solution:
-      "Built a responsive, heavily optimized landing platform with strict SLAs.",
+      "We redesigned and rebuilt the site to be faster, fully responsive, and better aligned with the premium events they host.",
     impact:
-      "Boosted inquiry conversion rates and slashed bounce rates significantly.",
+      "Bounce rate decreased noticeably, and event inquiries increased shortly after the new site went live.",
     image: "images/projects/singapore-expo.webp",
     tags: ["Figma", "HTML", "SASS", "Vanilla JavaScript"],
     link: "https://www.singaporeexpo.com.sg/",
@@ -47,16 +47,28 @@ const DEFAULT_PROJECTS: Project[] = [
     subcategory: "Organization Website",
     description: "A website for Unpage Indonesia organization.",
     problem:
-      "Scattered data led to poor visibility for green-economy initiatives.",
+      "Each program division managed its content separately, making the information scattered and inconsistent across the site.",
     solution:
-      "Implemented a cohesive CMS-driven structure for rapid publications.",
+      "We implemented a centralized CMS so all divisions could publish and manage content independently without developer support.",
     impact:
-      "Enhanced accessibility, unifying 5 distinct program wings under one hub.",
+      "Five program divisions are now unified under one platform, making the website easier to manage and much more user-friendly for visitors.",
     image: "images/projects/unpage-indonesia.webp",
     tags: ["Figma", "HTML", "SASS", "Vanilla JavaScript"],
     link: "https://www.un-pageindonesia.org/id",
   },
 ];
+
+const cinEase: [number, number, number, number] = [0.76, 0, 0.24, 1];
+
+const textSlideUp: Variants = {
+  hidden: { y: "110%", opacity: 0 },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  visible: (i: number): any => ({
+    y: "0%",
+    opacity: 1,
+    transition: { duration: 0.9, ease: cinEase, delay: i * 0.08 },
+  }),
+};
 
 export function Projects({
   projects = DEFAULT_PROJECTS,
@@ -64,150 +76,68 @@ export function Projects({
   title = "PROJECTS",
 }: ProjectsProps) {
   const { theme } = useTheme();
+
   return (
     <section
-      className="px-6 md:px-12 max-w-screen-2xl mx-auto py-24 md:py-32"
+      className="relative px-6 md:px-12 max-w-screen-2xl mx-auto py-28 md:py-40 overflow-hidden"
       id="work"
     >
+      {/* ── Section header ── */}
       <motion.div
-        variants={staggerContainer}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
-        className="flex justify-between items-end mb-16 md:mb-24"
+        viewport={{ once: true, margin: "-80px" }}
+        className="mb-20 md:mb-28 grid grid-cols-1 md:grid-cols-12 gap-8 items-end"
       >
-        <div>
-          <motion.span
-            variants={fadeUp}
-            className="font-label text-[10px] tracking-[0.4em] uppercase text-on-background/70 mb-4 block"
-          >
-            {label}
-          </motion.span>
-          <motion.h2
-            variants={fadeUp}
-            className="font-headline text-2xl lg:text-4xl font-extrabold tracking-tight text-on-background"
-          >
-            {title}
-          </motion.h2>
+        {/* Left: label + title */}
+        <div className="md:col-span-7">
+          <div className="overflow-hidden mb-3">
+            <motion.span
+              variants={textSlideUp}
+              custom={0}
+              className="inline-flex items-center gap-3 font-label text-[10px] tracking-[0.4em] uppercase text-on-background/50"
+            >
+              {label}
+            </motion.span>
+          </div>
+
+          <div className="overflow-hidden">
+            <motion.h2
+              variants={textSlideUp}
+              custom={1}
+              className="font-headline text-2xl md:text-6xl xl:text-7xl font-extrabold tracking-tight text-on-background"
+            >
+              {title}
+            </motion.h2>
+          </div>
         </div>
-        <motion.div variants={fadeUp} className="hidden md:block">
-          <span className="text-on-background/50 font-label text-xs tracking-widest uppercase">
-            ({projects.length.toString().padStart(2, "0")}) Selected
+
+        {/* Right: count + brief */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease, delay: 0.4 }}
+          className="md:col-span-5 md:text-right"
+        >
+          <p className="text-xs lg:text-sm text-on-background/50 font-light leading-relaxed mb-3">
+            Selected works showcasing design precision and meaningful execution.
+          </p>
+          <span className="font-label text-xs tracking-widest uppercase text-on-background/30">
+            ({projects.length.toString().padStart(2, "0")}) Selected Works
           </span>
         </motion.div>
       </motion.div>
 
-      <div className="flex flex-col gap-12 md:gap-24">
+      {/* ── Project list ── */}
+      <div className="flex flex-col items-center justify-center gap-16 md:gap-24">
         {projects.map((project, index) => (
-          <motion.div
+          <ProjectCard
             key={project.id}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease, delay: index * 0.1 }}
-            className="group block relative"
-          >
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-              {/* IMAGE COLUMN */}
-              <a
-                href={project.link || "#"}
-                target={project.link ? "_blank" : undefined}
-                rel="noopener noreferrer"
-                className="lg:col-span-7 relative h-75 md:h-112.5 lg:h-125 w-full rounded-2xl overflow-hidden bg-surface shadow-[0_4px_24px_rgba(0,0,0,0.05)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.4)] transition-all duration-700 hover:shadow-[0_20px_40px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_20px_40px_rgba(0,0,0,0.6)]"
-              >
-                {/* Overlay Blur / Gradient effect on hover */}
-                <div className="absolute inset-0 z-10 bg-linear-to-t from-background/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-                <motion.img
-                  whileHover={{ scale: 1.03 }}
-                  transition={{ duration: 0.8, ease }}
-                  className="w-full h-full object-cover filter brightness-[0.85] group-hover:brightness-100 transition-all duration-700"
-                  alt={project.title}
-                  src={project.image}
-                />
-              </a>
-
-              {/* CONTENT COLUMN - STORYTELLING */}
-              <div className="lg:col-span-5 flex flex-col justify-center relative">
-                <div className="mb-6 flex justify-between items-center">
-                  <span className="text-[10px] tracking-widest uppercase text-on-background/60 font-semibold border border-outline px-3 py-1 rounded-full">
-                    {project.category}
-                  </span>
-                  <ArrowUpRight className="w-5 h-5 text-on-background/40 group-hover:text-on-background transition-colors duration-500 group-hover:translate-x-1 group-hover:-translate-y-1" />
-                </div>
-
-                <h3 className="text-lg md:text-2xl font-extrabold tracking-tight text-on-background mb-4">
-                  {project.title}
-                </h3>
-
-                {/* Tech Tags */}
-                <div className="flex flex-wrap gap-2 mb-8">
-                  {project.tags.map((tag) => {
-                    const slug = tag
-                      .toLowerCase()
-                      .replace("react js", "react")
-                      .replace("react native", "react")
-                      .replace("vanilla javascript", "javascript")
-                      .replace("next js", "nextdotjs")
-                      .replace("next.js", "nextdotjs")
-                      .replace("ethers.js", "ethereum")
-                      .replace("tailwind", "tailwindcss")
-                      .replace("html", "html5")
-                      .replace("css", "css")
-                      .replace(/\s+/g, "")
-                      .replace(/\./g, "");
-
-                    const iconColor = theme === "dark" ? "ffffff" : "000000";
-                    const iconUrl = `https://cdn.simpleicons.org/${slug}/${iconColor}`;
-
-                    return (
-                      <span
-                        key={tag}
-                        className="flex items-center justify-center w-8 h-8 lg:w-9 lg:h-9 rounded-full bg-surface-variant border border-outline shadow-sm hover:scale-110 transition-transform duration-300"
-                        title={tag}
-                      >
-                        <img
-                          src={iconUrl}
-                          alt={tag}
-                          className="w-4 h-4 lg:w-5 lg:h-5 object-contain opacity-80"
-                          onError={(e) =>
-                            (e.currentTarget.style.display = "none")
-                          }
-                        />
-                      </span>
-                    );
-                  })}
-                </div>
-
-                {/* Storytelling Grid */}
-                <div className="space-y-5 border-l border-outline pl-5">
-                  <div className="relative group/item">
-                    <h4 className="text-sm uppercase tracking-wider text-on-background/50 font-semibold mb-1">
-                      Problem
-                    </h4>
-                    <p className="text-sm text-on-background/90 leading-relaxed font-light">
-                      {project.problem || project.description}
-                    </p>
-                  </div>
-                  <div className="relative group/item">
-                    <h4 className="text-sm uppercase tracking-wider text-on-background/50 font-semibold mb-1">
-                      Solution
-                    </h4>
-                    <p className="text-sm text-on-background/90 leading-relaxed font-light">
-                      {project.solution}
-                    </p>
-                  </div>
-                  <div className="relative group/item">
-                    <h4 className="text-sm uppercase tracking-wider text-on-background/50 font-semibold mb-1">
-                      Impact
-                    </h4>
-                    <p className="text-sm text-on-background/90 font-medium">
-                      {project.impact}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
+            project={project}
+            index={index}
+            theme={theme}
+          />
         ))}
       </div>
     </section>
