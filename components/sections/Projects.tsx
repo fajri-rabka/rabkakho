@@ -13,13 +13,7 @@ const DEFAULT_PROJECTS: Project[] = [
     category: "Apps & Web Development",
     subcategory: "Booking Services Apps",
     description:
-      "A super app for Honda motorcycle enthusiasts to connect, share, and book services.",
-    problem:
-      "Booking a service was still done manually, people had to call dealers, wait in queue, and often follow up just to get a confirmation.",
-    solution:
-      "We built a single super app that lets users book services, explore dealer info, and engage with the community in one simple experience.",
-    impact:
-      "Service bookings shifted significantly to digital, with a 40% increase in adoption across regional dealers.",
+      "Worked as Frontend Developer in a team building a motorcycle service booking platform for Honda dealers. My responsibility was developing the mobile app booking flow, web dashboard admin, integrating dealer service data into a unified experience. The new system reduced manual booking dependency and increased digital adoption by 40% across regional dealers",
     image: "images/projects/wahana-honda.webp",
     tags: ["React Native", "React JS", "Bitbucket", "Bootstrap"],
     link: "https://apps.apple.com/id/app/wahana-honda/id1502207230",
@@ -29,13 +23,8 @@ const DEFAULT_PROJECTS: Project[] = [
     title: "Singapore Expo",
     category: "Web Development",
     subcategory: "Event Website",
-    description: "A website for Singapore Expo event.",
-    problem:
-      "The previous website felt slow and outdated, causing users to leave before completing inquiry forms.",
-    solution:
-      "We redesigned and rebuilt the site to be faster, fully responsive, and better aligned with the premium events they host.",
-    impact:
-      "Bounce rate decreased noticeably, and event inquiries increased shortly after the new site went live.",
+    description:
+      "Redesigned and rebuilt the Singapore Expo website to improve performance, usability, and enquiry conversion for one of Southeast Asia’s largest event venues.",
     image: "images/projects/singapore-expo.webp",
     tags: ["Figma", "HTML", "SASS", "Vanilla JavaScript"],
     link: "https://www.singaporeexpo.com.sg/",
@@ -45,13 +34,8 @@ const DEFAULT_PROJECTS: Project[] = [
     title: "UNPAGE Indonesia",
     category: "Web Development",
     subcategory: "Organization Website",
-    description: "A website for Unpage Indonesia organization.",
-    problem:
-      "Each program division managed its content separately, making the information scattered and inconsistent across the site.",
-    solution:
-      "We implemented a centralized CMS so all divisions could publish and manage content independently without developer support.",
-    impact:
-      "Five program divisions are now unified under one platform, making the website easier to manage and much more user-friendly for visitors.",
+    description:
+      "Created a unified platform for UNPAGE Indonesia that brings five program divisions into one structured website, making information easier to manage and access.",
     image: "images/projects/unpage-indonesia.webp",
     tags: ["Figma", "HTML", "SASS", "Vanilla JavaScript"],
     link: "https://www.un-pageindonesia.org/id",
@@ -79,7 +63,7 @@ export function Projects({
 
   return (
     <section
-      className="relative px-6 md:px-12 max-w-screen-2xl mx-auto py-28 md:py-40 overflow-hidden"
+      className="relative px-6 md:px-12 max-w-screen-2xl mx-auto py-16 md:py-48 overflow-hidden"
       id="work"
     >
       {/* ── Section header ── */}
@@ -87,50 +71,40 @@ export function Projects({
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-80px" }}
-        className="mb-20 md:mb-28 grid grid-cols-1 md:grid-cols-12 gap-8 items-end"
+        className="mb-32 md:mb-48 flex flex-col items-center text-center max-w-4xl mx-auto"
       >
-        {/* Left: label + title */}
-        <div className="md:col-span-7">
-          <div className="overflow-hidden mb-3">
-            <motion.span
-              variants={textSlideUp}
-              custom={0}
-              className="inline-flex items-center gap-3 font-label text-[10px] tracking-[0.4em] uppercase text-on-background/50"
-            >
-              {label}
-            </motion.span>
-          </div>
-
-          <div className="overflow-hidden">
-            <motion.h2
-              variants={textSlideUp}
-              custom={1}
-              className="font-headline text-2xl md:text-6xl xl:text-7xl font-extrabold tracking-tight text-on-background"
-            >
-              {title}
-            </motion.h2>
-          </div>
+        <div className="overflow-hidden mb-6">
+          <motion.span
+            variants={textSlideUp}
+            custom={0}
+            className="inline-flex items-center gap-4 font-label text-xs tracking-[0.5em] uppercase text-primary"
+          >
+            {label}
+          </motion.span>
         </div>
 
-        {/* Right: count + brief */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease, delay: 0.4 }}
-          className="md:col-span-5 md:text-right"
+        <div className="overflow-hidden">
+          <motion.h2
+            variants={textSlideUp}
+            custom={1}
+            className="font-headline text-2xl md:text-5xl lg:text-6xl font-black tracking-tighter text-on-background leading-none uppercase"
+          >
+            {title}
+          </motion.h2>
+        </div>
+
+        <motion.p
+          custom={2}
+          variants={textSlideUp}
+          className="mt-8 text-sm md:text-base text-on-background/50 max-w-2xl px-4"
         >
-          <p className="text-xs lg:text-sm text-on-background/50 font-light leading-relaxed mb-3">
-            Selected works showcasing design precision and meaningful execution.
-          </p>
-          <span className="font-label text-xs tracking-widest uppercase text-on-background/30">
-            ({projects.length.toString().padStart(2, "0")}) Selected Works
-          </span>
-        </motion.div>
+          Selected works showcasing design precision and meaningful execution
+          across digital experiences.
+        </motion.p>
       </motion.div>
 
       {/* ── Project list ── */}
-      <div className="flex flex-col items-center justify-center gap-16 md:gap-24">
+      <div className="flex flex-col gap-32 md:gap-48 w-full">
         {projects.map((project, index) => (
           <ProjectCard
             key={project.id}

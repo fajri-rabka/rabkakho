@@ -6,7 +6,7 @@ import {
   useSpring,
   type Variants,
 } from "framer-motion";
-import { ExternalLink } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { useRef } from "react";
 
 // Typed as BezierDefinition to satisfy Framer Motion's Easing type
@@ -23,8 +23,6 @@ const clipReveal: Variants = {
   },
 };
 
-// textSlideUp uses `custom` prop for staggered delay.
-// To stay TS-safe we cast the function variant as Variants.
 const textSlideUp: Variants = {
   hidden: { y: "110%", opacity: 0 },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -33,14 +31,6 @@ const textSlideUp: Variants = {
     opacity: 1,
     transition: { duration: 0.9, ease: cinEase, delay: i * 0.08 },
   }),
-};
-
-const lineExpand: Variants = {
-  hidden: { scaleX: 0, originX: 0 },
-  visible: {
-    scaleX: 1,
-    transition: { duration: 1.0, ease: cinEase, delay: 0.2 },
-  },
 };
 
 // ── Tag slug helper ───────────────────────────────────────────────────────────
@@ -77,11 +67,6 @@ export function ProjectCard({
     offset: ["start end", "end start"],
   });
 
-  /**
-   * Parallax: the inner wrapper shifts ±40px.
-   * The wrapper is inset by -40px top & bottom so the image ALWAYS fills
-   * the container regardless of translation — no clipping artifacts.
-   */
   const rawY = useTransform(scrollYProgress, [0, 1], [40, -40]);
   const y = useSpring(rawY, { stiffness: 60, damping: 20 });
 
@@ -91,151 +76,129 @@ export function ProjectCard({
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-80px" }}
-      className="relative"
+      className="relative w-full group"
     >
-      {/* Divider line with cinematic reveal */}
-      <motion.div
-        variants={lineExpand}
-        className="w-full h-px bg-outline mb-12 md:mb-16"
-      />
-
-      <div
-        className={`grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-16 items-center ${
-          isEven ? "" : "lg:[direction:rtl]"
-        }`}
-      >
+      <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-24 w-full">
         {/* ── IMAGE ── */}
-        <motion.div
-          variants={clipReveal}
-          className="lg:col-span-7 relative overflow-hidden rounded-2xl bg-surface-variant"
-          style={{ aspectRatio: "16/10" }}
+        <div
+          className={`w-full lg:w-[55%] relative ${
+            isEven ? "lg:order-1" : "lg:order-2"
+          }`}
         >
-          {/* Gradient overlay */}
-          <div className="absolute inset-0 z-10 bg-linear-to-br from-black/20 via-transparent to-black/40 pointer-events-none" />
-
-          {/*
-            Parallax image wrapper.
-            Sits at top:-40px / bottom:-40px so even after y has moved ±40px
-            it still fully covers the container. overflow-hidden on the outer
-            motion.div clips any excess — zero gaps, zero white space.
-          */}
-          {/*
-            One single motion.div: negative top/bottom inset absorbs the full
-            ±40 px parallax travel — the image always covers the container.
-          */}
-          <motion.div
-            style={{
-              y,
-              position: "absolute",
-              top: -40,
-              bottom: -40,
-              left: 0,
-              right: 0,
-            }}
-            className="will-change-transform"
-          >
-            <img
-              src={project.image}
-              alt={project.title}
-              className="w-full h-full object-cover brightness-[0.88] transition-[filter] duration-700"
-            />
-          </motion.div>
-
-          {/* Hover visit-link overlay */}
-          <a
+          {/* Subtle Ambient Background Number */}
+          <span className="text-[120px] md:text-[200px] lg:text-[280px] font-black text-on-background/5 absolute -top-12 lg:-top-20 -left-6 lg:-left-12 select-none z-[-1] leading-none pointer-events-none transition-transform duration-1000 group-hover:-translate-y-4 group-hover:scale-105">
+            {project.id}
+          </span>
+          <motion.a
             href={project.link || "#"}
             target={project.link ? "_blank" : undefined}
             rel="noopener noreferrer"
-            className="absolute inset-0 z-20 flex items-end p-6 opacity-0 hover:opacity-100 transition-opacity duration-500 bg-linear-to-t from-black/70 via-black/20 to-transparent group/link"
+            variants={clipReveal}
+            className="block relative overflow-hidden bg-surface-variant group/link cursor-pointer w-full rounded-2xl md:rounded-4xl shadow-2xl"
+            style={{ aspectRatio: "4/3" }}
           >
-            <span className="flex items-center gap-2 text-white text-xs tracking-[0.2em] uppercase font-semibold translate-y-3 group-hover/link:translate-y-0 transition-transform duration-500">
-              <ExternalLink className="w-3.5 h-3.5" />
-              View Project
-            </span>
-          </a>
-        </motion.div>
+            {/* Gradient Overlay for Mood */}
+            <div className="absolute inset-0 z-10 bg-linear-to-b from-transparent via-black/10 to-black/60 opacity-60 group-hover/link:opacity-80 transition-opacity duration-700 pointer-events-none" />
+
+            {/* Cinematic Overlay Border */}
+            <div className="absolute inset-0 z-20 border border-white/10 mix-blend-overlay rounded-2xl md:rounded-4xl pointer-events-none" />
+
+            <motion.div
+              style={{
+                y,
+                position: "absolute",
+                top: -40,
+                bottom: -40,
+                left: 0,
+                right: 0,
+              }}
+              className="will-change-transform"
+            >
+              <img
+                src={project.image}
+                alt={project.title}
+                className="w-full h-full object-cover brightness-90 saturate-[0.80] group-hover/link:saturate-100 group-hover/link:brightness-100 group-hover/link:scale-105 transition-all duration-[1.5s] ease-[cubic-bezier(0.19,1,0.22,1)] will-change-transform"
+              />
+            </motion.div>
+
+            {/* Hover Explort Button */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 opacity-0 group-hover/link:opacity-100 scale-90 group-hover/link:scale-100 transition-all duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] pointer-events-none">
+              <div className="bg-black/60 backdrop-blur-md rounded-full px-6 py-3 flex items-center gap-3 border border-white/20 text-white shadow-2xl">
+                <span className="text-[10px] md:text-xs tracking-[0.2em] uppercase font-bold">
+                  Explore
+                </span>
+                <ArrowUpRight className="w-4 h-4" />
+              </div>
+            </div>
+          </motion.a>
+        </div>
 
         {/* ── CONTENT ── */}
         <div
-          className={`lg:col-span-5 flex flex-col justify-center pt-8 lg:pt-0 ${
-            isEven ? "" : "[direction:ltr]"
+          className={`w-full lg:w-[45%] flex flex-col justify-center mt-6 lg:mt-0 ${
+            isEven ? "lg:order-2" : "lg:order-1"
           }`}
         >
-          {/* Category */}
+          {/* Subcategory & Prefix */}
           <motion.div
             custom={0}
             variants={textSlideUp}
-            className="overflow-hidden mb-6"
+            className="flex items-center gap-4 mb-4 lg:mb-6"
           >
-            <span className="inline-flex items-center gap-2 text-[10px] font-semibold tracking-[0.35em] uppercase text-on-background/50">
-              {project.category}
+            <span className="font-label text-[9px] md:text-[11px] tracking-[0.3em] uppercase text-primary font-bold opacity-50">
+              {project.subcategory || project.category}
             </span>
           </motion.div>
 
           {/* Title */}
-          <div className="overflow-hidden mb-6">
+          <div className="overflow-hidden mb-6 lg:mb-8">
             <motion.h3
               custom={1}
               variants={textSlideUp}
-              className="font-headline text-2xl md:text-3xl xl:text-4xl font-extrabold tracking-tight text-on-background leading-tight"
+              className="font-headline text-xl md:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tighter text-on-background leading-[1.1] hover:text-primary transition-colors duration-500"
             >
-              {project.title}
+              <a
+                href={project.link || "#"}
+                target={project.link ? "_blank" : undefined}
+                rel="noopener noreferrer"
+              >
+                {project.title}
+              </a>
             </motion.h3>
           </div>
 
-          {/* Tech tags */}
+          {/* Description */}
           <motion.div
             custom={2}
             variants={textSlideUp}
-            className="flex flex-wrap gap-2 mb-8"
+            className="overflow-hidden mb-8 lg:mb-10"
           >
-            {project.tags.map((tag) => (
-              <span
-                key={tag}
-                title={tag}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-outline bg-surface text-[10px] tracking-wide uppercase text-on-background/60 font-medium hover:border-on-background/30 hover:text-on-background transition-all duration-300"
-              >
-                <img
-                  src={`https://cdn.simpleicons.org/${getSlug(tag)}/${iconColor}`}
-                  alt={tag}
-                  className="w-3 h-3 object-contain opacity-70"
-                  onError={(e) => (e.currentTarget.style.display = "none")}
-                />
-                {tag}
-              </span>
-            ))}
+            <p className="text-xs md:text-base text-on-background/70 font-light leading-relaxed max-w-lg lg:max-w-md">
+              {project.description}
+            </p>
           </motion.div>
 
-          {/* Storytelling rows */}
-          <motion.div custom={3} variants={textSlideUp} className="space-y-5">
-            {(
-              [
-                {
-                  label: "Problem",
-                  text: project.problem || project.description,
-                  accent: false,
-                },
-                { label: "Solution", text: project.solution, accent: false },
-                { label: "Impact", text: project.impact, accent: true },
-              ] as { label: string; text?: string; accent: boolean }[]
-            ).map(({ label, text, accent }) =>
-              text ? (
-                <div key={label} className="flex gap-5 items-start">
-                  <span className="text-[9px] tracking-[0.25em] uppercase text-on-background/35 font-semibold pt-1 w-14 shrink-0">
-                    {label}
-                  </span>
-                  <p
-                    className={`text-sm leading-relaxed ${
-                      accent
-                        ? "text-on-background font-semibold"
-                        : "text-on-background/70 font-light"
-                    }`}
-                  >
-                    {text}
-                  </p>
+          {/* Tech tags - Redesigned as sleek minimal list */}
+          <motion.div
+            custom={3}
+            variants={textSlideUp}
+            className="flex flex-wrap gap-x-6 gap-y-4"
+          >
+            {project.tags.map((tag) => (
+              <div key={tag} className="flex items-center gap-2 group/tag">
+                <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-surface-variant flex items-center justify-center border border-outline/50 group-hover/tag:bg-on-background/5 group-hover/tag:border-on-background/20 transition-all duration-300">
+                  <img
+                    src={`https://cdn.simpleicons.org/${getSlug(tag)}/${iconColor}`}
+                    alt={tag}
+                    className="w-3.5 h-3.5 md:w-4 md:h-4 object-contain opacity-50 group-hover/tag:opacity-100 transition-opacity duration-300"
+                    onError={(e) => (e.currentTarget.style.display = "none")}
+                  />
                 </div>
-              ) : null,
-            )}
+                <span className="text-[10px] md:text-[11px] tracking-widest uppercase text-on-background/60 group-hover/tag:text-on-background font-semibold transition-colors duration-300">
+                  {tag}
+                </span>
+              </div>
+            ))}
           </motion.div>
         </div>
       </div>
