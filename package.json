@@ -9,7 +9,7 @@
     "lint": "eslint",
     "clean": "rmdir /s /q .next node_modules",
     "fresh": "npm run clean && npm install && npm run dev",
-    "merge": "bash scripts/merging.sh"
+    "merge": "node scripts/merging.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

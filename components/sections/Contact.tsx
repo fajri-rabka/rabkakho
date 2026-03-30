@@ -78,7 +78,7 @@ export function Contact() {
             LET&apos;S CONNECT.
           </h2>
 
-          <p className="text-on-background/85 font-label text-[9px] md:text-[10px] tracking-[0.2em] md:tracking-[0.3em] uppercase">
+          <p className="text-on-background/40 font-label text-[9px] md:text-[10px] tracking-[0.2em] md:tracking-[0.3em] uppercase">
             Currently accepting new projects
           </p>
         </div>

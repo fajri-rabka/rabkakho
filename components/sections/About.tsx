@@ -131,7 +131,7 @@ export function About() {
               <h4 className="font-headline font-bold lg:text-lg text-md mb-4 tracking-tighter text-on-background">
                 THE APPROACH
               </h4>
-              <p className="text-on-background/70 lg:text-lg text-xs leading-relaxed font-light">
+              <p className="text-on-background/70 xl:text-md lg:text-sm text-xs leading-relaxed font-light">
                 I build with a systems mindset clean code, prioritize
                 performance, and precise, every detail matters.
               </p>
@@ -151,7 +151,7 @@ export function About() {
               <h4 className="font-headline font-bold lg:text-lg text-md mb-4 tracking-tighter text-on-background">
                 THE RESULT
               </h4>
-              <p className="text-on-background/70 lg:text-lg text-xs leading-relaxed font-light">
+              <p className="text-on-background/70 xl:text-md lg:text-sm text-xs leading-relaxed font-light">
                 Scalable, high performance products built to last and designed
                 to deliver real impact.
               </p>
@@ -177,23 +177,23 @@ export function About() {
               }}
               className="group flex items-center gap-4 w-fit cursor-pointer"
             >
-              <div className="relative overflow-hidden border border-outline rounded-full px-8 py-4 bg-transparent group-hover:bg-on-background transition-all duration-500 ease-[0.16, 1, 0.3, 1]">
-                <span className="relative z-10 text-[9px] md:text-[11px] font-bold uppercase tracking-[0.3em] text-on-background group-hover:text-background transition-colors duration-500">
+              <div className="relative overflow-hidden border border-outline rounded-full px-8 pt-2 pb-4 lg:py-4 bg-transparent group-hover:bg-on-background transition-all duration-500 ease-[0.16, 1, 0.3, 1]">
+                <span className="relative z-10 text-[.6rem] md:text-sm font-bold uppercase tracking-[0.3em] text-on-background group-hover:text-background transition-colors duration-500">
                   Download CV
                 </span>
               </div>
 
-              <div className="w-14 h-14 rounded-full border border-outline flex items-center justify-center bg-on-background/5 group-hover:bg-on-background transition-all duration-700 ease-[0.16, 1, 0.3, 1] overflow-hidden">
+              <div className="w-10 h-10 lg:w-14 lg:h-14 rounded-full border border-outline flex items-center justify-center bg-on-background/5 group-hover:bg-on-background transition-all duration-700 ease-[0.16, 1, 0.3, 1] overflow-hidden">
                 <motion.div
                   variants={{
                     initial: { rotate: 0 },
-                    hovered: { 
+                    hovered: {
                       rotate: -15,
                       transition: {
                         duration: 0.4,
-                        ease: [0.16, 1, 0.3, 1]
-                      }
-                    }
+                        ease: [0.16, 1, 0.3, 1],
+                      },
+                    },
                   }}
                   className="group-hover:text-background transition-colors duration-500"
                 >
