@@ -85,7 +85,7 @@ export function Projects({
           </motion.span>
           <motion.h2
             variants={fadeUp}
-            className="font-headline text-xl lg:text-4xl font-extrabold tracking-tight text-on-background"
+            className="font-headline text-2xl lg:text-4xl font-extrabold tracking-tight text-on-background"
           >
             {title}
           </motion.h2>

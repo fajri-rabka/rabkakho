@@ -20,7 +20,7 @@ export function Experience() {
           <span className="font-label text-[10px] tracking-[0.4em] uppercase text-on-background/85">
             The Journey
           </span>
-          <h2 className="font-headline lg:text-6xl text-3xl font-extrabold tracking-tighter mt-4 text-on-background">
+          <h2 className="font-headline lg:text-6xl text-2xl font-extrabold tracking-tighter mt-4 text-on-background">
             EXPERIENCE
           </h2>
         </motion.div>

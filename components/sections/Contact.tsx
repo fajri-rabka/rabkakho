@@ -74,7 +74,7 @@ export function Contact() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-50 md:w-75 h-50 md:h-75 bg-on-background/1 blur-[60px] md:blur-[100px] rounded-full pointer-events-none" />
 
         <div className="relative z-10 text-center mb-12 md:mb-16">
-          <h2 className="font-headline lg:text-6xl text-3xl font-extrabold tracking-tighter mb-4 text-on-background">
+          <h2 className="font-headline lg:text-6xl text-2xl font-extrabold tracking-tighter mb-4 text-on-background">
             LET&apos;S CONNECT.
           </h2>
 
