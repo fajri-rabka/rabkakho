@@ -8,9 +8,12 @@ import {
   useMotionValue,
   useSpring,
 } from "framer-motion";
+import { useThemeContext } from "@/context/ThemeContext";
 
 const BackgroundParticles = () => {
+  const { theme } = useThemeContext();
   const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -38,17 +41,30 @@ const BackgroundParticles = () => {
   useEffect(() => {
     setMounted(true);
 
+    const checkMobile = () => {
+      setIsMobile(window.matchMedia("(max-width: 768px)").matches);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
     const handleMove = (e: MouseEvent) => {
+      if (window.matchMedia("(max-width: 768px)").matches) return;
       mouseX.set(e.clientX / window.innerWidth - 0.5);
       mouseY.set(e.clientY / window.innerHeight - 0.5);
     };
 
     window.addEventListener("mousemove", handleMove);
-    return () => window.removeEventListener("mousemove", handleMove);
+    return () => {
+      window.removeEventListener("mousemove", handleMove);
+      window.removeEventListener("resize", checkMobile);
+    };
   }, [mouseX, mouseY]);
 
   const particles = useMemo(() => {
-    return Array.from({ length: 60 }).map((_, i) => {
+    // Reduced count for mobile to improve FPS
+    const count = isMobile ? 30 : 100;
+    return Array.from({ length: count }).map((_, i) => {
       const layer = i % 3;
 
       return {
@@ -69,7 +85,7 @@ const BackgroundParticles = () => {
         driftDuration: Math.random() * 12 + 18,
       };
     });
-  }, []);
+  }, [isMobile]);
 
   if (!mounted) return null;
 
@@ -100,7 +116,7 @@ const BackgroundParticles = () => {
         <motion.div
           key={lIdx}
           style={{
-            x: layer.mx,
+            x: isMobile ? 0 : layer.mx,
             y: layer.y,
           }}
           className="absolute inset-0"
@@ -125,7 +141,9 @@ const BackgroundParticles = () => {
                 filter: `blur(${p.layer * 1.5}px)`,
 
                 background:
-                  "radial-gradient(circle, rgba(255,255,255,0.9) 0%, transparent 70%)",
+                  theme === "dark"
+                    ? "radial-gradient(circle, rgba(255,255,255,1) 0%, transparent 70%)"
+                    : "radial-gradient(circle, rgba(0,0,0,1) 0%, transparent 70%)",
 
                 willChange: "transform, opacity",
               }}
@@ -136,7 +154,7 @@ const BackgroundParticles = () => {
                 scale: [1, 1.15, 1],
               }}
               transition={{
-                duration: p.driftDuration,
+                duration: isMobile ? p.driftDuration * 1.5 : p.driftDuration,
                 repeat: Infinity,
                 ease: [0.65, 0, 0.35, 1],
               }}

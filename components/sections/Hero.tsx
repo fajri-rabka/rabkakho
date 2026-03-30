@@ -54,6 +54,7 @@ const Highlight = ({
 
 export function Hero() {
   const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const { scrollY } = useScroll();
   const yParallax = useTransform(scrollY, [0, 500], [0, 80]);
   const [index, setIndex] = useState(0);
@@ -61,19 +62,26 @@ export function Hero() {
 
   useEffect(() => {
     setMounted(true);
+    const checkMobile = () => {
+      setIsMobile(window.matchMedia("(max-width: 768px)").matches);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
     const wordTimer = setInterval(() => {
       setIndex((prev) => (prev + 1) % words.length);
     }, 6000);
 
     const highlightTimer = setInterval(() => {
       setHighlightIdx((prev) => (prev + 1) % 4);
-    }, 3000);
+    }, isMobile ? 5000 : 3000);
 
     return () => {
       clearInterval(wordTimer);
       clearInterval(highlightTimer);
+      window.removeEventListener("resize", checkMobile);
     };
-  }, [words.length]);
+  }, [words.length, isMobile]);
 
   if (!mounted) {
     return (
@@ -90,7 +98,7 @@ export function Hero() {
     >
       <BackgroundParticles />
 
-      <motion.div style={{ y: yParallax }} className="relative z-10 w-full">
+      <motion.div style={{ y: isMobile ? 0 : yParallax }} className="relative z-10 w-full">
         {/* YEAR TAG */}
         <motion.div
           custom={0}
@@ -117,9 +125,9 @@ export function Hero() {
             <AnimatePresence mode="popLayout">
               <motion.span
                 key={words[index]}
-                initial={{ y: 40, opacity: 0, filter: "blur(6px)" }}
+                initial={{ y: 40, opacity: 0, filter: isMobile ? "blur(3px)" : "blur(6px)" }}
                 animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
-                exit={{ y: -40, opacity: 0, filter: "blur(6px)" }}
+                exit={{ y: -40, opacity: 0, filter: isMobile ? "blur(3px)" : "blur(6px)" }}
                 transition={{
                   duration: 0.9,
                   ease: [0.22, 1, 0.36, 1],

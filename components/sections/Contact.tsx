@@ -100,7 +100,7 @@ export function Contact() {
               />
               <div className="absolute bottom-0 left-0 w-full h-px md:h-0.5 scale-x-0 peer-focus:scale-x-100 bg-on-background transition-transform duration-500 origin-center" />
               <label
-                className="absolute top-3 md:top-4 -z-10 origin-[0] -translate-y-8 scale-75 transform text-[10px] md:text-xs font-bold tracking-widest text-on-background/75 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-on-background"
+                className="absolute top-3 md:top-4 pointer-events-none origin-[0] -translate-y-8 scale-75 transform text-[10px] md:text-xs font-bold tracking-widest text-on-background/75 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-on-background"
                 htmlFor="name"
               >
                 FULL NAME
@@ -130,7 +130,7 @@ export function Contact() {
               />
               <div className="absolute bottom-0 left-0 w-full h-px md:h-0.5 scale-x-0 peer-focus:scale-x-100 bg-on-background transition-transform duration-500 origin-center" />
               <label
-                className="absolute top-3 md:top-4 -z-10 origin-[0] -translate-y-8 scale-75 transform text-[10px] md:text-xs font-bold tracking-widest text-on-background/75 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-on-background"
+                className="absolute top-3 md:top-4 pointer-events-none origin-[0] -translate-y-8 scale-75 transform text-[10px] md:text-xs font-bold tracking-widest text-on-background/75 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-on-background"
                 htmlFor="email"
               >
                 EMAIL ADDRESS
@@ -161,7 +161,7 @@ export function Contact() {
             ></textarea>
             <div className="absolute bottom-0 left-0 w-full h-px md:h-0.5 scale-x-0 peer-focus:scale-x-100 bg-on-background transition-transform duration-500 origin-center" />
             <label
-              className="absolute top-3 md:top-4 -z-10 origin-[0] -translate-y-8 scale-75 transform text-[10px] md:text-xs font-bold tracking-widest text-on-background/75 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-on-background"
+              className="absolute top-3 md:top-4 pointer-events-none origin-[0] -translate-y-8 scale-75 transform text-[10px] md:text-xs font-bold tracking-widest text-on-background/75 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-on-background"
               htmlFor="message"
             >
               PROJECT OVERVIEW
