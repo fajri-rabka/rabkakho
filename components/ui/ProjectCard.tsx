@@ -85,10 +85,6 @@ export function ProjectCard({
             isEven ? "lg:order-1" : "lg:order-2"
           }`}
         >
-          {/* Subtle Ambient Background Number */}
-          <span className="text-[120px] md:text-[200px] lg:text-[280px] font-black text-on-background/5 absolute -top-12 lg:-top-20 -left-6 lg:-left-12 select-none z-[-1] leading-none pointer-events-none transition-transform duration-1000 group-hover:-translate-y-4 group-hover:scale-105">
-            {project.id}
-          </span>
           <motion.a
             href={project.link || "#"}
             target={project.link ? "_blank" : undefined}
@@ -155,7 +151,7 @@ export function ProjectCard({
             <motion.h3
               custom={1}
               variants={textSlideUp}
-              className="font-headline text-xl md:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tighter text-on-background leading-[1.1] hover:text-primary transition-colors duration-500"
+              className="font-headline text-xl md:text-2xl lg:text-3xl xl:text-4xl font-black tracking-tighter text-on-background leading-[1.1] hover:text-primary transition-colors duration-500"
             >
               <a
                 href={project.link || "#"}
@@ -173,7 +169,7 @@ export function ProjectCard({
             variants={textSlideUp}
             className="overflow-hidden mb-8 lg:mb-10"
           >
-            <p className="text-xs md:text-base text-on-background/70 font-light leading-relaxed max-w-lg lg:max-w-md">
+            <p className="text-xs md:text-sm text-on-background/70 font-light leading-relaxed max-w-lg lg:max-w-md">
               {project.description}
             </p>
           </motion.div>
