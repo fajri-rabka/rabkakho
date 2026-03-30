@@ -105,7 +105,7 @@ export function Hero() {
         </motion.span>
 
         {/* Headline */}
-        <h1 className="font-headline text-3xl lg:text-6xl font-bold tracking-tight leading-none text-on-background mb-8">
+        <h1 className="font-headline text-3xl lg:text-8xl font-bold tracking-tight leading-none text-on-background mb-8">
           <TextReveal text="LESS CODE," className="block" />
 
           {/* Animated Word */}

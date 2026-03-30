@@ -78,6 +78,7 @@ export function Navbar() {
         >
           <motion.div
             animate={{ scale: isScrolled ? 0.95 : 1 }}
+            onClick={() => scrollTo("home")}
             className="text-xl font-bold tracking-tighter text-on-background font-headline"
           >
             Rabka.
