@@ -164,7 +164,7 @@ export function Contact() {
               className="absolute top-3 md:top-4 pointer-events-none origin-[0] -translate-y-8 scale-75 transform text-[10px] md:text-xs font-bold tracking-widest text-on-background/75 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-on-background"
               htmlFor="message"
             >
-              PROJECT OVERVIEW
+              MESSAGE
             </label>
             <AnimatePresence>
               {errors.message && (

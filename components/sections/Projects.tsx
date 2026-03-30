@@ -8,7 +8,7 @@ const DEFAULT_PROJECTS: Project[] = [
   {
     id: "01",
     title: "Mokita Wahana Honda",
-    category: "Web Development",
+    category: "Apps & Web Development",
     subcategory: "Booking Services Apps",
     description:
       "A super app for Honda motorcycle enthusiasts to connect, share, and booking services.",
@@ -124,7 +124,7 @@ export function Projects({
               </div>
               <div className="project-card-glass p-5 lg:p-8 absolute bottom-20 left-6 right-6 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 z-10 shadow-2xl">
                 <span className="text-[8px] lg:text-[10px] tracking-[0.3em] uppercase text-on-background/90 font-bold">
-                  {project.category} - {project.subcategory}
+                  {project.category}
                 </span>
                 <h3 className="text-lg lg:text-2xl font-extrabold tracking-tighter text-on-background mt-2">
                   {project.title}
