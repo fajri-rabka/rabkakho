@@ -182,7 +182,7 @@ export function About() {
               className="group flex items-center gap-6 w-fit cursor-pointer"
             >
               <div className="relative overflow-hidden border border-outline/40 rounded-full px-8 lg:py-4 pt-2 pb-4 bg-transparent hover:bg-on-background transition-colors duration-500 ease-out">
-                <span className="relative z-10 text-[.6rem] md:text-sm font-bold uppercase tracking-[0.3em] text-on-background group-hover:text-background transition-colors duration-500">
+                <span className="relative z-10 text-[.6rem] md:text-xs font-bold uppercase tracking-[0.3em] text-on-background group-hover:text-background transition-colors duration-500">
                   Download CV
                 </span>
                 <div className="absolute inset-0 bg-on-background scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left" />

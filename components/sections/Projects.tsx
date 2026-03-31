@@ -2,7 +2,7 @@
 
 import { Project, ProjectsProps } from "@/lib/interfaces";
 import { motion, type Variants } from "framer-motion";
-import { useTheme } from "@/hooks/useTheme";
+import { useState, useEffect } from "react";
 import { ProjectCard } from "@/components/ui/ProjectCard";
 
 const DEFAULT_PROJECTS: Project[] = [
@@ -59,8 +59,35 @@ export function Projects({
   label = "Works",
   title = "PROJECTS",
 }: ProjectsProps) {
-  const { theme } = useTheme();
+  // const { theme } = useTheme();
+  const [active, setActive] = useState(0);
+  const [opened, setOpened] = useState<number | null>(null);
 
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") handleNext();
+      if (e.key === "ArrowLeft") handlePrev();
+    };
+
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, []);
+
+  const handleNext = () => {
+    setActive((prev) => {
+      const next = (prev + 1) % projects.length;
+      setOpened(null);
+      return next;
+    });
+  };
+
+  const handlePrev = () => {
+    setActive((prev) => {
+      const next = (prev - 1 + projects.length) % projects.length;
+      setOpened(null);
+      return next;
+    });
+  };
   return (
     <section
       className="relative px-6 md:px-12 max-w-screen-2xl mx-auto py-16 md:py-48 overflow-hidden"
@@ -74,7 +101,7 @@ export function Projects({
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-10%" }}
-        className="mb-5 md:mb-48 flex flex-col items-center text-center max-w-4xl mx-auto relative z-10"
+        className="mb-5 md:mb- flex flex-col items-center text-center max-w-4xl mx-auto relative z-10"
       >
         <div className="p-2 -m-2 overflow-hidden mb-6">
           <motion.span
@@ -95,32 +122,53 @@ export function Projects({
             {title}
           </motion.h2>
         </div>
-
-        <motion.p
-          custom={2}
-          variants={textReveal}
-          className="mt-8 text-xs md:text-sm text-on-background/50 max-w-xl px-4 leading-relaxed font-light"
-        >
-          Selected works showcasing design precision and meaningful execution
-          across digital experiences.
-        </motion.p>
       </motion.div>
 
       {/* ── Project list ── */}
-      <div className="flex flex-col gap-5 md:gap-40 w-full relative z-20">
-        {projects.map((project, index) => (
-          <ProjectCard
-            key={project.id}
-            project={project}
-            index={index}
-            theme={theme}
-          />
-        ))}
+      <div className="relative w-full mt-20 md:mt-32 flex items-center justify-center mb-10">
+        <div className="relative w-full max-w-[1200px] h-[420px] md:h-[520px] overflow-visible">
+          {projects.map((project, index) => (
+            <ProjectCard
+              key={project.id}
+              project={project}
+              index={index}
+              total={projects.length}
+              active={active}
+              opened={opened}
+              setOpened={setOpened}
+            />
+          ))}
+
+          {/* NAV */}
+        </div>
+        <div className="flex flex-col top-[220px] lg:top-0 items-center h-full gap-3 px-4 pointer-events-none relative z-20">
+          <motion.div
+            custom={2}
+            variants={textReveal}
+            className="mt-8 text-xs md:text-sm text-on-background/50 max-w-xl px-4 leading-relaxed font-light"
+          >
+            <p>
+              Selected works showcasing design precision and meaningful
+              execution across digital experiences.
+            </p>
+          </motion.div>
+          <motion.div className="flex items-center md:justify-between justify-center gap-3 ">
+            <button
+              onClick={handlePrev}
+              className="pointer-events-auto w-10 h-10 md:w-12 md:h-12 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/80 active:scale-95 md:hover:scale-110 transition-all duration-200"
+            >
+              ←
+            </button>
+
+            <button
+              onClick={handleNext}
+              className="pointer-events-auto w-10 h-10 md:w-12 md:h-12 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/80 active:scale-95 md:hover:scale-110 transition-all duration-200"
+            >
+              →
+            </button>
+          </motion.div>
+        </div>
       </div>
     </section>
   );
-}
-
-export function ProjectsPreview() {
-  return <Projects />;
 }
