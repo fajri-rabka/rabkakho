@@ -2,8 +2,14 @@
 
 import { useState, useEffect, Suspense, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+import dynamic from "next/dynamic";
+
+const Canvas = dynamic(
+  () => import("@react-three/fiber").then((mod) => mod.Canvas),
+  { ssr: false, loading: () => <RocketCSSFallback /> }
+);
 
 interface SpaceLoaderProps {
   onComplete?: () => void;
@@ -430,8 +436,8 @@ export function SpaceLoader({ onComplete, isComplete }: SpaceLoaderProps) {
 
               <div className="w-28 h-px bg-white/10 overflow-hidden rounded-full drop-shadow-[0_0_5px_rgba(255,255,255,0.4)] mt-50">
                 <motion.div
-                  className="h-full bg-white shadow-[0_0_10px_white]"
-                  animate={{ width: `${progress}%` }}
+                  className="h-full bg-white shadow-[0_0_10px_white] origin-left"
+                  animate={{ scaleX: progress / 100 }}
                   transition={{ ease: "easeOut", duration: 0.2 }}
                 />
               </div>

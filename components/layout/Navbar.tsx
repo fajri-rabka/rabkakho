@@ -64,7 +64,7 @@ export function Navbar() {
             : "0 0 0 rgba(0, 0, 0, 0)",
         }}
         transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
-        className="fixed z-50 left-1/2 -translate-x-1/2 backdrop-blur-3xl saturate-[180%]"
+        className="fixed z-999 left-1/2 -translate-x-1/2 backdrop-blur-3xl saturate-[180%]"
       >
         <motion.div
           animate={{
@@ -93,10 +93,9 @@ export function Navbar() {
                   key={item.id}
                   onClick={() => scrollTo(item.id)}
                   className={`relative uppercase text-[10px] font-bold tracking-[0.2em] font-headline pb-1 transition-colors
-                    ${
-                      isActive
-                        ? "text-on-background"
-                        : "text-on-background/80 hover:text-on-background"
+                    ${isActive
+                      ? "text-on-background"
+                      : "text-on-background/80 hover:text-on-background"
                     }`}
                 >
                   {item.label}
