@@ -30,8 +30,8 @@ function TechCard({ tech, index }: { tech: typeof TECH_DATA[0]; index: number })
   const cardRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const xTo = useRef<any>();
-  const yTo = useRef<any>();
+  const xTo = useRef<gsap.QuickToFunc | null>(null);
+  const yTo = useRef<gsap.QuickToFunc | null>(null);
   const glitchTween = useRef<gsap.core.Tween>();
 
   // Hydration Guard

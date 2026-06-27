@@ -21,8 +21,8 @@ export function FloatingLetter({
   const [isHovered, setIsHovered] = useState(false);
 
   // Quick setters for smooth spring-like cursor tracking
-  const xTo = useRef<any>();
-  const yTo = useRef<any>();
+  const xTo = useRef<gsap.QuickToFunc | null>(null);
+  const yTo = useRef<gsap.QuickToFunc | null>(null);
 
   useGSAP(
     () => {

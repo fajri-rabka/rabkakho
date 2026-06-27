@@ -12,10 +12,10 @@ export function CustomCursor() {
   const outerRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
 
-  const xOuter = useRef<any>();
-  const yOuter = useRef<any>();
-  const xInner = useRef<any>();
-  const yInner = useRef<any>();
+  const xOuter = useRef<gsap.QuickToFunc | null>(null);
+  const yOuter = useRef<gsap.QuickToFunc | null>(null);
+  const xInner = useRef<gsap.QuickToFunc | null>(null);
+  const yInner = useRef<gsap.QuickToFunc | null>(null);
 
   useGSAP(() => {
     // Set up quickTo for high performance cursor tracking
