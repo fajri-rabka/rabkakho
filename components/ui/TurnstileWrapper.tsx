@@ -33,7 +33,7 @@ export function TurnstileWrapper({ onSuccess, onExpire, onError }: TurnstileWrap
     <div className="min-h-[65px] min-w-[300px] flex justify-center lg:justify-start">
       <Turnstile
         key={theme}
-        siteKey={process.env.TURNSTILE_SITE_KEY!}
+        siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
         onSuccess={onSuccess}
         onExpire={onExpire}
         onError={onError}
