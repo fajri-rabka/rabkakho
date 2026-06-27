@@ -32,7 +32,7 @@ function TechCard({ tech, index }: { tech: typeof TECH_DATA[0]; index: number })
 
   const xTo = useRef<gsap.QuickToFunc | null>(null);
   const yTo = useRef<gsap.QuickToFunc | null>(null);
-  const glitchTween = useRef<gsap.core.Tween>();
+  const glitchTween = useRef<gsap.core.Tween | null>(null);
 
   // Hydration Guard
   const [isMounted, setIsMounted] = useState(false);
