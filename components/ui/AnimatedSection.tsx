@@ -1,80 +1,103 @@
-'use client';
+"use client";
 
-import { motion, type HTMLMotionProps } from 'framer-motion';
-import { cn } from '@/lib/utils/cn';
-import { staggerContainer, revealItem, slideUp } from '@/lib/animation/variants';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useRef } from "react";
+import { cn } from "@/lib/utils/cn";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import ScrollTrigger from "gsap/ScrollTrigger";
 
-interface AnimatedSectionProps extends HTMLMotionProps<'div'> {
-  /**
-   * When `stagger` is true (default), the wrapper becomes a staggerContainer
-   * and YOU are responsible for wrapping direct children in `<motion.div variants={revealItem}>`.
-   *
-   * When `stagger` is false, this component itself animates as a single slideUp block.
-   */
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
+
+interface AnimatedSectionProps extends React.HTMLAttributes<HTMLDivElement> {
   stagger?: boolean;
-  width?: 'full' | 'default';
+  width?: "full" | "default";
 }
 
 export function AnimatedSection({
   children,
   className,
   stagger = false,
-  width = 'default',
+  width = "default",
   ...props
 }: AnimatedSectionProps) {
   const reduced = useReducedMotion();
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  // When reduced motion is requested, render children without any animation
+  useGSAP(
+    () => {
+      if (reduced) return;
+
+      const q = gsap.utils.selector(containerRef);
+
+      if (stagger) {
+        gsap.fromTo(
+          q("> *"), // Target direct children
+          { opacity: 0, y: 50 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: containerRef.current,
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      } else {
+        gsap.fromTo(
+          containerRef.current,
+          { opacity: 0, y: 50 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: containerRef.current,
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+    },
+    { scope: containerRef, dependencies: [stagger, reduced] }
+  );
+
   if (reduced) {
     return (
       <div
         className={cn(
-          'w-full',
-          width === 'default' && 'max-w-7xl mx-auto',
-          className
-        )}
-      >
-        {children as React.ReactNode}
-      </div>
-    );
-  }
-
-  if (stagger) {
-    // Parent-only: children must have variants={revealItem}
-    return (
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-80px' }}
-        variants={staggerContainer}
-        className={cn(
-          'w-full',
-          width === 'default' && 'max-w-7xl mx-auto',
+          "w-full",
+          width === "default" && "max-w-7xl mx-auto",
           className
         )}
         {...props}
       >
         {children}
-      </motion.div>
+      </div>
     );
   }
 
-  // Default: single-block slideUp
   return (
-    <motion.div
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: '-80px' }}
-      variants={slideUp}
+    <div
+      ref={containerRef}
       className={cn(
-        'w-full',
-        width === 'default' && 'max-w-7xl mx-auto',
+        "w-full",
+        width === "default" && "max-w-7xl mx-auto",
+        !stagger ? "opacity-0" : "", // If not stagger, the container itself is animated
         className
       )}
       {...props}
     >
+      {/* If stagger is true, children must manually start with opacity-0 if they don't want FOUC, or we can just let GSAP handle it immediately */}
       {children}
-    </motion.div>
+    </div>
   );
 }

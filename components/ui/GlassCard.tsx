@@ -1,13 +1,10 @@
-'use client';
-
 import React from 'react';
-import { motion, type HTMLMotionProps } from 'framer-motion';
 import { cn } from '@/lib/utils/cn';
 import { tokens } from '@/lib/constants/design-tokens';
-import { hoverScale, tapScale } from '@/lib/animation/variants';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
+import gsap from 'gsap';
 
-interface GlassCardProps extends HTMLMotionProps<'div'> {
+interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: 'base' | 'card' | 'none';
   hoverEffect?: boolean;
 }
@@ -21,21 +18,51 @@ export function GlassCard({
 }: GlassCardProps) {
   const reduced = useReducedMotion();
 
+  const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (hoverEffect && !reduced) {
+      gsap.to(e.currentTarget, { scale: 1.02, duration: 0.3, ease: 'power2.out' });
+    }
+    props.onMouseEnter?.(e);
+  };
+
+  const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (hoverEffect && !reduced) {
+      gsap.to(e.currentTarget, { scale: 1, duration: 0.3, ease: 'power2.out' });
+    }
+    props.onMouseLeave?.(e);
+  };
+
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (hoverEffect && !reduced) {
+      gsap.to(e.currentTarget, { scale: 0.98, duration: 0.1, ease: 'power2.out' });
+    }
+    props.onMouseDown?.(e);
+  };
+
+  const handleMouseUp = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (hoverEffect && !reduced) {
+      gsap.to(e.currentTarget, { scale: 1.02, duration: 0.2, ease: 'power2.out' });
+    }
+    props.onMouseUp?.(e);
+  };
+
   return (
-    <motion.div
+    <div
       className={cn(
-        'relative overflow-hidden rounded-2xl',
+        'relative overflow-hidden rounded-2xl will-change-transform',
         tokens.glass[variant],
         hoverEffect && 'hover:shadow-2xl hover:border-white/30',
         className
       )}
-      whileHover={hoverEffect && !reduced ? hoverScale : undefined}
-      whileTap={hoverEffect && !reduced ? tapScale : undefined}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
       {...props}
     >
       {/* Subtle shimmer overlay on hover */}
       <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-      {children as React.ReactNode}
-    </motion.div>
+      {children}
+    </div>
   );
 }

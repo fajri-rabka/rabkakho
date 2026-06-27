@@ -1,20 +1,61 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
-
-const SPRING = { damping: 25, stiffness: 300, mass: 0.4 };
+import { useEffect, useState, useRef } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
 export function CustomCursor() {
   const [isVisible, setIsVisible] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const [variant, setVariant] = useState<"default" | "hover">("default");
 
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
+  const outerRef = useRef<HTMLDivElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
 
-  const smoothX = useSpring(mouseX, SPRING);
-  const smoothY = useSpring(mouseY, SPRING);
+  const xOuter = useRef<any>();
+  const yOuter = useRef<any>();
+  const xInner = useRef<any>();
+  const yInner = useRef<any>();
+
+  useGSAP(() => {
+    // Set up quickTo for high performance cursor tracking
+    xOuter.current = gsap.quickTo(outerRef.current, "x", {
+      duration: 0.25,
+      ease: "power2.out",
+    });
+    yOuter.current = gsap.quickTo(outerRef.current, "y", {
+      duration: 0.25,
+      ease: "power2.out",
+    });
+    xInner.current = gsap.quickTo(innerRef.current, "x", {
+      duration: 0.1,
+      ease: "power3.out",
+    });
+    yInner.current = gsap.quickTo(innerRef.current, "y", {
+      duration: 0.1,
+      ease: "power3.out",
+    });
+  }, []);
+
+  useGSAP(() => {
+    gsap.to(outerRef.current, {
+      opacity: isVisible ? (variant === "hover" ? 0.2 : 1) : 0,
+      scale: variant === "hover" ? 1.3 : 1,
+      backgroundColor:
+        variant === "hover" ? "var(--on-bg-variant)" : "transparent",
+      borderColor:
+        variant === "hover" ? "var(--on-bg-variant)" : "var(--cursor-ring)",
+      duration: 0.25,
+      ease: "power2.out",
+    });
+
+    gsap.to(innerRef.current, {
+      opacity: isVisible ? 1 : 0,
+      scale: variant === "hover" ? 0.7 : 1,
+      duration: 0.2,
+      ease: "power3.out",
+    });
+  }, { dependencies: [isVisible, variant] });
 
   useEffect(() => {
     // Detect touch device (coarse pointer)
@@ -26,8 +67,11 @@ export function CustomCursor() {
     window.addEventListener("resize", checkTouch);
 
     const move = (e: MouseEvent) => {
-      mouseX.set(e.clientX);
-      mouseY.set(e.clientY);
+      xOuter.current?.(e.clientX);
+      yOuter.current?.(e.clientY);
+      xInner.current?.(e.clientX);
+      yInner.current?.(e.clientY);
+
       if (!isVisible) setIsVisible(true);
     };
 
@@ -56,59 +100,24 @@ export function CustomCursor() {
       document.removeEventListener("mouseleave", handlePointerLeave);
       document.removeEventListener("mouseenter", handlePointerEnter);
     };
-  }, [isVisible, mouseX, mouseY]);
+  }, [isVisible]);
 
   if (isTouchDevice) return null;
 
   return (
     <>
       {/* OUTER RING */}
-      <motion.div
-        className="fixed top-0 left-0 w-10 h-10 rounded-full border pointer-events-none z-[9999] backdrop-blur-[2px]"
-        style={{
-          x: smoothX,
-          y: smoothY,
-          translateX: "-50%",
-          translateY: "-50%",
-          opacity: isVisible ? 1 : 0,
-        }}
-        animate={{
-          scale: variant === "hover" ? 1.3 : 1,
-          borderColor:
-            variant === "hover"
-              ? "var(--on-bg-variant)"
-              : "var(--cursor-ring)",
-          backgroundColor:
-            variant === "hover"
-              ? "var(--on-bg-variant)"
-              : "transparent",
-          opacity: isVisible ? (variant === "hover" ? 0.2 : 1) : 0,
-        }}
-        transition={{
-          scale: { type: "spring", ...SPRING },
-          borderColor: { duration: 0.25 },
-          backgroundColor: { duration: 0.25 },
-        }}
+      <div
+        ref={outerRef}
+        className="fixed top-0 left-0 w-10 h-10 rounded-full border pointer-events-none z-[9999] backdrop-blur-[2px] opacity-0 will-change-transform"
+        style={{ transform: "translate(-50%, -50%)" }}
       />
 
       {/* CENTER DOT */}
-      <motion.div
-        className="fixed top-0 left-0 w-1.25 h-1.25 bg-white rounded-full pointer-events-none z-[10000] mix-blend-difference"
-        style={{
-          x: mouseX,
-          y: mouseY,
-          translateX: "-50%",
-          translateY: "-50%",
-          opacity: isVisible ? 1 : 0,
-        }}
-        animate={{
-          scale: variant === "hover" ? 0.7 : 1,
-        }}
-        transition={{
-          type: "spring",
-          damping: 20,
-          stiffness: 400,
-        }}
+      <div
+        ref={innerRef}
+        className="fixed top-0 left-0 w-1.25 h-1.25 bg-white rounded-full pointer-events-none z-[10000] mix-blend-difference opacity-0 will-change-transform"
+        style={{ transform: "translate(-50%, -50%)" }}
       />
     </>
   );
