@@ -66,6 +66,7 @@ h5 {
 }
 
 @media (pointer: fine) {
+
   a,
   button,
   input,
@@ -108,7 +109,6 @@ h5 {
   backdrop-filter: blur(40px) saturate(180%) contrast(110%);
   -webkit-backdrop-filter: blur(40px) saturate(180%) contrast(110%);
   border: 1px solid var(--color-glass-border);
-  border-radius: 20px;
 }
 
 .project-card-glass {
@@ -124,6 +124,7 @@ h5 {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

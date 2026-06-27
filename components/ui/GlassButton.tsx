@@ -1,9 +1,9 @@
 import React from 'react';
-import { motion, HTMLMotionProps } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
+import gsap from 'gsap';
 
-interface GlassButtonProps extends HTMLMotionProps<'button'> {
+interface GlassButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: 'primary' | 'secondary' | 'ghost' | 'glass';
     size?: 'sm' | 'md' | 'lg' | 'icon';
     isLoading?: boolean;
@@ -32,22 +32,44 @@ export function GlassButton({
         icon: 'h-10 w-10 p-2',
     };
 
+    const handleMouseEnter = (e: React.MouseEvent<HTMLButtonElement>) => {
+        gsap.to(e.currentTarget, { scale: 1.05, duration: 0.3, ease: 'power2.out' });
+        props.onMouseEnter?.(e);
+    };
+
+    const handleMouseLeave = (e: React.MouseEvent<HTMLButtonElement>) => {
+        gsap.to(e.currentTarget, { scale: 1, duration: 0.3, ease: 'power2.out' });
+        props.onMouseLeave?.(e);
+    };
+
+    const handleMouseDown = (e: React.MouseEvent<HTMLButtonElement>) => {
+        gsap.to(e.currentTarget, { scale: 0.95, duration: 0.1, ease: 'power2.out' });
+        props.onMouseDown?.(e);
+    };
+
+    const handleMouseUp = (e: React.MouseEvent<HTMLButtonElement>) => {
+        gsap.to(e.currentTarget, { scale: 1.05, duration: 0.2, ease: 'power2.out' });
+        props.onMouseUp?.(e);
+    };
+
     return (
-        <motion.button
+        <button
             className={cn(
-                'relative inline-flex items-center justify-center rounded-full font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-cyan-500 disabled:opacity-50 disabled:pointer-events-none',
+                'relative inline-flex items-center justify-center rounded-full font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-cyan-500 disabled:opacity-50 disabled:pointer-events-none will-change-transform',
                 variants[variant],
                 sizes[size],
                 className
             )}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
             disabled={disabled || isLoading}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            onMouseDown={handleMouseDown}
+            onMouseUp={handleMouseUp}
             {...props}
         >
             <React.Fragment>
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                {children as React.ReactNode}
+                {children}
 
                 {/* Shine effect for glass/primary variants */}
                 {(variant === 'glass' || variant === 'primary') && (
@@ -56,6 +78,6 @@ export function GlassButton({
                     </div>
                 )}
             </React.Fragment>
-        </motion.button>
+        </button>
     );
 }

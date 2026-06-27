@@ -1,10 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, useScroll, useMotionValueEvent } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
 import { useScrollSpy } from "@/hooks/useScrollSpy";
 import { Sidebar } from "./Sidebar";
 import { useTheme } from "@/hooks/useTheme";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import ScrollTrigger from "gsap/ScrollTrigger";
+import { Moon, Sun } from "lucide-react";
+
+// Registration is now handled globally in lib/gsap-config.ts
 
 const NAV_ITEMS = [
   { id: "home", label: "Home" },
@@ -17,13 +22,11 @@ const NAV_ITEMS = [
 export function Navbar() {
   const { active, scrollTo } = useScrollSpy(NAV_ITEMS.map((i) => i.id));
   const { theme, toggleTheme } = useTheme();
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const { scrollY } = useScroll();
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    setIsScrolled(latest > 50);
-  });
+  const navRef = useRef<HTMLDivElement>(null);
+  const linksContainerRef = useRef<HTMLDivElement>(null);
+  const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0, opacity: 0 });
 
   useEffect(() => {
     if (isSidebarOpen) {
@@ -33,64 +36,138 @@ export function Navbar() {
     }
   }, [isSidebarOpen]);
 
+  // 1. The "Hydration-Guard" (Mount State)
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => setIsMounted(true), []);
+
+  useGSAP(
+    (context) => {
+      // 2. Abort if React hasn't fully painted yet or refs are missing
+      if (!isMounted || !navRef.current) return;
+
+      // Lock centering natively
+      gsap.set(navRef.current, { xPercent: -50 });
+
+      let rafId1: number;
+      let rafId2: number;
+
+      // 3. Double-Raf Buffer for Layout Paint
+      rafId1 = requestAnimationFrame(() => {
+        rafId2 = requestAnimationFrame(() => {
+          // 4. Guaranteed Context Execution - This ties the timeline securely to the component lifecycle
+          context.add(() => {
+            // 5. Defensive Ref Selection: Using a local scope selector
+            const q = gsap.utils.selector(navRef);
+            
+            const tl = gsap.timeline({
+              scrollTrigger: {
+                trigger: document.documentElement,
+                start: "top -50",
+                end: "+=1",
+                toggleActions: "play none none reverse",
+              },
+            });
+
+            tl.to(
+              navRef.current,
+              {
+                top: "14px",
+                width: "80%",
+                borderWidth: "1px",
+                borderColor: "var(--nav-border)",
+                backgroundColor: "var(--nav-bg)",
+                boxShadow: "var(--nav-shadow)",
+                duration: 0.6,
+                ease: "power3.inOut",
+              },
+              0
+            );
+
+            tl.to(
+              q(".nav-inner"),
+              {
+                paddingTop: "12px",
+                paddingBottom: "12px",
+                paddingLeft: "24px",
+                paddingRight: "24px",
+                duration: 0.6,
+                ease: "power3.inOut",
+              },
+              0
+            );
+
+            tl.to(
+              q(".nav-logo"),
+              {
+                scale: 0.95,
+                duration: 0.6,
+                ease: "power3.inOut",
+              },
+              0
+            );
+          });
+        });
+      });
+
+      return () => {
+        cancelAnimationFrame(rafId1);
+        cancelAnimationFrame(rafId2);
+        // context.revert() is handled automatically by useGSAP
+      };
+    },
+    { scope: navRef, dependencies: [isMounted], revertOnUpdate: true } 
+  );
+
+  useEffect(() => {
+    if (!linksContainerRef.current || !active) return;
+    const activeEl = linksContainerRef.current.querySelector(
+      `[data-id='${active}']`
+    ) as HTMLElement;
+    if (activeEl) {
+      setIndicatorStyle({
+        left: activeEl.offsetLeft,
+        width: activeEl.offsetWidth,
+        opacity: 1,
+      });
+    } else {
+      setIndicatorStyle((prev) => ({ ...prev, opacity: 0 }));
+    }
+  }, [active]);
+
   return (
     <>
-      <motion.nav
-        initial={{ y: -100 }}
-        animate={{
-          y: 0,
-          top: isScrolled ? "14px" : "0px",
-          width: isScrolled ? "80%" : "100%",
-          borderRadius: "100px",
-          borderWidth: isScrolled ? "1px" : "0px",
-          borderColor: isScrolled
-            ? theme === "dark"
-              ? "rgba(255, 255, 255, 0.15)"
-              : "rgba(0, 0, 0, 0.08)"
-            : theme === "dark"
-              ? "rgba(255, 255, 255, 0)"
-              : "rgba(0, 0, 0, 0)",
-          backgroundColor: isScrolled
-            ? theme === "dark"
-              ? "rgba(10, 10, 10, 0.45)"
-              : "rgba(255, 255, 255, 0.45)"
-            : theme === "dark"
-              ? "rgba(0, 0, 0, 0)"
-              : "rgba(255, 255, 255, 0)",
-          boxShadow: isScrolled
-            ? theme === "dark"
-              ? "0 20px 40px -15px rgba(0, 0, 0, 0.7)"
-              : "0 20px 40px -15px rgba(0, 0, 0, 0.1)"
-            : "0 0 0 rgba(0, 0, 0, 0)",
-        }}
-        transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
-        className="fixed z-999 left-1/2 -translate-x-1/2 backdrop-blur-3xl saturate-[180%]"
+      <nav
+        ref={navRef}
+        style={{
+          "--nav-border": theme === "dark" ? "rgba(255, 255, 255, 0.15)" : "rgba(0, 0, 0, 0.08)",
+          "--nav-bg": theme === "dark" ? "rgba(10, 10, 10, 0.45)" : "rgba(255, 255, 255, 0.45)",
+          "--nav-shadow": theme === "dark" ? "0 20px 40px -15px rgba(0, 0, 0, 0.7)" : "0 20px 40px -15px rgba(0, 0, 0, 0.1)",
+          willChange: "transform, width, top, padding, background-color, border-color",
+        } as React.CSSProperties}
+        className="fixed z-[999] left-1/2 top-0 w-full backdrop-blur-3xl saturate-[180%] border border-transparent"
       >
-        <motion.div
-          animate={{
-            paddingTop: isScrolled ? "12px" : "28px",
-            paddingBottom: isScrolled ? "12px" : "28px",
-            paddingLeft: isScrolled ? "24px" : "40px",
-            paddingRight: isScrolled ? "24px" : "40px",
-          }}
-          transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
-          className="flex justify-between items-center w-full max-w-screen-2xl mx-auto gap-8"
+        <div
+          style={{ willChange: "padding" }}
+          className="nav-inner flex justify-between items-center w-full max-w-screen-2xl mx-auto gap-8 px-10 py-7"
         >
-          <motion.div
-            animate={{ scale: isScrolled ? 0.95 : 1 }}
+          <div
             onClick={() => scrollTo("home")}
-            className="text-xl font-bold tracking-tighter text-on-background font-headline"
+            className="nav-logo text-xl font-bold tracking-tighter text-on-background font-headline cursor-pointer origin-left will-change-transform"
           >
             Rabka.
-          </motion.div>
+          </div>
 
-          <div className="hidden lg:flex gap-10 items-center relative">
+          <div
+            ref={linksContainerRef}
+            className="hidden lg:flex gap-10 items-center relative"
+          >
             {NAV_ITEMS.map((item) => {
               const isActive = active === item.id;
 
               return (
                 <button
                   key={item.id}
+                  data-id={item.id}
                   onClick={() => scrollTo(item.id)}
                   className={`relative uppercase text-[10px] font-bold tracking-[0.2em] font-headline pb-1 transition-colors
                     ${isActive
@@ -99,62 +176,45 @@ export function Navbar() {
                     }`}
                 >
                   {item.label}
-
-                  {isActive && (
-                    <motion.div
-                      layoutId="nav-indicator"
-                      className="absolute left-0 bottom-0 h-px w-full bg-on-background"
-                      transition={{
-                        type: "spring",
-                        stiffness: 400,
-                        damping: 30,
-                      }}
-                    />
-                  )}
                 </button>
               );
             })}
+
+            <div
+              className="absolute bottom-0 h-px bg-on-background transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+              style={{
+                left: indicatorStyle.left,
+                width: indicatorStyle.width,
+                opacity: indicatorStyle.opacity,
+              }}
+            />
           </div>
 
           <div className="flex items-center gap-6">
             <button
               onClick={toggleTheme}
-              className="group relative h-10 w-10 rounded-full border border-outline bg-transparent hover:bg-surface transition-all duration-300 overflow-hidden active:scale-90"
+              className="group relative h-10 w-10 flex-shrink-0 bg-transparent hover:bg-surface transition-all duration-300 overflow-hidden active:scale-90"
               aria-label="Toggle Theme"
             >
-              <div className="relative h-full w-full">
-                <motion.div
-                  initial={false}
-                  animate={{
-                    y: theme === "dark" ? "0%" : "100%",
-                    opacity: theme === "dark" ? 1 : 0,
-                  }}
-                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                  className="absolute inset-0 flex items-center justify-center group transition-colors duration-500"
-                >
-                  <span className="material-symbols-outlined text-[20px] transition-colors duration-500">
-                    dark_mode
-                  </span>
-                </motion.div>
-                <motion.div
-                  initial={false}
-                  animate={{
-                    y: theme === "light" ? "0%" : "-100%",
-                    opacity: theme === "light" ? 1 : 0,
-                  }}
-                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                  className="absolute inset-0 flex items-center justify-center group transition-colors duration-500"
-                >
-                  <span className="material-symbols-outlined text-[20px] transition-colors duration-500">
-                    light_mode
-                  </span>
-                </motion.div>
+              <div
+                className="flex flex-col h-[200%] w-full transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+                style={{
+                  transform: `translateY(${theme === "dark" ? "0%" : "-50%"})`,
+                }}
+              >
+                <div className="h-10 w-full flex items-center justify-center flex-shrink-0">
+                  <Moon className="w-4 h-4 text-on-background" strokeWidth={1.5} />
+                </div>
+
+                <div className="h-10 w-full flex items-center justify-center flex-shrink-0">
+                  <Sun className="w-4 h-4 text-on-background" strokeWidth={1.5} />
+                </div>
               </div>
             </button>
 
             <button
               onClick={() => scrollTo("contact")}
-              className="hidden md:block border border-outline text-on-background rounded-full px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] bg-transparent hover:bg-on-background hover:text-background active:scale-95 transition-all duration-300"
+              className="hidden md:block border border-outline text-on-background px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] bg-transparent hover:bg-on-background hover:text-background active:scale-95 transition-all duration-300"
             >
               Get in Touch
             </button>
@@ -164,13 +224,13 @@ export function Navbar() {
               className="flex lg:hidden group items-center justify-center"
             >
               <div className="flex flex-col gap-1.5 items-end">
-                <span className="w-8 h-[1.5px] bg-on-background rounded-full" />
-                <span className="w-6 h-[1.5px] bg-on-background rounded-full" />
+                <span className="w-8 h-[1.5px] bg-on-background" />
+                <span className="w-6 h-[1.5px] bg-on-background" />
               </div>
             </button>
           </div>
-        </motion.div>
-      </motion.nav>
+        </div>
+      </nav>
 
       <Sidebar
         isOpen={isSidebarOpen}

@@ -4,18 +4,21 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { contactSchema, type ContactFormData } from "@/lib/utils/validation";
 import { sendContactEmail } from "@/app/actions/contact";
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Turnstile } from "@marsidev/react-turnstile";
-import { useThemeContext } from "@/context/ThemeContext";
+import { useState, useRef, useEffect } from "react";
+import { TurnstileWrapper } from "@/components/ui/TurnstileWrapper";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import ScrollTrigger from "gsap/ScrollTrigger";
 
 export function Contact() {
-  const { theme } = useThemeContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isVerified, setIsVerified] = useState(false); // Security: State-Locked Form
   const [feedback, setFeedback] = useState<{
     type: "success" | "error";
     message: string;
   } | null>(null);
+
+  const containerRef = useRef<HTMLElement>(null);
 
   const {
     register,
@@ -27,7 +30,78 @@ export function Contact() {
     resolver: zodResolver(contactSchema),
   });
 
+  // 1. Hydration Guard
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => setIsMounted(true), []);
+
+  useGSAP(
+    (context) => {
+      // 2. Abort if React hasn't fully painted yet
+      if (!isMounted || !containerRef.current) return;
+
+      let rafId1: number;
+      let rafId2: number;
+
+      rafId1 = requestAnimationFrame(() => {
+        rafId2 = requestAnimationFrame(() => {
+          // 3. Guaranteed Context Execution
+          context.add(() => {
+            const q = gsap.utils.selector(containerRef);
+            let mm = gsap.matchMedia();
+
+            mm.add("(prefers-reduced-motion: no-preference)", () => {
+              ScrollTrigger.create({
+                trigger: containerRef.current,
+                start: "top 80%",
+                onEnter: () => {
+                  gsap.fromTo(
+                    q(".contact-elem"),
+                    { opacity: 0, y: 30 },
+                    {
+                      opacity: 1,
+                      y: 0,
+                      duration: 0.8,
+                      ease: "power3.out",
+                      stagger: 0.1,
+                    }
+                  );
+                }
+              });
+            });
+
+            mm.add("(prefers-reduced-motion: reduce)", () => {
+              ScrollTrigger.create({
+                trigger: containerRef.current,
+                start: "top 80%",
+                onEnter: () => {
+                  gsap.fromTo(
+                    q(".contact-elem"),
+                    { opacity: 0 },
+                    {
+                      opacity: 1,
+                      duration: 0.8,
+                      stagger: 0.1,
+                    }
+                  );
+                }
+              });
+            });
+          });
+        });
+      });
+
+      return () => {
+        cancelAnimationFrame(rafId1);
+        cancelAnimationFrame(rafId2);
+      };
+    },
+    { scope: containerRef, dependencies: [isMounted], revertOnUpdate: true }
+  );
+
   const onSubmit = async (data: ContactFormData) => {
+    // Failsafe: Prevent execution if not verified client-side (Zero-Trust)
+    if (!isVerified) return;
+
     setIsSubmitting(true);
     setFeedback(null);
 
@@ -36,17 +110,18 @@ export function Contact() {
       if (result.success) {
         setFeedback({
           type: "success",
-          message: "Message sent! I'll get back to you soon.",
+          message: "[TRANSMISSION_SUCCESSFUL]",
         });
         reset();
+        setIsVerified(false); // Reset verification after successful send
       } else {
         setFeedback({
           type: "error",
-          message: result.error || "Something went wrong.",
+          message: result.error || "[TRANSMISSION_FAILED]",
         });
       }
     } catch (e) {
-      setFeedback({ type: "error", message: "Failed to connect to server." });
+      setFeedback({ type: "error", message: "[SERVER_ERROR]" });
     } finally {
       setIsSubmitting(false);
     }
@@ -54,238 +129,137 @@ export function Contact() {
 
   return (
     <section
-      className="px-4 md:px-12 max-w-screen-2xl mx-auto py-12 md:py-24 lg:py-32"
+      ref={containerRef}
+      className="w-full relative border-y border-outline bg-background overflow-hidden"
       id="contact"
     >
-      <motion.div
-        initial={{ opacity: 0, y: 50, scale: 0.98 }}
-        whileInView={{ opacity: 1, y: 0, scale: 1 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{
-          duration: 1,
-          ease: [0.16, 1, 0.3, 1] as any,
-          delay: 0.1,
-        }}
-        className="max-w-4xl mx-auto contact-form glass-card p-8 md:p-24 relative overflow-hidden shadow-2xl shadow-black/5"
-      >
-        {/* Dynamic Decorative Orbs */}
-        <div className="absolute -top-32 -right-32 w-75 md:w-125 h-75 md:h-125 bg-on-background/3 blur-[80px] md:blur-[140px] rounded-full pointer-events-none" />
-        <div className="absolute -bottom-32 -left-32 w-75 md:w-125 h-75 md:h-125 bg-on-background/2 blur-[80px] md:blur-[140px] rounded-full pointer-events-none" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-50 md:w-75 h-50 md:h-75 bg-on-background/1 blur-[60px] md:blur-[100px] rounded-full pointer-events-none" />
+      <div className="absolute inset-0 grid grid-cols-12 pointer-events-none opacity-20 z-0">
+        {[...Array(12)].map((_, i) => (
+          <div key={i} className="hidden lg:block border-r border-outline" />
+        ))}
+      </div>
 
-        <div className="relative z-10 text-center mb-12 md:mb-16">
-          <h2 className="font-headline lg:text-6xl text-2xl font-extrabold tracking-tighter mb-4 text-on-background">
-            LET&apos;S CONNECT.
-          </h2>
-
-          <p className="text-on-background/40 font-label text-[9px] md:text-[10px] tracking-[0.2em] md:tracking-[0.3em] uppercase">
-            Currently accepting new projects
-          </p>
+      <div className="grid grid-cols-1 lg:grid-cols-12 relative z-10">
+        {/* HEADER (Spans 4 cols) */}
+        <div className="lg:col-span-4 border-r border-outline border-b lg:border-b-0 pl-4 md:pl-12 pr-4 pt-24 pb-12 flex flex-col justify-between">
+          <div className="contact-elem opacity-0 will-change-transform">
+            <h2 className="font-headline text-6xl lg:text-[7rem] font-black tracking-[-0.04em] text-on-background uppercase leading-[0.85] break-words">
+              LET&apos;S<br />CONNECT.
+            </h2>
+            <p className="font-mono text-[10px] tracking-[0.4em] uppercase text-on-background/50 mt-12 block">
+              [STATUS: OPEN_FOR_PROJECTS]
+            </p>
+          </div>
         </div>
 
-        <form
-          noValidate
-          onSubmit={handleSubmit(onSubmit)}
-          className="space-y-12"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12">
-            <div className="relative group/field">
-              <input
-                {...register("name")}
-                className="peer block w-full appearance-none border-0 border-b border-outline bg-transparent py-3 md:py-4 px-0 text-sm md:text-base text-on-background focus:outline-none focus:ring-0 transition-all duration-300"
-                id="name"
-                placeholder=" "
-                type="text"
-                disabled={isSubmitting}
-              />
-              <div className="absolute bottom-0 left-0 w-full h-px md:h-0.5 scale-x-0 peer-focus:scale-x-100 bg-on-background transition-transform duration-500 origin-center" />
-              <label
-                className="absolute top-3 md:top-4 pointer-events-none origin-[0] -translate-y-8 scale-75 transform text-[10px] md:text-xs font-bold tracking-widest text-on-background/75 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-on-background"
-                htmlFor="name"
-              >
-                FULL NAME
-              </label>
-              <AnimatePresence>
+        {/* FORM (Spans 8 cols) */}
+        <div className="lg:col-span-8 flex flex-col bg-background relative z-10">
+          <form
+            noValidate
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col w-full h-full"
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 border-b border-outline">
+              <div className="contact-elem opacity-0 will-change-transform border-b md:border-b-0 md:border-r border-outline relative p-8 md:p-12">
+                <label className="font-mono text-[10px] tracking-[0.4em] uppercase text-on-background/50 block mb-6">
+                  [FULL_NAME]
+                </label>
+                <input
+                  {...register("name")}
+                  className="w-full bg-transparent border-none text-2xl lg:text-4xl font-headline font-black uppercase text-on-background focus:outline-none focus:ring-0 placeholder-on-background/10 transition-colors"
+                  placeholder="JOHN DOE"
+                  disabled={isSubmitting}
+                />
                 {errors.name && (
-                  <motion.span
-                    initial={{ opacity: 0, y: -5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    className="text-[9px] md:text-[10px] text-red-500 font-bold uppercase tracking-widest mt-2 block"
-                  >
+                  <span className="absolute bottom-4 left-8 md:left-12 text-[9px] text-red-500 font-bold uppercase tracking-[0.2em]">
                     {errors.name.message}
-                  </motion.span>
+                  </span>
                 )}
-              </AnimatePresence>
+              </div>
+              <div className="contact-elem opacity-0 will-change-transform relative p-8 md:p-12">
+                <label className="font-mono text-[10px] tracking-[0.4em] uppercase text-on-background/50 block mb-6">
+                  [EMAIL_ADDRESS]
+                </label>
+                <input
+                  {...register("email")}
+                  className="w-full bg-transparent border-none text-2xl lg:text-4xl font-headline font-black uppercase text-on-background focus:outline-none focus:ring-0 placeholder-on-background/10 transition-colors"
+                  placeholder="HELLO@DOMAIN.COM"
+                  disabled={isSubmitting}
+                />
+                {errors.email && (
+                  <span className="absolute bottom-4 left-8 md:left-12 text-[9px] text-red-500 font-bold uppercase tracking-[0.2em]">
+                    {errors.email.message}
+                  </span>
+                )}
+              </div>
             </div>
 
-            <div className="relative group/field">
-              <input
-                {...register("email")}
-                className="peer block w-full appearance-none border-0 border-b border-outline bg-transparent py-3 md:py-4 px-0 text-sm md:text-base text-on-background focus:outline-none focus:ring-0 transition-all duration-300"
-                id="email"
-                placeholder=" "
-                type="email"
+            <div className="contact-elem opacity-0 will-change-transform border-b border-outline relative p-8 md:p-12 flex-grow">
+              <label className="font-mono text-[10px] tracking-[0.4em] uppercase text-on-background/50 block mb-6">
+                [MESSAGE]
+              </label>
+              <textarea
+                {...register("message")}
+                className="w-full h-full min-h-[200px] lg:min-h-[300px] bg-transparent border-none text-2xl lg:text-4xl font-headline font-black uppercase text-on-background focus:outline-none focus:ring-0 placeholder-on-background/10 transition-colors resize-none"
+                placeholder="TELL ME ABOUT YOUR PROJECT..."
                 disabled={isSubmitting}
               />
-              <div className="absolute bottom-0 left-0 w-full h-px md:h-0.5 scale-x-0 peer-focus:scale-x-100 bg-on-background transition-transform duration-500 origin-center" />
-              <label
-                className="absolute top-3 md:top-4 pointer-events-none origin-[0] -translate-y-8 scale-75 transform text-[10px] md:text-xs font-bold tracking-widest text-on-background/75 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-on-background"
-                htmlFor="email"
-              >
-                EMAIL ADDRESS
-              </label>
-              <AnimatePresence>
-                {errors.email && (
-                  <motion.span
-                    initial={{ opacity: 0, y: -5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    className="text-[9px] md:text-[10px] text-red-500 font-bold uppercase tracking-widest mt-2 block"
-                  >
-                    {errors.email.message}
-                  </motion.span>
-                )}
-              </AnimatePresence>
-            </div>
-          </div>
-
-          <div className="relative group/field">
-            <textarea
-              {...register("message")}
-              className="peer block w-full appearance-none border-0 border-b border-outline bg-transparent py-3 md:py-4 px-0 text-sm md:text-base text-on-background focus:outline-none focus:ring-0 transition-all duration-300"
-              id="message"
-              placeholder=" "
-              rows={3}
-              disabled={isSubmitting}
-            ></textarea>
-            <div className="absolute bottom-0 left-0 w-full h-px md:h-0.5 scale-x-0 peer-focus:scale-x-100 bg-on-background transition-transform duration-500 origin-center" />
-            <label
-              className="absolute top-3 md:top-4 pointer-events-none origin-[0] -translate-y-8 scale-75 transform text-[10px] md:text-xs font-bold tracking-widest text-on-background/75 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-on-background"
-              htmlFor="message"
-            >
-              MESSAGE
-            </label>
-            <AnimatePresence>
               {errors.message && (
-                <motion.span
-                  initial={{ opacity: 0, y: -5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
-                  className="text-[9px] md:text-[10px] text-red-500 font-bold uppercase tracking-widest mt-2 block"
-                >
+                <span className="absolute bottom-4 left-8 md:left-12 text-[9px] text-red-500 font-bold uppercase tracking-[0.2em]">
                   {errors.message.message}
-                </motion.span>
+                </span>
               )}
-            </AnimatePresence>
-          </div>
-
-          <div className="flex flex-col items-center gap-6 md:gap-8 pt-4 md:pt-8">
-            <AnimatePresence>
-              {feedback && (
-                <motion.div
-                  initial={{ opacity: 0, rotateX: -10 }}
-                  animate={{ opacity: 1, rotateX: 0 }}
-                  className={`text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] px-6 md:px-8 py-3 rounded-full border ${
-                    feedback.type === "success"
-                      ? "bg-on-background/10 border-on-background/20 text-on-background"
-                      : "bg-red-500/10 border-red-500/20 text-red-500"
-                  }`}
-                >
-                  {feedback.message}
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            <div className="flex flex-col items-center md:items-start pt-4 gap-2">
-              <Turnstile
-                key={theme}
-                siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
-                onSuccess={(token) => setValue("turnstileToken", token)}
-                onExpire={() => setValue("turnstileToken", "")}
-                options={{ theme }}
-              />
-              <AnimatePresence>
-                {errors.turnstileToken && (
-                  <motion.span
-                    initial={{ opacity: 0, y: -5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    className="text-[9px] md:text-[10px] text-red-500 font-bold uppercase tracking-widest block"
-                  >
-                    {errors.turnstileToken.message}
-                  </motion.span>
-                )}
-              </AnimatePresence>
             </div>
 
-            <button
-              className={`bg-on-background text-background border-on-background border rounded-full px-8 md:px-16 py-4 md:py-5 text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] transition-all duration-[400ms] relative overflow-hidden group w-full md:w-auto min-w-0 md:min-w-60 flex items-center justify-center ${
-                isSubmitting
-                  ? "opacity-60 cursor-not-allowed scale-[0.98]"
-                  : feedback?.type === "success"
-                    ? "bg-green-500 border-green-500 text-black"
-                    : "hover:bg-transparent hover:text-on-background active:scale-95"
-              }`}
-              type="submit"
-              disabled={isSubmitting || feedback?.type === "success"}
-            >
-              <AnimatePresence mode="wait">
-                {isSubmitting ? (
-                  <motion.span
-                    key="submitting"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className="flex items-center gap-3"
-                  >
-                    <motion.span
-                      animate={{ rotate: 360 }}
-                      transition={{
-                        repeat: Infinity,
-                        duration: 0.8,
-                        ease: "linear",
-                      }}
-                      className="w-4 h-4 border-[2.5px] border-black border-t-transparent rounded-full"
-                    />
-                    SENDING...
-                  </motion.span>
-                ) : feedback?.type === "success" ? (
-                  <motion.span
-                    key="success"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.8 }}
-                    className="flex items-center gap-2"
-                  >
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="w-4 h-4"
-                    >
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                    SENT SUCCESSFULLY
-                  </motion.span>
-                ) : (
-                  <motion.span
-                    key="idle"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                  >
-                    Send Message
-                  </motion.span>
+            <div className="contact-elem opacity-0 will-change-transform flex flex-col md:flex-row items-stretch min-h-[140px]">
+              <div className="flex-grow p-8 flex flex-col justify-center border-b md:border-b-0 md:border-r border-outline relative">
+                <TurnstileWrapper
+                  onSuccess={(token) => {
+                    setValue("turnstileToken", token);
+                    setIsVerified(true);
+                  }}
+                  onExpire={() => {
+                    setValue("turnstileToken", "");
+                    setIsVerified(false);
+                  }}
+                  onError={() => {
+                    setValue("turnstileToken", "");
+                    setIsVerified(false);
+                  }}
+                />
+                {errors.turnstileToken && (
+                  <span className="absolute top-4 right-8 text-[9px] text-red-500 font-bold uppercase tracking-[0.2em]">
+                    {errors.turnstileToken.message}
+                  </span>
                 )}
-              </AnimatePresence>
-            </button>
-          </div>
-        </form>
-      </motion.div>
+                {feedback && (
+                  <span className={`mt-4 text-[9px] font-bold uppercase tracking-[0.2em] ${feedback.type === 'success' ? 'text-green-500' : 'text-red-500'}`}>
+                    {feedback.message}
+                  </span>
+                )}
+              </div>
+              
+              <button
+                className={`w-full md:w-[350px] flex items-center justify-center font-headline text-2xl lg:text-4xl font-black uppercase transition-all duration-300 ${
+                  !isVerified || isSubmitting || feedback?.type === "success" 
+                    ? "bg-surface text-on-background/30 cursor-not-allowed" 
+                    : "bg-on-background text-background hover:bg-primary hover:text-black cursor-crosshair"
+                }`}
+                type="submit"
+                disabled={!isVerified || isSubmitting || feedback?.type === "success"}
+              >
+                {isSubmitting 
+                  ? "TRANSMITTING..." 
+                  : feedback?.type === "success" 
+                    ? "RECEIVED." 
+                    : !isVerified 
+                      ? "AWAITING VERIFICATION" 
+                      : "SEND"}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </section>
   );
 }

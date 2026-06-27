@@ -1,14 +1,12 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useTransform, HTMLMotionProps } from "framer-motion";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import ScrollTrigger from "gsap/ScrollTrigger";
 
-interface ScrollParallaxWrapperProps extends HTMLMotionProps<"div"> {
-  children: React.ReactNode;
-  withParallax?: boolean;
-  background?: React.ReactNode;
-  className?: string;
-  id?: string;
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
 }
 
 export function ScrollParallaxWrapper({
@@ -18,37 +16,74 @@ export function ScrollParallaxWrapper({
   className,
   id,
   ...props
-}: ScrollParallaxWrapperProps) {
+}: {
+  children: React.ReactNode;
+  withParallax?: boolean;
+  background?: React.ReactNode;
+  className?: string;
+  id?: string;
+  [key: string]: any;
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
-  
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"],
-  });
 
-  const yText = useTransform(scrollYProgress, [0, 1], [0, -40]);
-  const yBg = useTransform(scrollYProgress, [0, 1], [0, 80]);
-  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  useGSAP(
+    () => {
+      if (withParallax) {
+        let mm = gsap.matchMedia();
+        mm.add("(prefers-reduced-motion: no-preference)", () => {
+          // Parallax background (slower than scroll)
+          gsap.to(".parallax-bg", {
+            y: 80,
+            ease: "none",
+            scrollTrigger: {
+              trigger: containerRef.current,
+              start: "top top",
+              end: "bottom top",
+              scrub: true,
+            },
+          });
+
+          // Parallax text (faster than scroll) + fade out
+          gsap.to(".parallax-content", {
+            y: -40,
+            opacity: 0,
+            ease: "none",
+            scrollTrigger: {
+              trigger: containerRef.current,
+              start: "top top",
+              end: "bottom top",
+              scrub: true,
+            },
+          });
+        });
+        return () => mm.revert();
+      }
+    },
+    { scope: containerRef }
+  );
 
   if (withParallax) {
     return (
       <section ref={containerRef} id={id} className={className}>
         {background && (
-          <motion.div style={{ y: yBg }} className="absolute inset-0">
+          <div className="absolute inset-0 parallax-bg will-change-transform">
             {background}
-          </motion.div>
+          </div>
         )}
-        <motion.div style={{ y: yText, opacity }} className="relative z-10 w-full max-w-4xl" {...props}>
+        <div
+          className="relative z-10 w-full max-w-4xl parallax-content will-change-transform"
+          {...props}
+        >
           {children}
-        </motion.div>
+        </div>
       </section>
     );
   }
 
-  // Fallback to regular motion div for other sections (like About)
+  // Fallback to regular div for other sections
   return (
-    <motion.div {...props} className={className}>
+    <div {...props} className={className}>
       {children}
-    </motion.div>
+    </div>
   );
 }

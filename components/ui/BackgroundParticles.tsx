@@ -1,169 +1,176 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useMotionValue,
-  useSpring,
-} from "framer-motion";
+import { useRef, useState, useEffect } from "react";
 import { useThemeContext } from "@/context/ThemeContext";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
-const BackgroundParticles = () => {
+export default function BackgroundParticles() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const { theme } = useThemeContext();
   const [mounted, setMounted] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  // Smooth spring for high-performance mouse tracking (no re-renders)
-  const smoothMouseX = useSpring(mouseX, { damping: 25, stiffness: 120 });
-  const smoothMouseY = useSpring(mouseY, { damping: 25, stiffness: 120 });
-
-  const { scrollY } = useScroll();
-
-  // Parallax depth layers (Scroll-driven)
-  const layer1Y = useTransform(scrollY, [0, 1000], [0, -120]);
-  const layer2Y = useTransform(scrollY, [0, 1000], [0, -240]);
-  const layer3Y = useTransform(scrollY, [0, 1000], [0, -360]);
-
-  // Parallax layers (Mouse-driven via style prop)
-  const m1X = useTransform(smoothMouseX, [-0.5, 0.5], [-25, 25]);
-  const m1Y = useTransform(smoothMouseY, [-0.5, 0.5], [-25, 25]);
-
-  const m2X = useTransform(smoothMouseX, [-0.5, 0.5], [-45, 45]);
-  const m2Y = useTransform(smoothMouseY, [-0.5, 0.5], [-45, 45]);
-
-  const m3X = useTransform(smoothMouseX, [-0.5, 0.5], [-65, 65]);
-  const m3Y = useTransform(smoothMouseY, [-0.5, 0.5], [-65, 65]);
 
   useEffect(() => {
     setMounted(true);
+  }, []);
 
-    const checkMobile = () => {
-      setIsMobile(window.matchMedia("(max-width: 768px)").matches);
-    };
+  useGSAP(
+    () => {
+      if (!mounted || !canvasRef.current) return;
 
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
 
-    const handleMove = (e: MouseEvent) => {
-      if (window.matchMedia("(max-width: 768px)").matches) return;
-      mouseX.set(e.clientX / window.innerWidth - 0.5);
-      mouseY.set(e.clientY / window.innerHeight - 0.5);
-    };
+      let width = window.innerWidth;
+      let height = window.innerHeight;
+      let particles: Particle[] = [];
 
-    window.addEventListener("mousemove", handleMove);
-    return () => {
-      window.removeEventListener("mousemove", handleMove);
-      window.removeEventListener("resize", checkMobile);
-    };
-  }, [mouseX, mouseY]);
+      // Deteksi mobile untuk menyesuaikan jumlah partikel (biar tetap enteng)
+      const isMobile = window.innerWidth < 768;
+      const PARTICLE_COUNT = isMobile ? 150 : 400;
 
-  const particles = useMemo(() => {
-    // Reduced count for mobile to improve FPS
-    const count = isMobile ? 30 : 100;
-    return Array.from({ length: count }).map((_, i) => {
-      const layer = i % 3;
-
-      return {
-        left: `${Math.random() * 100}%`,
-        top: `${Math.random() * 100}%`,
-
-        layer,
-
-        size:
-          (Math.random() * 1.5 + 3) *
-          (layer === 0 ? 1.2 : layer === 1 ? 1 : 0.7),
-
-        opacity: Math.random() * 0.5 + 0.2,
-
-        driftX: Math.random() * 60 - 30,
-        driftY: -(Math.random() * 120 + 40),
-
-        driftDuration: Math.random() * 12 + 18,
+      // Optimasi Retina/High-DPI Display (Biar partikel nggak buram)
+      const resize = () => {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        ctx.scale(dpr, dpr);
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
       };
-    });
-  }, [isMobile]);
+
+      resize();
+      window.addEventListener("resize", resize);
+
+      // --- ANTIGRAVITY PHYSICS CLASS ---
+      class Particle {
+        x: number;
+        y: number;
+        originX: number;
+        originY: number;
+        size: number;
+        vx: number;
+        vy: number;
+        ease: number;
+        friction: number;
+        alpha: number;
+
+        constructor() {
+          this.x = Math.random() * width;
+          this.y = Math.random() * height;
+          this.originX = this.x;
+          this.originY = this.y;
+          this.size = Math.random() * 2 + 0.5; // Ukuran bervariasi (kedalaman)
+          this.vx = 0;
+          this.vy = 0;
+          this.ease = 0.05;
+          this.friction = 0.92;
+          this.alpha = Math.random() * 0.5 + 0.1;
+        }
+
+        draw(context: CanvasRenderingContext2D, isDark: boolean) {
+          context.beginPath();
+          context.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          context.fillStyle = isDark
+            ? `rgba(255, 255, 255, ${this.alpha})`
+            : `rgba(0, 0, 0, ${this.alpha})`;
+          context.fill();
+        }
+
+        update(mouseX: number, mouseY: number) {
+          // 1. Antigravity / Repulsion Logic (Menjauh dari mouse)
+          const dx = mouseX - this.x;
+          const dy = mouseY - this.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          const forceDirectionX = dx / distance;
+          const forceDirectionY = dy / distance;
+
+          // Radius area tolakan mouse
+          const maxDistance = 150;
+
+          if (distance < maxDistance) {
+            const force = (maxDistance - distance) / maxDistance;
+            // Dorong partikel berlawanan arah dengan mouse
+            this.vx -= forceDirectionX * force * 5;
+            this.vy -= forceDirectionY * force * 5;
+          }
+
+          // 2. Float Back (Kembali ke posisi asal secara organik)
+          this.vx += (this.originX - this.x) * this.ease;
+          this.vy += (this.originY - this.y) * this.ease;
+
+          // 3. Apply Friction (Biar gerakannya smooth dan berhenti perlahan)
+          this.vx *= this.friction;
+          this.vy *= this.friction;
+
+          // 4. Update Posisi
+          this.x += this.vx;
+          this.y += this.vy;
+
+          // 5. Efek melayang acak tambahan (biar nggak diam kaku)
+          this.originX += Math.sin(Date.now() * 0.001 + this.alpha) * 0.5;
+          this.originY += Math.cos(Date.now() * 0.001 + this.alpha) * 0.5;
+        }
+      }
+
+      // Inisialisasi Partikel
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        particles.push(new Particle());
+      }
+
+      // Track pergerakan Mouse via GSAP quickTo logic concept
+      let mouse = { x: -1000, y: -1000 };
+      const handleMouseMove = (e: MouseEvent) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+      };
+
+      const handleMouseLeave = () => {
+        mouse.x = -1000;
+        mouse.y = -1000;
+      };
+
+      window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("mouseleave", handleMouseLeave);
+
+      // --- RENDER LOOP ENGINE (Di-drive oleh GSAP Ticker) ---
+      const render = () => {
+        // Bersihkan canvas setiap frame
+        ctx.clearRect(0, 0, width, height);
+
+        const isDark = theme === "dark";
+
+        // Gambar dan update ulang setiap partikel
+        for (let i = 0; i < particles.length; i++) {
+          particles[i].update(mouse.x, mouse.y);
+          particles[i].draw(ctx, isDark);
+        }
+      };
+
+      // Tambahkan fungsi render ke siklus internal GSAP (lock 60fps/120fps)
+      gsap.ticker.add(render);
+
+      // Cleanup
+      return () => {
+        window.removeEventListener("resize", resize);
+        window.removeEventListener("mousemove", handleMouseMove);
+        window.removeEventListener("mouseleave", handleMouseLeave);
+        gsap.ticker.remove(render);
+      };
+    },
+    { dependencies: [mounted, theme] }
+  );
 
   if (!mounted) return null;
 
-  const layers = [
-    {
-      p: particles.filter((p) => p.layer === 0),
-      y: layer1Y,
-      mx: m1X,
-      my: m1Y,
-    },
-    {
-      p: particles.filter((p) => p.layer === 1),
-      y: layer2Y,
-      mx: m2X,
-      my: m2Y,
-    },
-    {
-      p: particles.filter((p) => p.layer === 2),
-      y: layer3Y,
-      mx: m3X,
-      my: m3Y,
-    },
-  ];
-
   return (
-    <div className="absolute inset-0 pointer-events-none -z-10 overflow-hidden">
-      {layers.map((layer, lIdx) => (
-        <motion.div
-          key={lIdx}
-          style={{
-            x: isMobile ? 0 : layer.mx,
-            y: layer.y,
-          }}
-          className="absolute inset-0"
-        >
-          {layer.p.map((p, i) => (
-            <motion.div
-              key={i}
-              className="absolute rounded-full"
-              style={{
-                width: p.size,
-                height: p.size,
-                left: p.left,
-                top: p.top,
-
-                opacity:
-                  p.layer === 0
-                    ? p.opacity * 0.9
-                    : p.layer === 1
-                      ? p.opacity * 0.5
-                      : p.opacity * 0.25,
-
-                filter: `blur(${p.layer * 1.5}px)`,
-
-                background:
-                  theme === "dark"
-                    ? "radial-gradient(circle, rgba(255,255,255,1) 0%, transparent 70%)"
-                    : "radial-gradient(circle, rgba(0,0,0,1) 0%, transparent 70%)",
-
-                willChange: "transform, opacity",
-              }}
-              animate={{
-                x: [0, p.driftX, 0],
-                y: [0, p.driftY, 0],
-                opacity: [0.1, p.opacity, 0.1],
-                scale: [1, 1.15, 1],
-              }}
-              transition={{
-                duration: isMobile ? p.driftDuration * 1.5 : p.driftDuration,
-                repeat: Infinity,
-                ease: [0.65, 0, 0.35, 1],
-              }}
-            />
-          ))}
-        </motion.div>
-      ))}
-    </div>
+    <canvas
+      ref={canvasRef}
+      className="fixed inset-0 pointer-events-none z-[-10]"
+      aria-hidden="true"
+    />
   );
-};
-
-export default BackgroundParticles;
+}
